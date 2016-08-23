@@ -10,11 +10,22 @@
     "type": "git",
     "url": "git+https://github.com/Ryuno-Ki/js13kgames-2016.git"
   },
-  "keywords": ["js13kgames", "flux", "Vanilla"],
+  "keywords": [
+    "js13kgames",
+    "flux",
+    "Vanilla"
+  ],
   "author": "André Jaenisch",
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/Ryuno-Ki/js13kgames-2016/issues"
   },
-  "homepage": "https://ryuno-ki.github.io/js13kgames-2016/"
+  "homepage": "https://ryuno-ki.github.io/js13kgames-2016/",
+  "devDependencies": {
+    "grunt": "^1.0.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-mocha": "^1.0.2",
+    "grunt-mocha-chai-sinon": "0.0.9"
+  }
 }

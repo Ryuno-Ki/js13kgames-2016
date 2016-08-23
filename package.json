@@ -22,7 +22,9 @@
   },
   "homepage": "https://ryuno-ki.github.io/js13kgames-2016/",
   "devDependencies": {
+    "babel-preset-es2015": "^6.13.2",
     "grunt": "^1.0.0",
+    "grunt-babel": "^6.0.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-mocha": "^1.0.2",

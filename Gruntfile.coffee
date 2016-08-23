@@ -1,10 +1,28 @@
 module.exports = (grunt) =>
     grunt.initConfig
+        babel:
+            options:
+                sourceMap: true
+                presets: ['babel-preset-es2015']
+            dist:
+                files:
+                    'dist/app.js': 'js/game.js'
+
         jshint:
             files: ['js/*.js', 'spec/*.js']
             options:
+                browser: true
+                devel: true
+                curly: true
+                eqnull: true
+                eqeqeq: true
+                es5: true
+                expr: true
+                undef: true
                 globals:
-                    jQuery: true
+                    describe: true
+                    expect: true
+                    it: true
 
         'mocha-chai-sinon':
             test:
@@ -19,7 +37,8 @@ module.exports = (grunt) =>
 
     grunt.loadNpmTasks 'grunt-contrib-jshint'
     grunt.loadNpmTasks 'grunt-contrib-watch'
+    grunt.loadNpmTasks 'grunt-babel'
     grunt.loadNpmTasks 'grunt-mocha-chai-sinon'
 
-    grunt.registerTask 'default', ['jshint']
+    grunt.registerTask 'default', ['babel', 'jshint']
     grunt.registerTask 'test', ['mocha-chai-sinon']

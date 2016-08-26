@@ -26,8 +26,10 @@
     "babel-preset-es2015": "^6.13.2",
     "grunt": "^1.0.0",
     "grunt-babel": "^6.0.0",
+    "grunt-contrib-compress": "^1.3.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-max-filesize": "^0.1.1",
     "grunt-mocha": "^1.0.2",
     "grunt-mocha-chai-sinon": "0.0.9"
   },

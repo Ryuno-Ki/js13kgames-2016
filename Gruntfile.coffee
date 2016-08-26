@@ -12,6 +12,19 @@ module.exports = (grunt) =>
                     'spec/car.spec.js': 'spec/car.spec.es6.js'
                     'spec/trafficLight.spec.js': 'spec/trafficLight.spec.es6.js'
 
+        compress:
+            app:
+                options:
+                    archive: 'dist/game.zip'
+                files: [{
+                    expand: true
+                    src: [
+                        'index.html'
+                        'dist/*.js'
+                    ]
+                    dest: '/'
+                }]
+
         jshint:
             files: ['js/*.js', 'spec/*spec.es6.js']
             options:
@@ -31,6 +44,12 @@ module.exports = (grunt) =>
                     it: true
                     require: true
 
+        maxFilesize:
+            app:
+                options:
+                    maxBytes: 13312
+                src: ['dist/game.zip']
+
         'mocha-chai-sinon':
             test:
                 options:
@@ -42,10 +61,12 @@ module.exports = (grunt) =>
             files: ['js/*.js', 'spec/*.es6.js']
             tasks: ['babel', 'jshint', 'test']
 
+    grunt.loadNpmTasks 'grunt-contrib-compress'
     grunt.loadNpmTasks 'grunt-contrib-jshint'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-babel'
+    grunt.loadNpmTasks 'grunt-max-filesize'
     grunt.loadNpmTasks 'grunt-mocha-chai-sinon'
 
-    grunt.registerTask 'default', ['babel', 'jshint']
+    grunt.registerTask 'default', ['babel', 'jshint', 'compress', 'maxFilesize']
     grunt.registerTask 'test', ['mocha-chai-sinon']

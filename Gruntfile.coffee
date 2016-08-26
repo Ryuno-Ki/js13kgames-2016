@@ -7,7 +7,9 @@ module.exports = (grunt) =>
             dist:
                 files:
                     'dist/car.js': 'js/car.js'
+                    'dist/trafficLight.js': 'js/trafficLight.js'
                     'spec/car.spec.js': 'spec/car.spec.es6.js'
+                    'spec/trafficLight.spec.js': 'spec/trafficLight.spec.es6.js'
 
         jshint:
             files: ['js/*.js', 'spec/*spec.es6.js']

@@ -1,4 +1,6 @@
 *~
 *.swp
+*.map
 node_modules/
 dist/
+spec/*.spec.js

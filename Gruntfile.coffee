@@ -6,34 +6,38 @@ module.exports = (grunt) =>
                 presets: ['babel-preset-es2015']
             dist:
                 files:
-                    'dist/app.js': 'js/game.js'
+                    'dist/car.js': 'js/car.js'
+                    'spec/car.spec.js': 'spec/car.spec.es6.js'
 
         jshint:
-            files: ['js/*.js', 'spec/*.js']
+            files: ['js/*.js', 'spec/*spec.es6.js']
             options:
                 browser: true
                 devel: true
                 curly: true
                 eqnull: true
                 eqeqeq: true
-                es5: true
+                esversion: 6
                 expr: true
                 undef: true
                 globals:
+                    beforeEach: true
                     describe: true
                     expect: true
+                    exports: true
                     it: true
+                    require: true
 
         'mocha-chai-sinon':
             test:
                 options:
                     ui: 'bdd'
                     reporter: 'dot'
-                src: ['spec/*.js']
+                src: ['spec/*.spec.js']
 
         watch:
-            files: ['<%= jshint.files %>']
-            tasks: ['jshint']
+            files: ['js/*.js', 'spec/*.es6.js']
+            tasks: ['babel', 'jshint', 'test']
 
     grunt.loadNpmTasks 'grunt-contrib-jshint'
     grunt.loadNpmTasks 'grunt-contrib-watch'

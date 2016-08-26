@@ -4,7 +4,6 @@ module.exports = (grunt) =>
             options:
                 sourceMap: true
                 presets: ['babel-preset-es2015']
-                plugins: ['transform-es2015-modules-amd']
             dist:
                 files:
                     'dist/car.js': 'js/car.js'

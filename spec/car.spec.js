@@ -1,30 +1,30 @@
-define(['../dist/car.js'], function (_car) {
-    'use strict';
+'use strict';
 
-    describe('Car', function () {
-        var car = void 0;
+var _car = require('../dist/car.js');
 
-        beforeEach(function () {
-            car = new _car.Car();
-        });
+describe('Car', function () {
+    var car = void 0;
 
-        it('should stand still', function () {
-            var isDriving = car.isDriving();
-            expect(isDriving).to.be.false;
-        });
+    beforeEach(function () {
+        car = new _car.Car();
+    });
 
-        it('should be able to start and stop', function () {
-            var isDriving = car.isDriving();
-            expect(isDriving).to.be.false;
+    it('should stand still', function () {
+        var isDriving = car.isDriving();
+        expect(isDriving).to.be.false;
+    });
 
-            car.accelerate();
-            isDriving = car.isDriving();
-            expect(isDriving).to.be.true;
+    it('should be able to start and stop', function () {
+        var isDriving = car.isDriving();
+        expect(isDriving).to.be.false;
 
-            car.stop();
-            isDriving = car.isDriving();
-            expect(isDriving).to.be.false;
-        });
+        car.accelerate();
+        isDriving = car.isDriving();
+        expect(isDriving).to.be.true;
+
+        car.stop();
+        isDriving = car.isDriving();
+        expect(isDriving).to.be.false;
     });
 });
 //# sourceMappingURL=car.spec.js.map

@@ -1,7 +1,3 @@
-require.config({
-    baseUrl: 'dist/'
-});
+import { Car } from './js/car.js';
 
-require(['car'], function(Car) {
-    console.log(Car);
-});
+console.log(new Car());

@@ -2,6 +2,6 @@ require.config({
     baseUrl: 'dist/'
 });
 
-require(['Car'], function(Car) {
+require(['car'], function(Car) {
     console.log(Car);
 });

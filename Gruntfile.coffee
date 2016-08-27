@@ -7,8 +7,12 @@ module.exports = (grunt) =>
             dist:
                 files:
                     'dist/car.js': 'js/car.js'
+                    'dist/crossroad.js': 'js/crossroad.js'
+                    'dist/street.js': 'js/street.js'
                     'dist/trafficLight.js': 'js/trafficLight.js'
                     'spec/car.spec.js': 'spec/car.spec.es6.js'
+                    'spec/crossroad.spec.js': 'spec/crossroad.spec.es6.js'
+                    'spec/street.spec.js': 'spec/street.spec.es6.js'
                     'spec/trafficLight.spec.js': 'spec/trafficLight.spec.es6.js'
 
         compress:

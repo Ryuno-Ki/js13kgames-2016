@@ -1,3 +1,7 @@
-import { Car } from './js/car.js';
+require.config({
+    baseUrl: 'dist/'
+});
 
-console.log(new Car());
+require(['street'], function(Street) {
+    console.log(Street);
+});

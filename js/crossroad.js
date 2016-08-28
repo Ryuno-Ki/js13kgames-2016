@@ -1,9 +1,9 @@
-import { Street } from '../dist/street.js';
+import { StreetModel } from '../dist/street.js';
 
-class Crossroad extends Street {
+class CrossroadModel extends StreetModel {
     constructor() {
         super();
     }
 }
 
-export { Crossroad };
+export { CrossroadModel };

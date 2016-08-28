@@ -1,10 +1,10 @@
-import { Street } from '../dist/street.js';
+import { StreetModel } from '../dist/street.js';
 
-describe('Street', () => {
+describe('Street model', () => {
     let street;
 
     beforeEach(() => {
-        street = new Street();
+        street = new StreetModel();
     });
 
     it('should have zero utilisation', () => {

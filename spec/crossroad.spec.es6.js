@@ -1,10 +1,10 @@
-import { Crossroad } from '../dist/crossroad.js';
+import { CrossroadModel } from '../dist/crossroad.js';
 
-describe('Crossroad', () => {
+describe('Crossroad model', () => {
     let crossroad;
 
     beforeEach(() => {
-        crossroad = new Crossroad();
+        crossroad = new CrossroadModel();
     });
 
     it('should have zero utilisation', () => {

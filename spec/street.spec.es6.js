@@ -1,3 +1,6 @@
+let jsdom = require('jsdom').jsdom;
+global.document = jsdom('<html><head></head><body></body></html>');
+
 import { StreetModel, StreetView } from '../dist/street.js';
 
 describe('Street model', () => {
@@ -35,7 +38,7 @@ describe('Street view', () => {
         expect(carsOnTile).to.be.greater.than(0);
     });
 
-    it('should emit an event if a car is about to leave its tile', () => {
+    it('should emit an event if a car is about to leave its tile', (done) => {
         let carMock = {};
         street.enter(carMock);
         expect(street).to.trigger('car-leaving');

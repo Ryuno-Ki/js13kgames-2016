@@ -1,9 +1,10 @@
-import { StreetModel } from '../dist/street.js';
+unless StreetModel
+  class StreetModel
+    constructor: () ->
 
-class CrossroadModel extends StreetModel {
-    constructor() {
-        super();
-    }
-}
+class CrossroadModel extends StreetModel
+  getTrafficLights: () ->
+    return []
 
-export { CrossroadModel };
+root = exports ? this  # Node.js vs Browser
+root.CrossroadModel = CrossroadModel

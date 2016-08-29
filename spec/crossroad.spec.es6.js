@@ -1,4 +1,4 @@
-import { CrossroadModel } from '../dist/crossroad.js';
+let CrossroadModel = require('../dist/crossroad.js').CrossroadModel;
 
 describe('Crossroad model', () => {
     let crossroad;

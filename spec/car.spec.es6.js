@@ -1,4 +1,4 @@
-import { Car } from '../dist/car.js';
+let Car = require('../dist/car.js').Car;
 
 describe('Car', () => {
     let car;

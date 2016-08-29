@@ -1,12 +1,12 @@
 'use strict';
 
-var _car = require('../dist/car.js');
+var Car = require('../dist/car.js').Car;
 
 describe('Car', function () {
     var car = void 0;
 
     beforeEach(function () {
-        car = new _car.Car();
+        car = new Car();
     });
 
     it('should stand still', function () {

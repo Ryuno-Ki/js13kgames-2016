@@ -22,10 +22,9 @@
 
     StreetView.prototype.render = function() {
       var el, g, leftBoundary, middleBoundary, rightBoundary;
-      el = document.createElement('svg');
+      el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       el.setAttribute('viewBox', '0 0 100 100');
       el.setAttribute('version', '1.1');
-      el.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
       el.setAttribute('height', '60');
       el.setAttribute('width', '60');
       g = document.createElement('g');

@@ -14,6 +14,7 @@ module.exports = (grunt) =>
         coffee:
             compile:
                 files:
+                    'dist/app.js': 'js/app.js'
                     'dist/car.js': 'js/car.js'
                     'dist/crossroad.js': 'js/crossroad.js'
                     'dist/street.js': 'js/street.js'

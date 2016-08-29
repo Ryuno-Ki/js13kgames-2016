@@ -33,3 +33,7 @@ class StreetView
     return el
 
   enter: () ->
+
+root = exports ? this  # Node.js vs. Browser
+root.StreetModel = StreetModel
+root.StreetView = StreetView

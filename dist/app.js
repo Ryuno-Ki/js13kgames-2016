@@ -1,10 +1,11 @@
 (function() {
-  var map, sv;
+  var i, map, sv, tileNum;
 
   map = document.getElementById('map');
 
-  sv = new StreetView();
-
-  map.appendChild(sv.render());
+  for (tileNum = i = 1; i <= 25; tileNum = ++i) {
+    sv = new game.views.Street();
+    map.appendChild(sv.render());
+  }
 
 }).call(this);

@@ -32,10 +32,10 @@
       g = document.createElementNS(svgns, 'g');
       leftBoundary = document.createElementNS(svgns, 'path');
       leftBoundary.setAttribute('d', 'M0 33H100');
-      rightBoundary = document.createElementNS(svgns, 'path');
-      leftBoundary.setAttribute('d', 'M0 67H100');
       middleBoundary = document.createElementNS(svgns, 'path');
-      middleBoundary.setAttribute('d', 'M0 50H10');
+      middleBoundary.setAttribute('d', 'M0 50H100');
+      rightBoundary = document.createElementNS(svgns, 'path');
+      rightBoundary.setAttribute('d', 'M0 67H100');
       g.appendChild(leftBoundary);
       g.appendChild(middleBoundary);
       g.appendChild(rightBoundary);

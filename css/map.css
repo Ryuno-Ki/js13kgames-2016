@@ -1,0 +1,9 @@
+body {
+    background: #b2beb5;
+}
+
+#map {
+    background: white;
+    margin: 0 auto;
+    max-width: 300px;
+}

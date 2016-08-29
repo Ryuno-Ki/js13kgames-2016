@@ -1,3 +1,4 @@
 map = document.getElementById 'map'
-sv = new StreetView()
-map.appendChild sv.render()
+for tileNum in [1..25]
+  sv = new game.views.Street()
+  map.appendChild sv.render()

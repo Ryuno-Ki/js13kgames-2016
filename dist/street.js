@@ -18,17 +18,18 @@
     function StreetView(precursor, successor) {
       this.precursor = precursor || null;
       this.successor = successor || null;
+      this.svgns = 'http://www.w3.org/2000/svg';
+      this.svgNode = document.createElementNS(this.svgns, 'svg');
+      this.svgNode.setAttribute('viewBox', '0 0 100 100');
+      this.svgNode.setAttribute('xmlns', this.svgns);
+      this.svgNode.setAttribute('version', '1.1');
+      this.svgNode.setAttribute('height', '60');
+      this.svgNode.setAttribute('width', '60');
     }
 
     StreetView.prototype.render = function() {
-      var el, g, leftBoundary, middleBoundary, rightBoundary, svgns;
-      svgns = 'http://www.w3.org/2000/svg';
-      el = document.createElementNS(svgns, 'svg');
-      el.setAttribute('viewBox', '0 0 100 100');
-      el.setAttribute('xmlns', svgns);
-      el.setAttribute('version', '1.1');
-      el.setAttribute('height', '60');
-      el.setAttribute('width', '60');
+      var g, leftBoundary, middleBoundary, rightBoundary, svgns;
+      svgns = this.svgns;
       g = document.createElementNS(svgns, 'g');
       leftBoundary = document.createElementNS(svgns, 'path');
       leftBoundary.setAttribute('d', 'M0 33H100');
@@ -39,8 +40,8 @@
       g.appendChild(leftBoundary);
       g.appendChild(middleBoundary);
       g.appendChild(rightBoundary);
-      el.appendChild(g);
-      return el;
+      this.svgNode.appendChild(g);
+      return this.svgNode.cloneNode(true);
     };
 
     StreetView.prototype.enter = function() {

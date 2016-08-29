@@ -1,4 +1,11 @@
 map = document.getElementById 'map'
+sv = game.views.Street
+cr = game.views.Crossroad
+
+pick = () ->
+  choices = [sv, cr]
+  tile = choices[Math.floor(Math.random() * choices.length)]
+  return new tile()
+
 for tileNum in [1..25]
-  sv = new game.views.Street()
-  map.appendChild sv.render()
+  map.appendChild pick().render()

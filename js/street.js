@@ -7,31 +7,33 @@ class StreetModel
 
 class StreetView
   constructor: (precursor, successor) ->
+
     this.precursor = precursor || null
     this.successor = successor || null
 
-  render: () ->
-    svgns = 'http://www.w3.org/2000/svg'
-    el = document.createElementNS(svgns, 'svg')
-    el.setAttribute('viewBox', '0 0 100 100')
-    el.setAttribute('xmlns', svgns)
-    el.setAttribute('version', '1.1')
-    el.setAttribute('height', '60')
-    el.setAttribute('width', '60')
+    @svgns = 'http://www.w3.org/2000/svg'
+    @svgNode = document.createElementNS(@svgns, 'svg')
+    @svgNode.setAttribute('viewBox', '0 0 100 100')
+    @svgNode.setAttribute('xmlns', @svgns)
+    @svgNode.setAttribute('version', '1.1')
+    @svgNode.setAttribute('height', '60')
+    @svgNode.setAttribute('width', '60')
 
-    g = document.createElementNS(svgns, 'g')
-    leftBoundary = document.createElementNS(svgns, 'path')
-    leftBoundary.setAttribute('d', 'M0 33H100')
-    middleBoundary = document.createElementNS(svgns, 'path')
-    middleBoundary.setAttribute('d', 'M0 50H100')
-    rightBoundary = document.createElementNS(svgns, 'path')
-    rightBoundary.setAttribute('d', 'M0 67H100')
+  render: () ->
+    svgns = @svgns
+    g = document.createElementNS svgns, 'g'
+    leftBoundary = document.createElementNS svgns, 'path'
+    leftBoundary.setAttribute 'd', 'M0 33H100'
+    middleBoundary = document.createElementNS svgns, 'path'
+    middleBoundary.setAttribute 'd', 'M0 50H100'
+    rightBoundary = document.createElementNS svgns, 'path'
+    rightBoundary.setAttribute 'd', 'M0 67H100'
 
     g.appendChild(leftBoundary)
     g.appendChild(middleBoundary)
     g.appendChild(rightBoundary)
-    el.appendChild(g)
-    return el
+    @svgNode.appendChild(g)
+    return @svgNode.cloneNode true
 
   enter: () ->
     event = new global.window.CustomEvent('car-leaving')

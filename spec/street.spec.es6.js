@@ -1,7 +1,11 @@
 let jsdom = require('jsdom').jsdom;
 global.document = jsdom('<html><head></head><body></body></html>');
+global.window = document.defaultView;
 
-import { StreetModel, StreetView } from '../dist/street.js';
+let CarView = require('../dist/car.js').game.views.Car;
+let StreetModule = require('../dist/street.js').game;
+let StreetModel = StreetModule.models.Street;
+let StreetView = StreetModule.views.Street;
 
 describe('Street model', () => {
     let street;
@@ -35,12 +39,19 @@ describe('Street view', () => {
 
         let carMock = {};
         street.enter(carMock);
-        expect(carsOnTile).to.be.greater.than(0);
+        carsOnTile = street.getCarsOnIt();
+        expect(carsOnTile).to.be.above(0);
     });
 
     it('should emit an event if a car is about to leave its tile', (done) => {
-        let carMock = {};
-        street.enter(carMock);
-        expect(street).to.trigger('car-leaving');
+        let eventFired = false;
+        let car = new CarView();
+        car.on('car-leaving', () => {
+            eventFired = true;
+            done();
+        });
+
+        street.enter(car);
+        expect(eventFired).to.be.true;
     });
 });

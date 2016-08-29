@@ -1,12 +1,12 @@
 'use strict';
 
-var Car = require('../dist/car.js').Car;
+var CarModel = require('../dist/car.js').game.models.Car;
 
-describe('Car', function () {
+describe('Car model', function () {
     var car = void 0;
 
     beforeEach(function () {
-        car = new Car();
+        car = new CarModel();
     });
 
     it('should stand still', function () {

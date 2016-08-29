@@ -1,10 +1,10 @@
-import { TrafficLight } from '../dist/trafficLight.js';
+let TrafficLightModel = require('../dist/trafficLight.js').game.models.TrafficLight;
 
 describe('TrafficLight', () => {
     let trafficLight;
 
     beforeEach(() => {
-        trafficLight = new TrafficLight();
+        trafficLight = new TrafficLightModel();
     });
 
     it('should have three states: red, yellow, green', () => {

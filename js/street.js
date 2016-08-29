@@ -34,7 +34,18 @@ class StreetView
     return el
 
   enter: () ->
+    event = new global.window.CustomEvent('car-leaving')
+    global.document.dispatchEvent(event)
+    console.log('Dispatched', event)
+    return
+
+  getCarsOnIt: () ->
+    return 0
 
 root = exports ? this  # Node.js vs. Browser
-root.StreetModel = StreetModel
-root.StreetView = StreetView
+root.game ?= {}
+root.game.models ?= {}
+root.game.models.Street = StreetModel
+
+root.game.views ?= {}
+root.game.views.Street = StreetView

@@ -1,5 +1,5 @@
 (function() {
-  var TrafficLight;
+  var TrafficLight, base, root;
 
   TrafficLight = (function() {
     function TrafficLight() {
@@ -48,5 +48,17 @@
     return TrafficLight;
 
   })();
+
+  root = typeof exports !== "undefined" && exports !== null ? exports : this;
+
+  if (root.game == null) {
+    root.game = {};
+  }
+
+  if ((base = root.game).models == null) {
+    base.models = {};
+  }
+
+  root.game.models.TrafficLight = TrafficLight;
 
 }).call(this);

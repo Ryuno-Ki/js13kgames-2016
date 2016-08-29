@@ -1,4 +1,4 @@
-let CrossroadModel = require('../dist/crossroad.js').CrossroadModel;
+let CrossroadModel = require('../dist/crossroad.js').game.models.Crossroad;
 
 describe('Crossroad model', () => {
     let crossroad;

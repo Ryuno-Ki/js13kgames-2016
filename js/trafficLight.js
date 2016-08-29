@@ -37,3 +37,8 @@ class TrafficLight
         this._redToGreen = true
         this._currentState = states[1]
     return this._currentState
+
+root = exports ? this  # Nodejs. vs. Browser
+root.game ?= {}
+root.game.models ?= {}
+root.game.models.TrafficLight = TrafficLight

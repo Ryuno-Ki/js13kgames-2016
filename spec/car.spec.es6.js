@@ -1,10 +1,10 @@
-let Car = require('../dist/car.js').Car;
+let CarModel = require('../dist/car.js').game.models.Car;
 
-describe('Car', () => {
+describe('Car model', () => {
     let car;
 
     beforeEach(() => {
-        car = new Car();
+        car = new CarModel();
     });
 
     it('should stand still', () => {

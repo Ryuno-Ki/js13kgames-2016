@@ -3,8 +3,10 @@ unless StreetModel
     constructor: () ->
 
 class CrossroadModel extends StreetModel
-  getTrafficLights: () ->
-    return []
+  getUtilisation: () ->
+    return 0
 
 root = exports ? this  # Node.js vs Browser
-root.CrossroadModel = CrossroadModel
+root.game ?= {}
+root.game.models ?= {}
+root.game.models.Crossroad = CrossroadModel

@@ -1,5 +1,5 @@
 (function() {
-  var CrossroadModel, StreetModel, root,
+  var CrossroadModel, StreetModel, base, root,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -19,8 +19,8 @@
       return CrossroadModel.__super__.constructor.apply(this, arguments);
     }
 
-    CrossroadModel.prototype.getTrafficLights = function() {
-      return [];
+    CrossroadModel.prototype.getUtilisation = function() {
+      return 0;
     };
 
     return CrossroadModel;
@@ -29,6 +29,14 @@
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-  root.CrossroadModel = CrossroadModel;
+  if (root.game == null) {
+    root.game = {};
+  }
+
+  if ((base = root.game).models == null) {
+    base.models = {};
+  }
+
+  root.game.models.Crossroad = CrossroadModel;
 
 }).call(this);

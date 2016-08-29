@@ -1,5 +1,5 @@
 (function() {
-  var StreetModel, StreetView, root;
+  var StreetModel, StreetView, base, base1, root;
 
   StreetModel = (function() {
     function StreetModel() {
@@ -43,7 +43,16 @@
       return el;
     };
 
-    StreetView.prototype.enter = function() {};
+    StreetView.prototype.enter = function() {
+      var event;
+      event = new global.window.CustomEvent('car-leaving');
+      global.document.dispatchEvent(event);
+      console.log('Dispatched', event);
+    };
+
+    StreetView.prototype.getCarsOnIt = function() {
+      return 0;
+    };
 
     return StreetView;
 
@@ -51,8 +60,20 @@
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-  root.StreetModel = StreetModel;
+  if (root.game == null) {
+    root.game = {};
+  }
 
-  root.StreetView = StreetView;
+  if ((base = root.game).models == null) {
+    base.models = {};
+  }
+
+  root.game.models.Street = StreetModel;
+
+  if ((base1 = root.game).views == null) {
+    base1.views = {};
+  }
+
+  root.game.views.Street = StreetView;
 
 }).call(this);

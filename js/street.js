@@ -19,7 +19,7 @@ class StreetView
     el.setAttribute('height', '60')
     el.setAttribute('width', '60')
 
-    g = document.createElementNS(svgns'g')
+    g = document.createElementNS(svgns, 'g')
     leftBoundary = document.createElementNS(svgns, 'path')
     leftBoundary.setAttribute('d', 'M0 33H100')
     rightBoundary = document.createElementNS(svgns, 'path')

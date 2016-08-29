@@ -14,21 +14,13 @@ class StreetView {
         this.successor = successor || null;
     }
 
-    render(node) {
+    render() {
         let el = document.createElement('svg');
-        let svgProperties = {
-            viewBox: '0 0 100 100',
-            version: '1.1',
-            xmlns: 'http://www.w3.org/2000/svg',
-            height: '60',
-            width: '60'
-        };
-        
-        for (let prop in svgProperties) {
-            if (svgProperties.hasOwnProperty(prop)) {
-                el.setAttribute(prop, svgProperties[prop]);
-            }
-        }
+        el.setAttribute('viewBox', '0 0 100 100');
+        el.setAttribute('version', '1.1');
+        el.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        el.setAttribute('height', '60');
+        el.setAttribute('width', '60');
 
         let g = document.createElement('g');
         let leftBoundary = document.createElement('path');
@@ -42,8 +34,11 @@ class StreetView {
         g.appendChild(middleBoundary);
         g.appendChild(rightBoundary);
         el.appendChild(g);
-        node.appendChild(el);
+        return el;
+    }
+
+    enter() {
     }
 }
 
-export { StreetModel };
+export { StreetModel, StreetView };

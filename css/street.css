@@ -1,0 +1,9 @@
+svg,
+svg path {
+    stroke: black;
+    fill: white;
+}
+
+svg path {
+    stroke-width: 1;
+}

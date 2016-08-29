@@ -14,6 +14,7 @@ class StreetView
     svgns = 'http://www.w3.org/2000/svg'
     el = document.createElementNS(svgns, 'svg')
     el.setAttribute('viewBox', '0 0 100 100')
+    el.setAttribute('xmlns', svgns)
     el.setAttribute('version', '1.1')
     el.setAttribute('height', '60')
     el.setAttribute('width', '60')

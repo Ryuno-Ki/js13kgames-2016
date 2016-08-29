@@ -1,4 +1,4 @@
-import { StreetModel } from '../dist/street.js';
+import { StreetModel, StreetView } from '../dist/street.js';
 
 describe('Street model', () => {
     let street;
@@ -10,5 +10,34 @@ describe('Street model', () => {
     it('should have zero utilisation', () => {
         let utilisation = street.getUtilisation();
         expect(utilisation).to.equal(0);
+    });
+});
+
+describe('Street view', () => {
+    let street;
+
+    beforeEach(() => {
+        street = new StreetView();
+    });
+
+    it('should render a svg tile', () => {
+        let tileNode = street.render();
+        expect(tileNode).not.to.be.null;
+    });
+
+    it('should show a car on enter', () => {
+        let tileNode = street.render();
+        let carsOnTile = street.getCarsOnIt();
+        expect(carsOnTile).to.equal(0);
+
+        let carMock = {};
+        street.enter(carMock);
+        expect(carsOnTile).to.be.greater.than(0);
+    });
+
+    it('should emit an event if a car is about to leave its tile', () => {
+        let carMock = {};
+        street.enter(carMock);
+        expect(street).to.trigger('car-leaving');
     });
 });

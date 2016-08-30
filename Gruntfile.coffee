@@ -36,6 +36,11 @@ module.exports = (grunt) =>
                     dest: '/'
                 }]
 
+        graphviz:
+            doc:
+                files:
+                    'dependency-graph.png': 'dependencies.dot'
+
         jshint:
             files: ['spec/*spec.es6.js']
             options:
@@ -110,6 +115,7 @@ module.exports = (grunt) =>
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-babel'
     grunt.loadNpmTasks 'grunt-coffeelint'
+    grunt.loadNpmTasks 'grunt-graphviz'
     grunt.loadNpmTasks 'grunt-max-filesize'
     grunt.loadNpmTasks 'grunt-mocha-chai-sinon'
     grunt.loadNpmTasks 'grunt-notify'

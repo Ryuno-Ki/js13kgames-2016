@@ -1,0 +1,15 @@
+digraph G {
+    app [shape=box];
+    CarModel [shape=box];
+    CarView [shape=box];
+    CrossroadModel [shape=box];
+    CrossroadView [shape=box];
+    StreetModel [shape=box];
+    StreetView [shape=box];
+    TrafficLightModel [shape=box];
+
+    app -> CrossroadView [label="depends on"];
+    app -> StreetView [label="depends on"];
+    CrossroadModel -> StreetModel [label="depends on"];
+    CrossroadView -> StreetView [label="depends on"];
+}

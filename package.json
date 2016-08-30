@@ -31,6 +31,7 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-graphviz": "^0.1.1",
     "grunt-max-filesize": "^0.1.1",
     "grunt-mocha": "^1.0.2",
     "grunt-mocha-chai-sinon": "0.0.9",

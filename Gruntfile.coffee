@@ -86,6 +86,10 @@ module.exports = (grunt) =>
                     reserveDOMProperties: true
                     screwIE8: true
                     sourceMap: true
+                    compress:
+                        dead_code: true
+                        global_defs:
+                            'DEBUG': false
                 files:
                     'minified/app.min.js': [ 'dist/app.js' ]
 

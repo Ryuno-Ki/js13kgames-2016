@@ -3,30 +3,12 @@
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  if (!StreetModel) {
-    StreetModel = (function() {
-      function StreetModel() {}
-
-      return StreetModel;
-
-    })();
+  if (!(StreetModel && DEBUG)) {
+    StreetModel = require('../dist/street.js').game.models.Street;
   }
 
-  if (!StreetView) {
-    StreetView = (function() {
-      function StreetView() {
-        this.svgns = 'http://www.w3.org/2000/svg';
-        this.svgNode = document.createElementNS(this.svgns, 'svg');
-        this.svgNode.setAttribute('viewBox', '0 0 100 100');
-        this.svgNode.setAttribute('xmlns', this.svgns);
-        this.svgNode.setAttribute('version', '1.1');
-        this.svgNode.setAttribute('height', '60');
-        this.svgNode.setAttribute('width', '60');
-      }
-
-      return StreetView;
-
-    })();
+  if (!(StreetView && DEBUG)) {
+    StreetView = require('../dist/street.js').game.views.Street;
   }
 
   CrossroadModel = (function(superClass) {

@@ -1,17 +1,8 @@
-unless StreetModel
-  class StreetModel
-    constructor: () ->
+unless StreetModel and DEBUG
+  StreetModel = require('../dist/street.js').game.models.Street
 
-unless StreetView
-  class StreetView
-    constructor: () ->
-      @svgns = 'http://www.w3.org/2000/svg'
-      @svgNode = document.createElementNS(@svgns, 'svg')
-      @svgNode.setAttribute('viewBox', '0 0 100 100')
-      @svgNode.setAttribute('xmlns', @svgns)
-      @svgNode.setAttribute('version', '1.1')
-      @svgNode.setAttribute('height', '60')
-      @svgNode.setAttribute('width', '60')
+unless StreetView and DEBUG
+  StreetView = require('../dist/street.js').game.views.Street
 
 class CrossroadModel extends StreetModel
   getUtilisation: () ->

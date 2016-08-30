@@ -14,11 +14,11 @@ module.exports = (grunt) =>
         coffee:
             compile:
                 files:
-                    'dist/app.js': 'js/app.js'
-                    'dist/car.js': 'js/car.js'
-                    'dist/crossroad.js': 'js/crossroad.js'
-                    'dist/street.js': 'js/street.js'
-                    'dist/trafficLight.js': 'js/trafficLight.js'
+                    'transpiled/app.js': 'js/app.js'
+                    'transpiled/car.js': 'js/car.js'
+                    'transpiled/crossroad.js': 'js/crossroad.js'
+                    'transpiled/street.js': 'js/street.js'
+                    'transpiled/trafficLight.js': 'js/trafficLight.js'
 
         coffeelint:
             dist: ['js/*.js']
@@ -26,7 +26,7 @@ module.exports = (grunt) =>
         compress:
             app:
                 options:
-                    archive: 'dist/game.zip'
+                    archive: 'game.zip'
                 files: [{
                     expand: true
                     src: [
@@ -61,7 +61,7 @@ module.exports = (grunt) =>
             app:
                 options:
                     maxBytes: 13312
-                src: ['dist/game.zip']
+                src: ['game.zip']
 
         'mocha-chai-sinon':
             test:
@@ -91,11 +91,15 @@ module.exports = (grunt) =>
                         global_defs:
                             'DEBUG': false
                 files:
-                    'minified/app.min.js': [ 'dist/app.js' ]
+                    'dist/app.min.js': ['transpiled/app.js']
+                    'dist/car.min.js': ['transpiled/car.js']
+                    'dist/crossroad.min.js': ['transpiled/crossroad.js']
+                    'dist/street.min.js': ['transpiled/street.js']
+                    'dist/trafficLight.min.js': ['transpiled/trafficLight.js']
 
         watch:
             files: ['js/*.js', 'spec/*.es6.js']
-            tasks: ['coffee', 'babel', 'coffeelint', 'jshint', 'test']
+            tasks: ['coffee', 'babel', 'coffeelint', 'jshint', 'uglify', 'test']
 
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-compress'

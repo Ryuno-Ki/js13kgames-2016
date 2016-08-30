@@ -1,6 +1,6 @@
 'use strict';
 
-var CarModel = require('../dist/car.js').game.models.Car;
+var CarModel = require('../dist/car.min.js').game.models.Car;
 
 describe('Car model', function () {
     var car = void 0;

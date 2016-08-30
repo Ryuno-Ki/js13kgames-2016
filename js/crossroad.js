@@ -1,8 +1,8 @@
 unless StreetModel and DEBUG
-  StreetModel = require('../dist/street.js').game.models.Street
+  StreetModel = require('../dist/street.min.js').game.models.Street
 
 unless StreetView and DEBUG
-  StreetView = require('../dist/street.js').game.views.Street
+  StreetView = require('../dist/street.min.js').game.views.Street
 
 class CrossroadModel extends StreetModel
   getUtilisation: () ->

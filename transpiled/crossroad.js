@@ -4,11 +4,11 @@
     hasProp = {}.hasOwnProperty;
 
   if (!(StreetModel && DEBUG)) {
-    StreetModel = require('../dist/street.js').game.models.Street;
+    StreetModel = require('../dist/street.min.js').game.models.Street;
   }
 
   if (!(StreetView && DEBUG)) {
-    StreetView = require('../dist/street.js').game.views.Street;
+    StreetView = require('../dist/street.min.js').game.views.Street;
   }
 
   CrossroadModel = (function(superClass) {

@@ -1,4 +1,4 @@
-let TrafficLightModel = require('../dist/trafficLight.js').game.models.TrafficLight;
+let TrafficLightModel = require('../dist/trafficLight.min.js').game.models.TrafficLight;
 
 describe('TrafficLight', () => {
     let trafficLight;

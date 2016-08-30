@@ -78,6 +78,17 @@ module.exports = (grunt) =>
                 files:
                     'target.html': 'index.html'
 
+        uglify:
+            build:
+                options:
+                    mangleProperties: false
+                    preserveComments: false
+                    reserveDOMProperties: true
+                    screwIE8: true
+                    sourceMap: true
+                files:
+                    'minified/app.min.js': [ 'dist/app.js' ]
+
         watch:
             files: ['js/*.js', 'spec/*.es6.js']
             tasks: ['coffee', 'babel', 'coffeelint', 'jshint', 'test']
@@ -85,6 +96,7 @@ module.exports = (grunt) =>
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-compress'
     grunt.loadNpmTasks 'grunt-contrib-jshint'
+    grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-babel'
     grunt.loadNpmTasks 'grunt-coffeelint'
@@ -93,5 +105,5 @@ module.exports = (grunt) =>
     grunt.loadNpmTasks 'grunt-notify'
     grunt.loadNpmTasks 'grunt-processhtml'
 
-    grunt.registerTask 'default', ['coffee', 'coffeelint', 'jshint', 'compress', 'maxFilesize']
+    grunt.registerTask 'default', ['coffee', 'coffeelint', 'jshint', 'uglify', 'compress', 'maxFilesize']
     grunt.registerTask 'test', ['mocha-chai-sinon']

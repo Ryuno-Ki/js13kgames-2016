@@ -1,4 +1,4 @@
-let CarModel = require('../dist/car.min.js').game.models.Car;
+let CarModel = require('../transpiled/car.js').game.models.Car;
 
 describe('Car model', () => {
     let car;

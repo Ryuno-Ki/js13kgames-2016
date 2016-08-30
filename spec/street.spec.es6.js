@@ -2,8 +2,8 @@ let jsdom = require('jsdom').jsdom;
 global.document = jsdom('<html><head></head><body></body></html>');
 global.window = document.defaultView;
 
-let CarView = require('../dist/car.min.js').game.views.Car;
-let StreetModule = require('../dist/street.min.js').game;
+let CarView = require('../transpiled/car.js').game.views.Car;
+let StreetModule = require('../transpiled/street.js').game;
 let StreetModel = StreetModule.models.Street;
 let StreetView = StreetModule.views.Street;
 

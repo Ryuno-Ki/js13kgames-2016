@@ -88,8 +88,10 @@ module.exports = (grunt) =>
                     sourceMap: true
                     compress:
                         dead_code: true
+                        drop_console: false
                         global_defs:
-                            'DEBUG': false
+                            'require': undefined
+                        unused: true
                 files:
                     'dist/app.min.js': ['transpiled/app.js']
                     'dist/car.min.js': ['transpiled/car.js']

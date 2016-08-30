@@ -3,12 +3,20 @@
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  if (!(StreetModel && DEBUG)) {
-    StreetModel = require('../dist/street.min.js').game.models.Street;
+  if (!StreetModel) {
+    if (require) {
+      StreetModel = require('../transpiled/street.js').game.models.Street;
+    } else {
+      StreetModel = this.game.models.Street;
+    }
   }
 
-  if (!(StreetView && DEBUG)) {
-    StreetView = require('../dist/street.min.js').game.views.Street;
+  if (!StreetView) {
+    if (require) {
+      StreetView = require('../transpiled/street.js').game.views.Street;
+    } else {
+      StreetView = this.game.views.Street;
+    }
   }
 
   CrossroadModel = (function(superClass) {

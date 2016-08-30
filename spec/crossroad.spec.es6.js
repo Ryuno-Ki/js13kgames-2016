@@ -2,7 +2,7 @@ let jsdom = require('jsdom').jsdom;
 global.document = jsdom('<html><head></head><body></body></html>');
 global.window = document.defaultView;
 
-let CrossroadModule = require('../dist/crossroad.min.js').game;
+let CrossroadModule = require('../transpiled/crossroad.js').game;
 let CrossroadModel = CrossroadModule.models.Crossroad;
 let CrossroadView = CrossroadModule.views.Crossroad;
 

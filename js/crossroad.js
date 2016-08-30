@@ -1,8 +1,14 @@
-unless StreetModel and DEBUG
-  StreetModel = require('../dist/street.min.js').game.models.Street
+unless StreetModel
+  if require
+    StreetModel = require('../transpiled/street.js').game.models.Street
+  else
+    StreetModel = this.game.models.Street
 
-unless StreetView and DEBUG
-  StreetView = require('../dist/street.min.js').game.views.Street
+unless StreetView
+  if require
+    StreetView = require('../transpiled/street.js').game.views.Street
+  else
+    StreetView = this.game.views.Street
 
 class CrossroadModel extends StreetModel
   getUtilisation: () ->

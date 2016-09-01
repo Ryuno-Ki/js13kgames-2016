@@ -66,6 +66,7 @@
       g.appendChild(leftRightCrossline);
       g.appendChild(topBottomCrossline);
       svgNode.appendChild(g);
+      svgNode.setAttribute('class', 'crossroad street');
       return svgNode;
     };
 

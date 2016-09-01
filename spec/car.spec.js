@@ -1,6 +1,8 @@
 'use strict';
 
-var CarModel = require('../transpiled/car.js').game.models.Car;
+var CarModule = require('../transpiled/car.js').game;
+var CarModel = CarModule.models.Car;
+var CarView = CarModule.views.Car;
 
 describe('Car model', function () {
     var car = void 0;
@@ -25,6 +27,19 @@ describe('Car model', function () {
         car.stop();
         isDriving = car.isDriving();
         expect(isDriving).to.be.false;
+    });
+});
+
+describe('Car view', function () {
+    var car = void 0;
+
+    beforeEach(function () {
+        car = new CarView();
+    });
+
+    it('should render', function () {
+        var renderedObject = car.render();
+        expect(renderedObject.nodeName.toLowerCase()).to.equal('svg');
     });
 });
 //# sourceMappingURL=car.spec.js.map

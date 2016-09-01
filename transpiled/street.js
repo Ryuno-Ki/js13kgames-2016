@@ -97,11 +97,11 @@
       middleBoundary.setAttribute('d', 'M0 50H100');
       rightBoundary = document.createElementNS(svgns, 'path');
       rightBoundary.setAttribute('d', 'M0 67H100');
-      g.setAttribute('class', 'horizontal street');
       g.appendChild(leftBoundary);
       g.appendChild(middleBoundary);
       g.appendChild(rightBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('class', 'horizontal street');
       return svgNode;
     };
 
@@ -130,11 +130,11 @@
       middleBoundary.setAttribute('d', 'M50 0v100');
       bottomBoundary = document.createElementNS(svgns, 'path');
       bottomBoundary.setAttribute('d', 'M67 0v100');
-      g.setAttribute('class', 'vertical street');
       g.appendChild(topBoundary);
       g.appendChild(middleBoundary);
       g.appendChild(bottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('class', 'vertical street');
       return svgNode;
     };
 

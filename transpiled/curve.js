@@ -39,10 +39,10 @@
       leftTopBoundary.setAttribute('d', 'M0 33h33v-33');
       rightBottomBoundary = document.createElementNS(svgns, 'path');
       rightBottomBoundary.setAttribute('d', 'M0 67h67v-67');
-      g.setAttribute('class', 'left-top curve');
       g.appendChild(leftTopBoundary);
       g.appendChild(rightBottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('class', 'left-top curve street');
       return svgNode;
     };
 
@@ -66,10 +66,10 @@
       rightTopBoundary.setAttribute('d', 'M100 33h-33v-33');
       leftBottomBoundary = document.createElementNS(svgns, 'path');
       leftBottomBoundary.setAttribute('d', 'M100 67h-67v-67');
-      g.setAttribute('class', 'right-top curve');
       g.appendChild(rightTopBoundary);
       g.appendChild(leftBottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('class', 'right-top curve street');
       return svgNode;
     };
 
@@ -93,10 +93,10 @@
       leftTopBoundary.setAttribute('d', 'M0 33h67v67');
       rightBottomBoundary = document.createElementNS(svgns, 'path');
       rightBottomBoundary.setAttribute('d', 'M0 67h33v33');
-      g.setAttribute('class', 'left-bottom curve');
       g.appendChild(leftTopBoundary);
       g.appendChild(rightBottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('class', 'left-bottom curve street');
       return svgNode;
     };
 
@@ -120,10 +120,10 @@
       rightTopBoundary.setAttribute('d', 'M100 33h-67v67');
       leftBottomBoundary = document.createElementNS(svgns, 'path');
       leftBottomBoundary.setAttribute('d', 'M100 67h-33v67');
-      g.setAttribute('class', 'right-bottom curve');
       g.appendChild(rightTopBoundary);
       g.appendChild(leftBottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('class', 'right-bottom curve street');
       return svgNode;
     };
 

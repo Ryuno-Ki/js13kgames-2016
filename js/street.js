@@ -71,11 +71,12 @@ class HorizontalStreetView extends AbstractStreetView
     rightBoundary = document.createElementNS svgns, 'path'
     rightBoundary.setAttribute 'd', 'M0 67H100'
 
-    g.setAttribute 'class', 'horizontal street'
-    g.appendChild(leftBoundary)
-    g.appendChild(middleBoundary)
-    g.appendChild(rightBoundary)
-    svgNode.appendChild(g)
+    g.appendChild leftBoundary
+    g.appendChild middleBoundary
+    g.appendChild rightBoundary
+
+    svgNode.appendChild g
+    svgNode.setAttribute 'class', 'horizontal street'
     return svgNode
 
 class VerticalStreetView extends AbstractStreetView
@@ -97,11 +98,12 @@ class VerticalStreetView extends AbstractStreetView
     bottomBoundary = document.createElementNS svgns, 'path'
     bottomBoundary.setAttribute 'd', 'M67 0v100'
 
-    g.setAttribute 'class', 'vertical street'
     g.appendChild(topBoundary)
     g.appendChild(middleBoundary)
     g.appendChild(bottomBoundary)
+
     svgNode.appendChild(g)
+    svgNode.setAttribute 'class', 'vertical street'
     return svgNode
 
 

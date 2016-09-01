@@ -1,4 +1,6 @@
-let CarModel = require('../transpiled/car.js').game.models.Car;
+let CarModule = require('../transpiled/car.js').game;
+let CarModel = CarModule.models.Car;
+let CarView = CarModule.views.Car;
 
 describe('Car model', () => {
     let car;
@@ -23,5 +25,18 @@ describe('Car model', () => {
         car.stop();
         isDriving = car.isDriving();
         expect(isDriving).to.be.false;
+    });
+});
+
+describe('Car view', () => {
+    let car;
+
+    beforeEach(() => {
+        car = new CarView();
+    });
+
+    it('should render', () => {
+        let renderedObject = car.render();
+        expect(renderedObject.nodeName.toLowerCase()).to.equal('svg');
     });
 });

@@ -5,7 +5,8 @@ ltc = game.views.LeftTopCurve
 rtc = game.views.RightTopCurve
 lbc = game.views.LeftBottomCurve
 rbc = game.views.RightBottomCurve
-cr = game.views.Crossroad
+cr  = game.views.Crossroad
+car = game.views.Car
 
 pick = () ->
   choices = [hsv, vsv, ltc, rtc, lbc, rbc, cr]
@@ -13,4 +14,6 @@ pick = () ->
   return new tile()
 
 for tileNum in [1..25]
-  map.appendChild pick().render()
+  tile = pick().render()
+  tile.appendChild (new car()).render()
+  map.appendChild tile

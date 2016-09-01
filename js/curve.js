@@ -24,10 +24,11 @@ class LeftTopCurveView extends AbstractCurveView
     rightBottomBoundary = document.createElementNS svgns, 'path'
     rightBottomBoundary.setAttribute 'd', 'M0 67h67v-67'
 
-    g.setAttribute 'class', 'left-top curve'
     g.appendChild(leftTopBoundary)
     g.appendChild(rightBottomBoundary)
+
     svgNode.appendChild(g)
+    svgNode.setAttribute 'class', 'left-top curve street'
     return svgNode
 
 
@@ -45,10 +46,11 @@ class RightTopCurveView extends AbstractCurveView
     leftBottomBoundary = document.createElementNS svgns, 'path'
     leftBottomBoundary.setAttribute 'd', 'M100 67h-67v-67'
 
-    g.setAttribute 'class', 'right-top curve'
     g.appendChild(rightTopBoundary)
     g.appendChild(leftBottomBoundary)
+
     svgNode.appendChild(g)
+    svgNode.setAttribute 'class', 'right-top curve street'
     return svgNode
 
 
@@ -66,10 +68,11 @@ class LeftBottomCurveView extends AbstractCurveView
     rightBottomBoundary = document.createElementNS svgns, 'path'
     rightBottomBoundary.setAttribute 'd', 'M0 67h33v33'
 
-    g.setAttribute 'class', 'left-bottom curve'
     g.appendChild(leftTopBoundary)
     g.appendChild(rightBottomBoundary)
+
     svgNode.appendChild(g)
+    svgNode.setAttribute 'class', 'left-bottom curve street'
     return svgNode
 
 
@@ -87,10 +90,11 @@ class RightBottomCurveView extends AbstractCurveView
     leftBottomBoundary = document.createElementNS svgns, 'path'
     leftBottomBoundary.setAttribute 'd', 'M100 67h-33v67'
 
-    g.setAttribute 'class', 'right-bottom curve'
     g.appendChild(rightTopBoundary)
     g.appendChild(leftBottomBoundary)
+
     svgNode.appendChild(g)
+    svgNode.setAttribute 'class', 'right-bottom curve street'
     return svgNode
 
 

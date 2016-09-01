@@ -1,5 +1,5 @@
 (function() {
-  var cr, hsv, i, lbc, ltc, map, pick, rbc, rtc, tileNum, vsv;
+  var car, cr, hsv, i, lbc, ltc, map, pick, rbc, rtc, tile, tileNum, vsv;
 
   map = document.getElementById('map');
 
@@ -17,6 +17,8 @@
 
   cr = game.views.Crossroad;
 
+  car = game.views.Car;
+
   pick = function() {
     var choices, tile;
     choices = [hsv, vsv, ltc, rtc, lbc, rbc, cr];
@@ -25,7 +27,9 @@
   };
 
   for (tileNum = i = 1; i <= 25; tileNum = ++i) {
-    map.appendChild(pick().render());
+    tile = pick().render();
+    tile.appendChild((new car()).render());
+    map.appendChild(tile);
   }
 
 }).call(this);

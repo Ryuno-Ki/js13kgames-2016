@@ -37,13 +37,15 @@ class CrossroadView extends AbstractStreetView
     topBottomCrossline = document.createElementNS svgns, 'path'
     topBottomCrossline.setAttribute 'd', 'M50 5 v90'
 
-    g.appendChild(leftTopBoundary)
-    g.appendChild(leftBottomBoundary)
-    g.appendChild(rightTopBoundary)
-    g.appendChild(rightBottomBoundary)
-    g.appendChild(leftRightCrossline)
-    g.appendChild(topBottomCrossline)
-    svgNode.appendChild(g)
+    g.appendChild leftTopBoundary
+    g.appendChild leftBottomBoundary
+    g.appendChild rightTopBoundary
+    g.appendChild rightBottomBoundary
+    g.appendChild leftRightCrossline
+    g.appendChild topBottomCrossline
+
+    svgNode.appendChild g
+    svgNode.setAttribute 'class', 'crossroad street'
     return svgNode
 
 root = exports ? this  # Node.js vs. Browser

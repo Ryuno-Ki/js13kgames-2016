@@ -1,0 +1,139 @@
+.street .car .chassis {
+    fill: white;
+    stroke: black;
+}
+
+.horizontal.street .car {
+    transform: rotate(90deg) translate(50%, 80%);
+}
+
+.vertical.street .car {
+    transform: translate(50%, 80%);
+}
+
+.left-top.curve .car,
+.crossroad .car {
+    animation-name: topToLeftDrive;
+    transform: rotate(90deg) translate(33%, 80%);
+}
+
+.right-top.curve .car {
+    animation-name: topToRightDrive;
+    transform: rotate(-90deg) translate(33%, 85%);
+}
+
+.right-bottom.curve .car {
+    animation-name: rightToBottomDrive;
+    transform: translate(33%, 85%);
+}
+
+
+.left-bottom.curve .car {
+    animation-name: bottomToLeftDrive;
+    transform: rotate(90deg) translate(33%, 80%);
+}
+
+.horizontal.street .car {
+    animation-name: horizontalDrive;
+}
+
+.vertical.street .car {
+    animation-name: verticalDrive;
+}
+
+.street .car {
+    animation-duration: 1s;
+    transform-origin: center;
+}
+
+@keyframes topToLeftDrive {
+    0% {
+        transform: translate(33%, 0%);
+    }
+    
+    40% {
+        transform: translate(33%, 40%);
+    }
+
+    60% {
+        transform: rotate(90deg) translate(33%, 60%);
+    }
+
+    100% {
+        transform: rotate(90deg) translate(33%, 80%);
+    }
+}
+
+@keyframes topToRightDrive {
+    0% {
+        transform: translate(33%, 0%);
+    }
+    
+    40% {
+        transform: translate(33%, 33%);
+    }
+
+    60% {
+        transform: rotate(-90deg) translate(33%, 40%);
+    }
+
+    100% {
+        transform: rotate(-90deg) translate(33%, 85%);
+    }
+}
+
+@keyframes rightToBottomDrive {
+    0% {
+        transform: rotate(-90deg) translate(50%, 85%);
+    }
+
+    40% {
+        transform: rotate(-90deg) translate(50%, 50%);
+    }
+
+    60% {
+        transform: translate(33%, 60%);
+    }
+    
+    100% {
+        transform: translate(33%, 85%);
+    }
+}
+
+@keyframes bottomToLeftDrive {
+    0% {
+        transform: translate(50%, 85%);
+    }
+
+    40% {
+        transform: translate(50%, 60%);
+    }
+
+    60% {
+        transform: rotate(90deg) translate(33%, 60%);
+    }
+
+    100% {
+        transform: rotate(90deg) translate(33%, 80%);
+    }
+}
+
+@keyframes horizontalDrive {
+    0% {
+        transform: rotate(90deg) translate(50%, 0%);
+    }
+
+    100% {
+        transform: rotate(90deg) translate(50%, 80%);
+    }
+}
+
+@keyframes verticalDrive {
+    0% {
+        transform: translate(50%, 0%);
+    }
+
+    100% {
+        transform: translate(50%, 80%);
+    }
+}

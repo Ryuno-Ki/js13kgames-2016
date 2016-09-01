@@ -7,7 +7,8 @@ let StreetModule = require('../transpiled/street.js').game;
 let StreetModel = StreetModule.models.Street;
 
 let AbstractStreetView = StreetModule.views.AbstractStreet;
-let StreetView = StreetModule.views.Street;
+let VerticalStreetView = StreetModule.views.VerticalStreet;
+let HorizontalStreetView = StreetModule.views.HorizontalStreet;
 
 let NotImplementedError = require('../transpiled/errors.js').game.errors.NotImplemented;
 
@@ -56,16 +57,16 @@ describe('Abstract street view', () => {
     });
 });
 
-describe('Street view', () => {
+describe('Horizontal street view', () => {
     let street;
 
     beforeEach(() => {
-        street = new StreetView();
+        street = new HorizontalStreetView();
     });
 
     it('should render a svg tile', () => {
         let tileNode = street.render();
-        expect(tileNode).not.to.be.null;
+        expect(tileNode.nodeName.toLowerCase()).to.equal('svg');
     });
 
     it('should show a car on enter', () => {
@@ -89,5 +90,18 @@ describe('Street view', () => {
 
         street.enter(car);
         expect(eventFired).to.be.true;
+    });
+});
+
+describe('Vertical street view', () => {
+    let street;
+
+    beforeEach(() => {
+        street = new VerticalStreetView();
+    });
+
+    it('should render a svg tile', () => {
+        let tileNode = street.render();
+        expect(tileNode.nodeName.toLowerCase()).to.equal('svg');
     });
 });

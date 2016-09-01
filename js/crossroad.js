@@ -21,7 +21,7 @@ class CrossroadView extends AbstractStreetView
 
   render: () ->
     svgns = @getTileContextNamespace()
-    svgNode = document.createElementNS(svgns, 'svg')
+    svgNode = @getTileContext()
 
     g = document.createElementNS svgns, 'g'
     leftTopBoundary = document.createElementNS svgns, 'path'
@@ -32,11 +32,17 @@ class CrossroadView extends AbstractStreetView
     rightTopBoundary.setAttribute 'd', 'M0 67h33v33'
     rightBottomBoundary = document.createElementNS svgns, 'path'
     rightBottomBoundary.setAttribute 'd', 'M100 67h-33v33'
+    leftRightCrossline = document.createElementNS svgns, 'path'
+    leftRightCrossline.setAttribute 'd', 'M5 50 h90'
+    topBottomCrossline = document.createElementNS svgns, 'path'
+    topBottomCrossline.setAttribute 'd', 'M50 5 v90'
 
     g.appendChild(leftTopBoundary)
     g.appendChild(leftBottomBoundary)
     g.appendChild(rightTopBoundary)
     g.appendChild(rightBottomBoundary)
+    g.appendChild(leftRightCrossline)
+    g.appendChild(topBottomCrossline)
     svgNode.appendChild(g)
     return svgNode
 

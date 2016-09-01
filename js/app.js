@@ -1,10 +1,12 @@
 map = document.getElementById 'map'
-sv = game.views.Street
+hsv = game.views.HorizontalStreet
+vsv = game.views.VerticalStreet
 cr = game.views.Crossroad
 
 pick = () ->
-  choices = [sv, cr]
+  choices = [hsv, vsv, cr]
   tile = choices[Math.floor(Math.random() * choices.length)]
+  console.log("New tile", tile)
   return new tile()
 
 for tileNum in [1..25]

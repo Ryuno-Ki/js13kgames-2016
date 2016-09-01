@@ -1,16 +1,19 @@
 (function() {
-  var cr, i, map, pick, sv, tileNum;
+  var cr, hsv, i, map, pick, tileNum, vsv;
 
   map = document.getElementById('map');
 
-  sv = game.views.Street;
+  hsv = game.views.HorizontalStreet;
+
+  vsv = game.views.VerticalStreet;
 
   cr = game.views.Crossroad;
 
   pick = function() {
     var choices, tile;
-    choices = [sv, cr];
+    choices = [hsv, vsv, cr];
     tile = choices[Math.floor(Math.random() * choices.length)];
+    console.log("New tile", tile);
     return new tile();
   };
 

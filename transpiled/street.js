@@ -1,5 +1,5 @@
 (function() {
-  var AbstractStreetView, NotImplementedError, StreetModel, StreetView, base, base1, errorsModule, root,
+  var AbstractStreetView, HorizontalStreetView, NotImplementedError, StreetModel, VerticalStreetView, base, base1, errorsModule, root,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -43,9 +43,9 @@
     AbstractStreetView.prototype.getTileContext = function() {
       var svgNode, svgns;
       svgns = this.getTileContextNamespace();
-      svgNode = document.createElementNS(this.svgns, 'svg');
+      svgNode = document.createElementNS(svgns, 'svg');
       svgNode.setAttribute('viewBox', '0 0 100 100');
-      svgNode.setAttribute('xmlns', this.svgns);
+      svgNode.setAttribute('xmlns', svgns);
       svgNode.setAttribute('version', '1.1');
       svgNode.setAttribute('height', '60');
       svgNode.setAttribute('width', '60');
@@ -64,16 +64,16 @@
 
   })();
 
-  StreetView = (function(superClass) {
-    extend(StreetView, superClass);
+  HorizontalStreetView = (function(superClass) {
+    extend(HorizontalStreetView, superClass);
 
-    function StreetView(precursor, successor) {
+    function HorizontalStreetView(precursor, successor) {
       this.precursor = precursor || null;
       this.successor = successor || null;
       return this;
     }
 
-    StreetView.prototype.render = function() {
+    HorizontalStreetView.prototype.render = function() {
       var g, leftBoundary, middleBoundary, rightBoundary, svgNode, svgns;
       svgns = this.getTileContextNamespace();
       svgNode = this.getTileContext();
@@ -84,6 +84,7 @@
       middleBoundary.setAttribute('d', 'M0 50H100');
       rightBoundary = document.createElementNS(svgns, 'path');
       rightBoundary.setAttribute('d', 'M0 67H100');
+      g.setAttribute('class', 'horizontal street');
       g.appendChild(leftBoundary);
       g.appendChild(middleBoundary);
       g.appendChild(rightBoundary);
@@ -91,17 +92,49 @@
       return svgNode;
     };
 
-    StreetView.prototype.enter = function() {
+    HorizontalStreetView.prototype.enter = function() {
       var event;
       event = new global.window.CustomEvent('car-leaving');
       global.document.dispatchEvent(event);
     };
 
-    StreetView.prototype.getCarsOnIt = function() {
+    HorizontalStreetView.prototype.getCarsOnIt = function() {
       return 0;
     };
 
-    return StreetView;
+    return HorizontalStreetView;
+
+  })(AbstractStreetView);
+
+  VerticalStreetView = (function(superClass) {
+    extend(VerticalStreetView, superClass);
+
+    function VerticalStreetView(precursor, successor) {
+      this.precursor = precursor || null;
+      this.successor = successor || null;
+      return this;
+    }
+
+    VerticalStreetView.prototype.render = function() {
+      var bottomBoundary, g, middleBoundary, svgNode, svgns, topBoundary;
+      svgns = this.getTileContextNamespace();
+      svgNode = this.getTileContext();
+      g = document.createElementNS(svgns, 'g');
+      topBoundary = document.createElementNS(svgns, 'path');
+      topBoundary.setAttribute('d', 'M33 0v100');
+      middleBoundary = document.createElementNS(svgns, 'path');
+      middleBoundary.setAttribute('d', 'M50 0v100');
+      bottomBoundary = document.createElementNS(svgns, 'path');
+      bottomBoundary.setAttribute('d', 'M67 0v100');
+      g.setAttribute('class', 'vertical street');
+      g.appendChild(topBoundary);
+      g.appendChild(middleBoundary);
+      g.appendChild(bottomBoundary);
+      svgNode.appendChild(g);
+      return svgNode;
+    };
+
+    return VerticalStreetView;
 
   })(AbstractStreetView);
 
@@ -123,6 +156,8 @@
 
   root.game.views.AbstractStreet = AbstractStreetView;
 
-  root.game.views.Street = StreetView;
+  root.game.views.HorizontalStreet = HorizontalStreetView;
+
+  root.game.views.VerticalStreet = VerticalStreetView;
 
 }).call(this);

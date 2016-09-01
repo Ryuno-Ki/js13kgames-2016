@@ -87,6 +87,7 @@ module.exports = (grunt) =>
         uglify:
             build:
                 options:
+                    # mangle: false
                     mangleProperties: false
                     preserveComments: false
                     reserveDOMProperties: true

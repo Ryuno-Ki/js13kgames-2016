@@ -17,6 +17,7 @@ module.exports = (grunt) =>
                     'transpiled/app.js': 'js/app.js'
                     'transpiled/car.js': 'js/car.js'
                     'transpiled/crossroad.js': 'js/crossroad.js'
+                    'transpiled/errors.js': 'js/errors.js'
                     'transpiled/street.js': 'js/street.js'
                     'transpiled/trafficLight.js': 'js/trafficLight.js'
 
@@ -101,6 +102,7 @@ module.exports = (grunt) =>
                     'dist/app.min.js': ['transpiled/app.js']
                     'dist/car.min.js': ['transpiled/car.js']
                     'dist/crossroad.min.js': ['transpiled/crossroad.js']
+                    'dist/errors.min.js': ['transpiled/errors.js']
                     'dist/street.min.js': ['transpiled/street.js']
                     'dist/trafficLight.min.js': ['transpiled/trafficLight.js']
 

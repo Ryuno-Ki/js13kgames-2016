@@ -4,6 +4,7 @@ digraph G {
     CarView [shape=box];
     CrossroadModel [shape=box];
     CrossroadView [shape=box];
+    NotImplementedError [shape=box];
     StreetModel [shape=box];
     StreetView [shape=box];
     TrafficLightModel [shape=box];
@@ -12,4 +13,5 @@ digraph G {
     app -> StreetView [label="depends on"];
     CrossroadModel -> StreetModel [label="depends on"];
     CrossroadView -> StreetView [label="depends on"];
+    StreetView -> NotImplementedError [label="depends on"];
 }

@@ -7,6 +7,7 @@ module.exports = (grunt) =>
             spec:
                 files:
                     'spec/car.spec.js': 'spec/car.spec.es6.js'
+                    'spec/curve.spec.js': 'spec/curve.spec.es6.js'
                     'spec/crossroad.spec.js': 'spec/crossroad.spec.es6.js'
                     'spec/street.spec.js': 'spec/street.spec.es6.js'
                     'spec/trafficLight.spec.js': 'spec/trafficLight.spec.es6.js'
@@ -17,6 +18,7 @@ module.exports = (grunt) =>
                     'transpiled/app.js': 'js/app.js'
                     'transpiled/car.js': 'js/car.js'
                     'transpiled/crossroad.js': 'js/crossroad.js'
+                    'transpiled/curve.js': 'js/curve.js'
                     'transpiled/errors.js': 'js/errors.js'
                     'transpiled/street.js': 'js/street.js'
                     'transpiled/trafficLight.js': 'js/trafficLight.js'
@@ -103,6 +105,7 @@ module.exports = (grunt) =>
                     'dist/app.min.js': ['transpiled/app.js']
                     'dist/car.min.js': ['transpiled/car.js']
                     'dist/crossroad.min.js': ['transpiled/crossroad.js']
+                    'dist/curve.min.js': ['transpiled/curve.js']
                     'dist/errors.min.js': ['transpiled/errors.js']
                     'dist/street.min.js': ['transpiled/street.js']
                     'dist/trafficLight.min.js': ['transpiled/trafficLight.js']

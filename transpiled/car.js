@@ -30,7 +30,6 @@
     function CarView() {}
 
     CarView.prototype.on = function(event, callback) {
-      console.log('Received', event, 'so firing', callback);
       callback();
     };
 

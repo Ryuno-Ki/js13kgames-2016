@@ -12,7 +12,6 @@ The topic of js13kgames competition in 2016 is *glitch*.
 
 # Left to do
 
- * Tile for curves
  * Map algorithm
  * Traffic lights on crossroad tiles
  * Cars on tiles

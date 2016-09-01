@@ -19,7 +19,6 @@ class CarView
   constructor: () ->
 
   on: (event, callback) ->
-    console.log('Received', event, 'so firing', callback)
     callback()
     return
 

@@ -4,22 +4,25 @@ unless StreetModel
   else
     StreetModel = this.game.models.Street
 
-unless StreetView
+unless AbstractStreetView
   if require
-    StreetView = require('../transpiled/street.js').game.views.Street
+    streetModule = require('../transpiled/street.js').game
+    AbstractStreetView = streetModule.views.AbstractStreet
   else
-    StreetView = this.game.views.Street
+    AbstractStreetView = this.game.views.AbstractStreet
 
 class CrossroadModel extends StreetModel
   getUtilisation: () ->
     return 0
 
-class CrossroadView extends StreetView
+class CrossroadView extends AbstractStreetView
   constructor: () ->
     super()
 
   render: () ->
-    svgns = @svgns
+    svgns = @getTileContextNamespace()
+    svgNode = document.createElementNS(svgns, 'svg')
+
     g = document.createElementNS svgns, 'g'
     leftTopBoundary = document.createElementNS svgns, 'path'
     leftTopBoundary.setAttribute 'd', 'M0 33h33v-33'
@@ -34,8 +37,8 @@ class CrossroadView extends StreetView
     g.appendChild(leftBottomBoundary)
     g.appendChild(rightTopBoundary)
     g.appendChild(rightBottomBoundary)
-    @svgNode.appendChild(g)
-    return @svgNode.cloneNode true
+    svgNode.appendChild(g)
+    return svgNode
 
 root = exports ? this  # Node.js vs. Browser
 root.game ?= {}

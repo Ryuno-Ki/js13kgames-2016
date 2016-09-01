@@ -1,5 +1,5 @@
 (function() {
-  var CrossroadModel, CrossroadView, StreetModel, StreetView, base, base1, root,
+  var AbstractStreetView, CrossroadModel, CrossroadView, StreetModel, base, base1, root, streetModule,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -11,11 +11,12 @@
     }
   }
 
-  if (!StreetView) {
+  if (!AbstractStreetView) {
     if (require) {
-      StreetView = require('../transpiled/street.js').game.views.Street;
+      streetModule = require('../transpiled/street.js').game;
+      AbstractStreetView = streetModule.views.AbstractStreet;
     } else {
-      StreetView = this.game.views.Street;
+      AbstractStreetView = this.game.views.AbstractStreet;
     }
   }
 
@@ -42,8 +43,9 @@
     }
 
     CrossroadView.prototype.render = function() {
-      var g, leftBottomBoundary, leftTopBoundary, rightBottomBoundary, rightTopBoundary, svgns;
-      svgns = this.svgns;
+      var g, leftBottomBoundary, leftTopBoundary, rightBottomBoundary, rightTopBoundary, svgNode, svgns;
+      svgns = this.getTileContextNamespace();
+      svgNode = document.createElementNS(svgns, 'svg');
       g = document.createElementNS(svgns, 'g');
       leftTopBoundary = document.createElementNS(svgns, 'path');
       leftTopBoundary.setAttribute('d', 'M0 33h33v-33');
@@ -57,13 +59,13 @@
       g.appendChild(leftBottomBoundary);
       g.appendChild(rightTopBoundary);
       g.appendChild(rightBottomBoundary);
-      this.svgNode.appendChild(g);
-      return this.svgNode.cloneNode(true);
+      svgNode.appendChild(g);
+      return svgNode;
     };
 
     return CrossroadView;
 
-  })(StreetView);
+  })(AbstractStreetView);
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 

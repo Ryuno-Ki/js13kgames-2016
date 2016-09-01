@@ -5,7 +5,11 @@ global.window = document.defaultView;
 let CarView = require('../transpiled/car.js').game.views.Car;
 let StreetModule = require('../transpiled/street.js').game;
 let StreetModel = StreetModule.models.Street;
+
+let AbstractStreetView = StreetModule.views.AbstractStreet;
 let StreetView = StreetModule.views.Street;
+
+let NotImplementedError = require('../transpiled/errors.js').game.errors.NotImplemented;
 
 describe('Street model', () => {
     let street;
@@ -17,6 +21,38 @@ describe('Street model', () => {
     it('should have zero utilisation', () => {
         let utilisation = street.getUtilisation();
         expect(utilisation).to.equal(0);
+    });
+});
+
+describe('Abstract street view', () => {
+    let abstractStreet;
+
+    beforeEach(() => {
+        abstractStreet = new AbstractStreetView();
+    });
+
+    it('should have a precursor', () => {
+        let precursor = abstractStreet.getTileBefore();
+        expect(precursor).to.be.null;
+    });
+
+    it('should have a successor', () => {
+        let successor = abstractStreet.getTileAfter();
+        expect(successor).to.be.null;
+    });
+
+    it('should provide a name space for its context', () => {
+        let namespace = abstractStreet.getTileContextNamespace();
+        expect(namespace).to.equal('http://www.w3.org/2000/svg');
+    });
+
+    it('should provide a context to render in', () => {
+        let svgNode = abstractStreet.getTileContext();
+        expect(svgNode.nodeName.toLowerCase()).to.equal('svg');
+    });
+
+    it('should throw an error on calls of render()', () => {
+        expect(abstractStreet.render).to.throw(NotImplementedError);
     });
 });
 

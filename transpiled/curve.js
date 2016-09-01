@@ -27,7 +27,7 @@
     extend(LeftTopCurveView, superClass);
 
     function LeftTopCurveView() {
-      LeftTopCurveView.__super__.constructor.call(this);
+      this.cars = [];
     }
 
     LeftTopCurveView.prototype.render = function() {
@@ -54,7 +54,7 @@
     extend(RightTopCurveView, superClass);
 
     function RightTopCurveView() {
-      RightTopCurveView.__super__.constructor.call(this);
+      this.cars = [];
     }
 
     RightTopCurveView.prototype.render = function() {
@@ -81,7 +81,7 @@
     extend(LeftBottomCurveView, superClass);
 
     function LeftBottomCurveView() {
-      LeftBottomCurveView.__super__.constructor.call(this);
+      this.cars = [];
     }
 
     LeftBottomCurveView.prototype.render = function() {
@@ -108,7 +108,7 @@
     extend(RightBottomCurveView, superClass);
 
     function RightBottomCurveView() {
-      RightBottomCurveView.__super__.constructor.call(this);
+      this.cars = [];
     }
 
     RightBottomCurveView.prototype.render = function() {

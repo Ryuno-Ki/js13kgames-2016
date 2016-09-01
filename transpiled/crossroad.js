@@ -39,7 +39,7 @@
     extend(CrossroadView, superClass);
 
     function CrossroadView() {
-      CrossroadView.__super__.constructor.call(this);
+      this.cars = [];
     }
 
     CrossroadView.prototype.render = function() {

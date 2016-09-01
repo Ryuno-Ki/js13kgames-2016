@@ -12,7 +12,7 @@ class AbstractCurveView extends AbstractStreetView
 
 class LeftTopCurveView extends AbstractCurveView
   constructor: () ->
-    super()
+    @cars = []
 
   render: () ->
     svgns = @getTileContextNamespace()
@@ -33,7 +33,7 @@ class LeftTopCurveView extends AbstractCurveView
 
 class RightTopCurveView extends AbstractCurveView
   constructor: () ->
-    super()
+    @cars = []
 
   render: () ->
     svgns = @getTileContextNamespace()
@@ -54,7 +54,7 @@ class RightTopCurveView extends AbstractCurveView
 
 class LeftBottomCurveView extends AbstractCurveView
   constructor: () ->
-    super()
+    @cars = []
 
   render: () ->
     svgns = @getTileContextNamespace()
@@ -75,7 +75,7 @@ class LeftBottomCurveView extends AbstractCurveView
 
 class RightBottomCurveView extends AbstractCurveView
   constructor: () ->
-    super()
+    @cars = []
 
   render: () ->
     svgns = @getTileContextNamespace()

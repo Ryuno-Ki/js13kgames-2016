@@ -17,7 +17,7 @@ class CrossroadModel extends StreetModel
 
 class CrossroadView extends AbstractStreetView
   constructor: () ->
-    super()
+    @cars = []
 
   render: () ->
     svgns = @getTileContextNamespace()

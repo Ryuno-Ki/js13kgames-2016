@@ -30,6 +30,7 @@
     function AbstractStreetView() {
       this.precursor = null;
       this.successor = null;
+      this.cars = [];
     }
 
     AbstractStreetView.prototype.getTileBefore = function() {
@@ -60,6 +61,17 @@
       throw new NotImplementedError();
     };
 
+    AbstractStreetView.prototype.getCarsOnIt = function() {
+      return this.cars.length;
+    };
+
+    AbstractStreetView.prototype.enter = function(vehicle) {
+      var event;
+      this.cars.push(vehicle);
+      event = new global.window.CustomEvent('car-leaving');
+      global.document.dispatchEvent(event);
+    };
+
     return AbstractStreetView;
 
   })();
@@ -70,6 +82,7 @@
     function HorizontalStreetView(precursor, successor) {
       this.precursor = precursor || null;
       this.successor = successor || null;
+      this.cars = [];
       return this;
     }
 
@@ -92,16 +105,6 @@
       return svgNode;
     };
 
-    HorizontalStreetView.prototype.enter = function() {
-      var event;
-      event = new global.window.CustomEvent('car-leaving');
-      global.document.dispatchEvent(event);
-    };
-
-    HorizontalStreetView.prototype.getCarsOnIt = function() {
-      return 0;
-    };
-
     return HorizontalStreetView;
 
   })(AbstractStreetView);
@@ -112,6 +115,7 @@
     function VerticalStreetView(precursor, successor) {
       this.precursor = precursor || null;
       this.successor = successor || null;
+      this.cars = [];
       return this;
     }
 

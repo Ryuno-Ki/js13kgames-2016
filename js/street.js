@@ -18,6 +18,7 @@ class AbstractStreetView
   constructor: () ->
     @precursor = null
     @successor = null
+    @cars = []
 
   getTileBefore: () ->
     return this.precursor
@@ -41,12 +42,21 @@ class AbstractStreetView
   render: () ->
     throw new NotImplementedError()
 
+  getCarsOnIt: () ->
+    return @cars.length
+
+  enter: (vehicle) ->
+    @cars.push(vehicle)
+    event = new global.window.CustomEvent('car-leaving')
+    global.document.dispatchEvent(event)
+    return
+
 
 class HorizontalStreetView extends AbstractStreetView
   constructor: (precursor, successor) ->
     @precursor = precursor || null
     @successor = successor || null
-
+    @cars = []
     return this
 
   render: () ->
@@ -68,19 +78,11 @@ class HorizontalStreetView extends AbstractStreetView
     svgNode.appendChild(g)
     return svgNode
 
-  enter: () ->
-    event = new global.window.CustomEvent('car-leaving')
-    global.document.dispatchEvent(event)
-    return
-
-  getCarsOnIt: () ->
-    return 0
-
 class VerticalStreetView extends AbstractStreetView
   constructor: (precursor, successor) ->
     @precursor = precursor || null
     @successor = successor || null
-
+    @cars = []
     return this
 
   render: () ->

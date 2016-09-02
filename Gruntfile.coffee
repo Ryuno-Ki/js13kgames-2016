@@ -11,6 +11,7 @@ module.exports = (grunt) =>
                     'spec/street.spec.js': 'spec/street.spec.es6.js'
                     'spec/crossroad.spec.js': 'spec/crossroad.spec.es6.js'
                     'spec/trafficLight.spec.js': 'spec/trafficLight.spec.es6.js'
+                    'spec/map.spec.js': 'spec/map.spec.es6.js'
 
         coffee:
             compile:
@@ -22,6 +23,7 @@ module.exports = (grunt) =>
                     'transpiled/street.js': 'js/street.js'
                     'transpiled/crossroad.js': 'js/crossroad.js'
                     'transpiled/trafficLight.js': 'js/trafficLight.js'
+                    'transpiled/map.js': 'js/map.js'
 
         coffeelint:
             dist: ['js/*.js']
@@ -109,6 +111,7 @@ module.exports = (grunt) =>
                     'dist/errors.min.js': ['transpiled/errors.js']
                     'dist/street.min.js': ['transpiled/street.js']
                     'dist/trafficLight.min.js': ['transpiled/trafficLight.js']
+                    'dist/map.min.js': ['transpiled/map.js']
 
         watch:
             files: ['js/*.js', 'spec/*.es6.js']

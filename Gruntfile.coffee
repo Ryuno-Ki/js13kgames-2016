@@ -84,7 +84,7 @@ module.exports = (grunt) =>
                     variable: '42'
             dist:
                 files:
-                    'target.html': 'index.html'
+                    'app.html': 'index.html'
 
         uglify:
             build:
@@ -112,7 +112,15 @@ module.exports = (grunt) =>
 
         watch:
             files: ['js/*.js', 'spec/*.es6.js']
-            tasks: ['coffee', 'babel', 'coffeelint', 'jshint', 'uglify', 'test']
+            tasks: [
+                'coffee'
+                'babel'
+                'coffeelint'
+                'jshint'
+                'uglify'
+                'test'
+                'processhtml'
+            ]
 
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-compress'

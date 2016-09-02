@@ -2,6 +2,9 @@ let jsdom = require('jsdom').jsdom;
 global.document = jsdom('<html><head></head><body></body></html>');
 global.window = document.defaultView;
 
+let StreetModule = require('../transpiled/street.js').game;
+let AbstractStreetView = StreetModule.views.AbstractStreet;
+
 let CrossroadModule = require('../transpiled/crossroad.js').game;
 let CrossroadModel = CrossroadModule.models.Crossroad;
 let CrossroadView = CrossroadModule.views.Crossroad;
@@ -24,6 +27,10 @@ describe('Crossroad view', () => {
 
     beforeEach(() => {
         crossroad = new CrossroadView();
+    });
+
+    it('should inherit from AbstractStreetView', () => {
+        expect(crossroad).to.be.an.instanceof(AbstractStreetView);
     });
 
     it('should render a svg tile', () => {

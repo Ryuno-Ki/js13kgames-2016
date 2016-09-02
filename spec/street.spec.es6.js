@@ -64,6 +64,10 @@ describe('Horizontal street view', () => {
         street = new HorizontalStreetView();
     });
 
+    it('should inherit from AbstractStreetView', () => {
+        expect(street).to.be.an.instanceof(AbstractStreetView);
+    });
+
     it('should render a svg tile', () => {
         let tileNode = street.render();
         expect(tileNode.nodeName.toLowerCase()).to.equal('svg');
@@ -98,6 +102,10 @@ describe('Vertical street view', () => {
 
     beforeEach(() => {
         street = new VerticalStreetView();
+    });
+
+    it('should inherit from AbstractStreetView', () => {
+        expect(street).to.be.an.instanceof(AbstractStreetView);
     });
 
     it('should render a svg tile', () => {

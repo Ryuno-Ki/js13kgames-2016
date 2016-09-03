@@ -16,17 +16,17 @@ module.exports = (grunt) =>
         coffee:
             compile:
                 files:
-                    'transpiled/app.js': 'js/app.js'
-                    'transpiled/car.js': 'js/car.js'
-                    'transpiled/curve.js': 'js/curve.js'
-                    'transpiled/errors.js': 'js/errors.js'
-                    'transpiled/street.js': 'js/street.js'
-                    'transpiled/crossroad.js': 'js/crossroad.js'
-                    'transpiled/trafficLight.js': 'js/trafficLight.js'
-                    'transpiled/map.js': 'js/map.js'
+                    'transpiled/app.js': 'js/app.coffee'
+                    'transpiled/car.js': 'js/car.coffee'
+                    'transpiled/curve.js': 'js/curve.coffee'
+                    'transpiled/errors.js': 'js/errors.coffee'
+                    'transpiled/street.js': 'js/street.coffee'
+                    'transpiled/crossroad.js': 'js/crossroad.coffee'
+                    'transpiled/trafficLight.js': 'js/trafficLight.coffee'
+                    'transpiled/map.js': 'js/map.coffee'
 
         coffeelint:
-            dist: ['js/*.js']
+            dist: ['js/*.coffee']
 
         compress:
             app:
@@ -114,7 +114,7 @@ module.exports = (grunt) =>
                     'dist/map.min.js': ['transpiled/map.js']
 
         watch:
-            files: ['js/*.js', 'spec/*.es6.js']
+            files: ['js/*.coffee', 'spec/*.es6.js']
             tasks: [
                 'coffee'
                 'babel'

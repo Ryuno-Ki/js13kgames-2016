@@ -120,9 +120,11 @@ module.exports = (grunt) =>
                 'babel'
                 'coffeelint'
                 'jshint'
-                'uglify'
                 'test'
+                'uglify'
                 'processhtml'
+                'compress'
+                'maxFilesize'
             ]
 
     grunt.loadNpmTasks 'grunt-contrib-coffee'

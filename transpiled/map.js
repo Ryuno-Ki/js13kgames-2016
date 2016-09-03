@@ -64,78 +64,51 @@
     };
 
     MapModel.prototype._pickTile = function(environment) {
-      var allowedNeighborhood, details, direction, envSign, sign, tileCandidates;
+      var allowedNeighborhood, tileCandidates, tileSet;
       allowedNeighborhood = {
-        '+': {
-          name: 'crossroad',
-          above: ['+', '|', '^', '>'],
-          below: ['+', '|', 'v', '<'],
-          leftHand: ['+', '-', '>', 'v'],
-          rightHand: ['+', '-', '^', '<']
-        },
-        '-': {
-          name: 'horizontal',
-          above: [],
-          below: [],
-          leftHand: ['+', '-', '>', 'v'],
-          rightHand: ['+', '-', '^', '<']
-        },
-        '|': {
-          name: 'vertical',
-          above: ['+', '|', '^', '>'],
-          below: ['+', '|', 'v', '<'],
-          leftHand: [],
-          rightHand: []
-        },
-        '^': {
-          name: 'left-top',
-          above: ['+', '|', '^', '>'],
-          below: [],
-          leftHand: ['+', '-', '>', 'v'],
-          rightHand: []
-        },
-        '>': {
-          name: 'right-top',
-          above: ['+', '|', '^', '>'],
-          below: [],
-          leftHand: [],
-          rightHand: ['+', '-', '^', '<']
-        },
-        'v': {
-          name: 'right-bottom',
-          above: [],
-          below: ['+', '|', 'v', '<'],
-          leftHand: [],
-          rightHand: ['+', '-', '^', '<']
-        },
-        '<': {
-          name: 'left-bottom',
-          above: [],
-          below: ['+', '|', 'v', '<'],
-          leftHand: ['+', '-', '>', 'v'],
-          rightHand: []
-        }
+        above: ['^', '>', '|', '+', ''],
+        below: ['v', '<', '|', '+', ''],
+        leftHand: ['v', '>', '-', '+', ''],
+        rightHand: ['^', '<', '-', '+', '']
       };
-      tileCandidates = [];
-      for (direction in environment) {
-        envSign = environment[direction];
-        console.log('sign is', direction, envSign);
-        if (envSign === null) {
-          continue;
-        }
-        for (sign in allowedNeighborhood) {
-          details = allowedNeighborhood[sign];
-          if (envSign === '') {
-            tileCandidates.push(sign);
-            continue;
-          }
-          console.log('inclusion check', envSign, details[direction]);
-          if (indexOf.call(details[direction], envSign) >= 0) {
-            tileCandidates.push(sign);
-          }
-        }
+      tileCandidates = ['^', '>', 'v', '<', '-', '|', '+'];
+      tileSet = tileCandidates.slice(0);
+      tileCandidates.push('');
+      if (environment.above === null) {
+        tileCandidates = tileCandidates.filter(function(tile) {
+          return indexOf.call(allowedNeighborhood.above, tile) < 0;
+        });
       }
-      console.log('closer choice', tileCandidates);
+      if (environment.leftHand === null) {
+        tileCandidates = tileCandidates.filter(function(tile) {
+          return indexOf.call(allowedNeighborhood.leftHand, tile) < 0;
+        });
+      } else if (tileCandidates.length > 1) {
+        tileCandidates = tileCandidates.filter(function(tile) {
+          return indexOf.call(allowedNeighborhood.leftHand, tile) >= 0;
+        });
+      }
+      if (environment.below === null) {
+        tileCandidates = tileCandidates.filter(function(tile) {
+          return indexOf.call(allowedNeighborhood.below, tile) < 0;
+        });
+      } else if (tileCandidates.length > 1) {
+        tileCandidates = tileCandidates.filter(function(tile) {
+          return indexOf.call(allowedNeighborhood.below, tile) >= 0;
+        });
+      }
+      if (environment.rightHand === null) {
+        tileCandidates = tileCandidates.filter(function(tile) {
+          return indexOf.call(allowedNeighborhood.rightHand, tile) < 0;
+        });
+      } else if (tileCandidates.length > 1) {
+        tileCandidates = tileCandidates.filter(function(tile) {
+          return indexOf.call(allowedNeighborhood.rightHand, tile) >= 0;
+        });
+      }
+      if (indexOf.call(tileCandidates, '') >= 0) {
+        tileCandidates = tileSet[Math.floor(Math.random() * tileSet.length)];
+      }
       return tileCandidates[0];
     };
 

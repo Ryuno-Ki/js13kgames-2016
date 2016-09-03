@@ -52,66 +52,50 @@ class MapModel
     return map
 
   _pickTile: (environment) ->
+    # ^ is left-top curve
+    # > is right-top curve
+    # v is right-bottom curve
+    # < is left-bottom curve
+    # - is horizontal street
+    # | is vertical street
+    # + is a crossroad
     allowedNeighborhood = {
-      '+':
-        name: 'crossroad'
-        above: ['+', '|', '^', '>']
-        below: ['+', '|', 'v', '<']
-        leftHand: ['+', '-', '>', 'v']
-        rightHand: ['+', '-', '^', '<']
-      '-':
-        name: 'horizontal'
-        above: []
-        below: []
-        leftHand: ['+', '-', '>', 'v']
-        rightHand: ['+', '-', '^', '<']
-      '|':
-        name: 'vertical'
-        above: ['+', '|', '^', '>']
-        below: ['+', '|', 'v', '<']
-        leftHand: []
-        rightHand: []
-      '^':
-        name: 'left-top'
-        above: ['+', '|', '^', '>']
-        below: []
-        leftHand: ['+', '-', '>', 'v']
-        rightHand: []
-      '>':
-        name: 'right-top'
-        above: ['+', '|', '^', '>']
-        below: []
-        leftHand: []
-        rightHand: ['+', '-', '^', '<']
-      'v':
-        name: 'right-bottom'
-        above: []
-        below: ['+', '|', 'v', '<']
-        leftHand: []
-        rightHand: ['+', '-', '^', '<']
-      '<':
-        name: 'left-bottom'
-        above: []
-        below: ['+', '|', 'v', '<']
-        leftHand: ['+', '-', '>', 'v']
-        rightHand: []
+      above: ['^', '>', '|', '+', '']
+      below: ['v', '<', '|', '+', '']
+      leftHand: ['v', '>', '-', '+', '']
+      rightHand: ['^', '<', '-', '+', '']
     }
+    tileCandidates = ['^', '>', 'v', '<', '-', '|', '+']
+    tileSet = tileCandidates[..]  # Copy of values
+    tileCandidates.push('')
 
-    tileCandidates = []
-    for direction, envSign of environment
-      console.log 'sign is', direction, envSign
-      if envSign is null
-        continue
-      for sign, details of allowedNeighborhood
-        if envSign is ''
-          tileCandidates.push sign
-          continue
+    if environment.above is null
+      tileCandidates = tileCandidates.filter (tile) ->
+        tile not in allowedNeighborhood.above
 
-        console.log 'inclusion check', envSign, details[direction]
-        if envSign in details[direction]
-          tileCandidates.push sign
+    if environment.leftHand is null
+      tileCandidates = tileCandidates.filter (tile) ->
+        tile not in allowedNeighborhood.leftHand
+    else if tileCandidates.length > 1
+      tileCandidates = tileCandidates.filter (tile) ->
+        tile in allowedNeighborhood.leftHand
 
-    console.log 'closer choice', tileCandidates
+    if environment.below is null
+      tileCandidates = tileCandidates.filter (tile) ->
+        tile not in allowedNeighborhood.below
+    else if tileCandidates.length > 1
+      tileCandidates = tileCandidates.filter (tile) ->
+        tile in allowedNeighborhood.below
+
+    if environment.rightHand is null
+      tileCandidates = tileCandidates.filter (tile) ->
+        tile not in allowedNeighborhood.rightHand
+    else if tileCandidates.length > 1
+      tileCandidates = tileCandidates.filter (tile) ->
+        tile in allowedNeighborhood.rightHand
+
+    if '' in tileCandidates  # arbitrary tile
+      tileCandidates = tileSet[Math.floor(Math.random() * tileSet.length)]
     return tileCandidates[0]
 
 

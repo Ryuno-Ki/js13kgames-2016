@@ -58,6 +58,7 @@ module.exports = (grunt) =>
                 expr: true
                 undef: true
                 globals:
+                    afterEach: true
                     beforeEach: true
                     define: true
                     describe: true

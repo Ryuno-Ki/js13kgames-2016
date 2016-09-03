@@ -1,3 +1,53 @@
+unless LeftTopCurveView
+  if require
+    curveModule = require('../transpiled/curve.js').game
+    LeftTopCurveView = curveModule.views.LeftTopCurve
+  else
+    LeftTopCurveView = this.game.views.LeftTopCurve
+
+unless CrossroadView
+  if require
+    curveModule = require('../transpiled/curve.js').game
+    RightTopCurveView = curveModule.views.RightTopCurve
+  else
+    RightTopCurveView = this.game.views.RightTopCurve
+
+unless LeftBottomCurveView
+  if require
+    curveModule = require('../transpiled/curve.js').game
+    LeftBottomCurveView = curveModule.views.LeftBottomCurve
+  else
+    LeftBottomCurveView = this.game.views.LeftBottomCurve
+
+unless RightBottomCurveView
+  if require
+    curveModule = require('../transpiled/curve.js').game
+    RightBottomCurveView = curveModule.views.RightBottomCurve
+  else
+    RightBottomCurveView = this.game.views.RightBottomCurve
+
+unless HorizontalStreetView
+  if require
+    streetModule = require('../transpiled/street.js').game
+    HorizontalStreetView = streetModule.views.HorizontalStreet
+  else
+    HorizontalStreetView = this.game.views.HorizontalStreet
+
+unless VerticalStreetView
+  if require
+    streetModule = require('../transpiled/street.js').game
+    VerticalStreetView = streetModule.views.VerticalStreet
+  else
+    VerticalStreetView = this.game.views.VerticalStreet
+
+unless CrossroadView
+  if require
+    crossroadModule = require('../transpiled/crossroad.js').game
+    CrossroadView = crossroadModule.views.Crossroad
+  else
+    CrossroadView = this.game.views.Crossroad
+
+
 class MapModel
   constructor: (canvasHeight, canvasWidth) ->
     @canvasHeight = canvasHeight or 360
@@ -20,8 +70,11 @@ class MapModel
       for col in [0..numCols]
         @_setTile [row, col], map
 
-    console.log '\n', map, '\n'
-    return JSON.stringify map
+    return JSON.stringify {
+      "map": map
+      "numRows": map.numRows
+      "numCols": map.numCols
+    }
 
   _initMap: () ->
     map = []
@@ -99,7 +152,36 @@ class MapModel
     return tileCandidates[0]
 
 
+class MapView
+  constructor: (node) ->
+    @node = node
+
+  render: (mapData) ->
+    console.log 'Translating into DOM:'
+    console.log mapData.map
+
+    for row in [0...mapData.numRows]
+      for col in [0...mapData.numCols]
+        sign = mapData.map[row][col]
+        view = @getViewForSign sign
+        @node.appendChild view.render()
+
+  getViewForSign: (sign) ->
+    switch sign
+      when '^' then view = LeftTopCurveView
+      when '>' then view = RightTopCurveView
+      when 'v' then view = RightBottomCurveView
+      when '<' then view = LeftBottomCurveView
+      when '-' then view = HorizontalStreetView
+      when '|' then view = VerticalStreetView
+      when '+' then view = CrossroadView
+    return new view()
+
+
 root = exports ? this  # Node.js vs. Browser
 root.game ?= {}
 root.game.models ?= {}
 root.game.models.Map = MapModel
+
+root.game.views ?= {}
+root.game.views.Map = MapView

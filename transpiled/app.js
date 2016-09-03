@@ -1,35 +1,14 @@
 (function() {
-  var car, cr, hsv, i, lbc, ltc, map, pick, rbc, rtc, tile, tileNum, vsv;
+  var mapData, mapModel, mapView, node;
 
-  map = document.getElementById('map');
+  node = document.getElementById('map');
 
-  hsv = game.views.HorizontalStreet;
+  mapModel = new game.models.Map();
 
-  vsv = game.views.VerticalStreet;
+  mapView = new game.views.Map(node);
 
-  ltc = game.views.LeftTopCurve;
+  mapData = JSON.parse(mapModel.calculateMap());
 
-  rtc = game.views.RightTopCurve;
-
-  lbc = game.views.LeftBottomCurve;
-
-  rbc = game.views.RightBottomCurve;
-
-  cr = game.views.Crossroad;
-
-  car = game.views.Car;
-
-  pick = function() {
-    var choices, tile;
-    choices = [hsv, vsv, ltc, rtc, lbc, rbc, cr];
-    tile = choices[Math.floor(Math.random() * choices.length)];
-    return new tile();
-  };
-
-  for (tileNum = i = 1; i <= 25; tileNum = ++i) {
-    tile = pick().render();
-    tile.appendChild((new car()).render());
-    map.appendChild(tile);
-  }
+  mapView.render(mapData);
 
 }).call(this);

@@ -1,6 +1,69 @@
 (function() {
-  var MapModel, base, root,
+  var CrossroadView, HorizontalStreetView, LeftBottomCurveView, LeftTopCurveView, MapModel, MapView, RightBottomCurveView, RightTopCurveView, VerticalStreetView, base, base1, crossroadModule, curveModule, root, streetModule,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  if (!LeftTopCurveView) {
+    if (require) {
+      curveModule = require('../transpiled/curve.js').game;
+      LeftTopCurveView = curveModule.views.LeftTopCurve;
+    } else {
+      LeftTopCurveView = this.game.views.LeftTopCurve;
+    }
+  }
+
+  if (!CrossroadView) {
+    if (require) {
+      curveModule = require('../transpiled/curve.js').game;
+      RightTopCurveView = curveModule.views.RightTopCurve;
+    } else {
+      RightTopCurveView = this.game.views.RightTopCurve;
+    }
+  }
+
+  if (!LeftBottomCurveView) {
+    if (require) {
+      curveModule = require('../transpiled/curve.js').game;
+      LeftBottomCurveView = curveModule.views.LeftBottomCurve;
+    } else {
+      LeftBottomCurveView = this.game.views.LeftBottomCurve;
+    }
+  }
+
+  if (!RightBottomCurveView) {
+    if (require) {
+      curveModule = require('../transpiled/curve.js').game;
+      RightBottomCurveView = curveModule.views.RightBottomCurve;
+    } else {
+      RightBottomCurveView = this.game.views.RightBottomCurve;
+    }
+  }
+
+  if (!HorizontalStreetView) {
+    if (require) {
+      streetModule = require('../transpiled/street.js').game;
+      HorizontalStreetView = streetModule.views.HorizontalStreet;
+    } else {
+      HorizontalStreetView = this.game.views.HorizontalStreet;
+    }
+  }
+
+  if (!VerticalStreetView) {
+    if (require) {
+      streetModule = require('../transpiled/street.js').game;
+      VerticalStreetView = streetModule.views.VerticalStreet;
+    } else {
+      VerticalStreetView = this.game.views.VerticalStreet;
+    }
+  }
+
+  if (!CrossroadView) {
+    if (require) {
+      crossroadModule = require('../transpiled/crossroad.js').game;
+      CrossroadView = crossroadModule.views.Crossroad;
+    } else {
+      CrossroadView = this.game.views.Crossroad;
+    }
+  }
 
   MapModel = (function() {
     function MapModel(canvasHeight, canvasWidth) {
@@ -28,8 +91,11 @@
           this._setTile([row, col], map);
         }
       }
-      console.log('\n', map, '\n');
-      return JSON.stringify(map);
+      return JSON.stringify({
+        "map": map,
+        "numRows": map.numRows,
+        "numCols": map.numCols
+      });
     };
 
     MapModel.prototype._initMap = function() {
@@ -116,6 +182,62 @@
 
   })();
 
+  MapView = (function() {
+    function MapView(node) {
+      this.node = node;
+    }
+
+    MapView.prototype.render = function(mapData) {
+      var col, i, ref, results, row, sign, view;
+      console.log('Translating into DOM:');
+      console.log(mapData.map);
+      results = [];
+      for (row = i = 0, ref = mapData.numRows; 0 <= ref ? i < ref : i > ref; row = 0 <= ref ? ++i : --i) {
+        results.push((function() {
+          var j, ref1, results1;
+          results1 = [];
+          for (col = j = 0, ref1 = mapData.numCols; 0 <= ref1 ? j < ref1 : j > ref1; col = 0 <= ref1 ? ++j : --j) {
+            sign = mapData.map[row][col];
+            view = this.getViewForSign(sign);
+            results1.push(this.node.appendChild(view.render()));
+          }
+          return results1;
+        }).call(this));
+      }
+      return results;
+    };
+
+    MapView.prototype.getViewForSign = function(sign) {
+      var view;
+      switch (sign) {
+        case '^':
+          view = LeftTopCurveView;
+          break;
+        case '>':
+          view = RightTopCurveView;
+          break;
+        case 'v':
+          view = RightBottomCurveView;
+          break;
+        case '<':
+          view = LeftBottomCurveView;
+          break;
+        case '-':
+          view = HorizontalStreetView;
+          break;
+        case '|':
+          view = VerticalStreetView;
+          break;
+        case '+':
+          view = CrossroadView;
+      }
+      return new view();
+    };
+
+    return MapView;
+
+  })();
+
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
   if (root.game == null) {
@@ -127,5 +249,11 @@
   }
 
   root.game.models.Map = MapModel;
+
+  if ((base1 = root.game).views == null) {
+    base1.views = {};
+  }
+
+  root.game.views.Map = MapView;
 
 }).call(this);

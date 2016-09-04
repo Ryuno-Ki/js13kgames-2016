@@ -67,10 +67,20 @@
 
   MapModel = (function() {
     function MapModel(canvasHeight, canvasWidth) {
-      this.canvasHeight = canvasHeight || 360;
+      this.canvasHeight = canvasHeight || 300;
       this.canvasWidth = canvasWidth || 300;
       this.tileHeight = 60;
       this.tileWidth = 60;
+      MapModel.SIGNS = {
+        LEFT_TOP: '^',
+        RIGHT_TOP: '>',
+        RIGHT_BOTTOM: 'v',
+        LEFT_BOTTOM: '<',
+        HORIZONTAL: '-',
+        VERTICAL: '|',
+        CROSSROAD: '+',
+        ANY: '?'
+      };
     }
 
     MapModel.prototype.getCanvasHeight = function() {
@@ -86,8 +96,8 @@
       map = this._initMap();
       numRows = map.numRows;
       numCols = map.numCols;
-      for (row = i = 0, ref = numRows; 0 <= ref ? i <= ref : i >= ref; row = 0 <= ref ? ++i : --i) {
-        for (col = j = 0, ref1 = numCols; 0 <= ref1 ? j <= ref1 : j >= ref1; col = 0 <= ref1 ? ++j : --j) {
+      for (row = i = 0, ref = numRows; 0 <= ref ? i < ref : i > ref; row = 0 <= ref ? ++i : --i) {
+        for (col = j = 0, ref1 = numCols; 0 <= ref1 ? j < ref1 : j > ref1; col = 0 <= ref1 ? ++j : --j) {
           this._setTile([row, col], map);
         }
       }
@@ -100,79 +110,89 @@
 
     MapModel.prototype._initMap = function() {
       var col, i, j, map, numCols, numRows, ref, ref1, row;
-      map = [];
       numRows = Math.floor(this.canvasHeight / this.tileHeight);
       numCols = Math.floor(this.canvasWidth / this.tileWidth);
+      map = [];
       map.numRows = numRows;
       map.numCols = numCols;
-      for (row = i = 0, ref = numRows; 0 <= ref ? i <= ref : i >= ref; row = 0 <= ref ? ++i : --i) {
+      for (row = i = 0, ref = numRows; 0 <= ref ? i < ref : i > ref; row = 0 <= ref ? ++i : --i) {
         map[row] = [];
-        for (col = j = 0, ref1 = numCols; 0 <= ref1 ? j <= ref1 : j >= ref1; col = 0 <= ref1 ? ++j : --j) {
-          map[row][col] = '';
+        for (col = j = 0, ref1 = numCols; 0 <= ref1 ? j < ref1 : j > ref1; col = 0 <= ref1 ? ++j : --j) {
+          map[row][col] = MapModel.SIGNS.ANY;
         }
       }
       return map;
     };
 
     MapModel.prototype._setTile = function(position, map) {
-      var environment, numCols, numRows, x, y;
-      x = position[0], y = position[1];
-      numRows = map.numRows;
-      numCols = map.numCols;
+      var col, environment, numCols, numRows, row;
+      row = position[0], col = position[1];
+      numRows = map.numRows - 1;
+      numCols = map.numCols - 1;
       environment = {
-        above: x > 0 ? map[x - 1][y] : null,
-        below: x < numRows ? map[x + 1][y] : null,
-        leftHand: y > 0 ? map[x][y - 1] : null,
-        rightHand: y < numCols ? map[x][y + 1] : null
+        above: row > 0 ? map[row - 1][col] : null,
+        below: row < numRows ? map[row + 1][col] : null,
+        leftHand: col > 0 ? map[row][col - 1] : null,
+        rightHand: col < numCols ? map[row][col + 1] : null
       };
-      map[x][y] = this._pickTile(environment);
+      map[row][col] = this.pickTile(environment);
       return map;
     };
 
-    MapModel.prototype._pickTile = function(environment) {
-      var allowedNeighborhood, tileCandidates, tileSet;
+    MapModel.prototype.pickTile = function(environment) {
+      var allowedNeighborhood, k, ref, s, tileCandidates, tileSet, v;
       allowedNeighborhood = {
-        above: ['^', '>', '|', '+', ''],
-        below: ['v', '<', '|', '+', ''],
-        leftHand: ['v', '>', '-', '+', ''],
-        rightHand: ['^', '<', '-', '+', '']
+        above: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
+        below: [MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
+        leftHand: [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
+        rightHand: [MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY]
       };
-      tileCandidates = ['^', '>', 'v', '<', '-', '|', '+'];
-      tileSet = tileCandidates.slice(0);
-      tileCandidates.push('');
+      tileCandidates = [
+        (function() {
+          var ref, results;
+          ref = MapModel.SIGNS;
+          results = [];
+          for (k in ref) {
+            v = ref[k];
+            results.push(v);
+          }
+          return results;
+        })()
+      ][0];
+      tileSet = [
+        (function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = tileCandidates.length; i < len; i++) {
+            s = tileCandidates[i];
+            if (s !== MapModel.SIGNS.ANY) {
+              results.push(s);
+            }
+          }
+          return results;
+        })()
+      ][0];
       if (environment.above === null) {
         tileCandidates = tileCandidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.above, tile) < 0;
-        });
-      }
-      if (environment.leftHand === null) {
-        tileCandidates = tileCandidates.filter(function(tile) {
-          return indexOf.call(allowedNeighborhood.leftHand, tile) < 0;
-        });
-      } else if (tileCandidates.length > 1) {
-        tileCandidates = tileCandidates.filter(function(tile) {
-          return indexOf.call(allowedNeighborhood.leftHand, tile) >= 0;
-        });
-      }
-      if (environment.below === null) {
-        tileCandidates = tileCandidates.filter(function(tile) {
-          return indexOf.call(allowedNeighborhood.below, tile) < 0;
-        });
-      } else if (tileCandidates.length > 1) {
-        tileCandidates = tileCandidates.filter(function(tile) {
-          return indexOf.call(allowedNeighborhood.below, tile) >= 0;
         });
       }
       if (environment.rightHand === null) {
         tileCandidates = tileCandidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.rightHand, tile) < 0;
         });
-      } else if (tileCandidates.length > 1) {
+      }
+      if (environment.leftHand === null) {
         tileCandidates = tileCandidates.filter(function(tile) {
-          return indexOf.call(allowedNeighborhood.rightHand, tile) >= 0;
+          return indexOf.call(allowedNeighborhood.leftHand, tile) < 0;
         });
       }
-      if (indexOf.call(tileCandidates, '') >= 0) {
+      if (environment.below === null) {
+        tileCandidates = tileCandidates.filter(function(tile) {
+          return indexOf.call(allowedNeighborhood.below, tile) < 0;
+        });
+      }
+      if (ref = MapModel.SIGNS.ANY, indexOf.call(tileCandidates, ref) >= 0) {
         tileCandidates = tileSet[Math.floor(Math.random() * tileSet.length)];
       }
       return tileCandidates[0];
@@ -210,25 +230,25 @@
     MapView.prototype.getViewForSign = function(sign) {
       var view;
       switch (sign) {
-        case '^':
+        case MapModel.SIGNS.LEFT_TOP:
           view = LeftTopCurveView;
           break;
-        case '>':
+        case MapModel.SIGNS.RIGHT_TOP:
           view = RightTopCurveView;
           break;
-        case 'v':
+        case MapModel.SIGNS.RIGHT_BOTTOM:
           view = RightBottomCurveView;
           break;
-        case '<':
+        case MapModel.SIGNS.LEFT_BOTTOM:
           view = LeftBottomCurveView;
           break;
-        case '-':
+        case MapModel.SIGNS.HORIZONTAL:
           view = HorizontalStreetView;
           break;
-        case '|':
+        case MapModel.SIGNS.VERTICAL:
           view = VerticalStreetView;
           break;
-        case '+':
+        case MapModel.SIGNS.CROSSROAD:
           view = CrossroadView;
       }
       return new view();

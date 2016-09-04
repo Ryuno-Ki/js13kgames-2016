@@ -67,6 +67,8 @@ module.exports = (grunt) =>
                     global: true
                     it: true
                     require: true
+                    xdescribe: true
+                    xit: true
 
         maxFilesize:
             app:

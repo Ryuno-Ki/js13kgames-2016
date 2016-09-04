@@ -50,10 +50,21 @@ unless CrossroadView
 
 class MapModel
   constructor: (canvasHeight, canvasWidth) ->
-    @canvasHeight = canvasHeight or 360
+    @canvasHeight = canvasHeight or 300
     @canvasWidth = canvasWidth or 300
     @tileHeight = 60
     @tileWidth = 60
+
+    MapModel.SIGNS = {
+      LEFT_TOP: '^'
+      RIGHT_TOP: '>'
+      RIGHT_BOTTOM: 'v'
+      LEFT_BOTTOM: '<'
+      HORIZONTAL: '-'
+      VERTICAL: '|'
+      CROSSROAD: '+'
+      ANY: '?'
+    }
 
   getCanvasHeight: () ->
     return @canvasHeight
@@ -66,8 +77,8 @@ class MapModel
     numRows = map.numRows
     numCols = map.numCols
 
-    for row in [0..numRows]
-      for col in [0..numCols]
+    for row in [0...numRows]
+      for col in [0...numCols]
         @_setTile [row, col], map
 
     return JSON.stringify {
@@ -77,77 +88,95 @@ class MapModel
     }
 
   _initMap: () ->
-    map = []
     numRows = Math.floor(@canvasHeight / @tileHeight)
     numCols = Math.floor(@canvasWidth / @tileWidth)
+    map = []
     map.numRows = numRows
     map.numCols = numCols
 
-    for row in [0..numRows]
+    for row in [0...numRows]
       map[row] = []
-      for col in [0..numCols]
-        map[row][col] = ''
+      for col in [0...numCols]
+        map[row][col] = MapModel.SIGNS.ANY
 
     return map
 
   _setTile: (position, map) ->
-    [x, y] = position
-    numRows = map.numRows
-    numCols = map.numCols
+    [row, col] = position
+    numRows = map.numRows - 1
+    numCols = map.numCols - 1
 
     environment = {
-      above: if x > 0 then map[x - 1][y] else null
-      below: if x < numRows then map[x + 1][y] else null
-      leftHand: if y > 0 then map[x][y - 1] else null
-      rightHand: if y < numCols then map[x][y + 1] else null
+      above: if row > 0 then map[row - 1][col] else null
+      below: if row < numRows then map[row + 1][col] else null
+      leftHand: if col > 0 then map[row][col - 1] else null
+      rightHand: if col < numCols then map[row][col + 1] else null
     }
-    map[x][y] = @_pickTile(environment)
+    map[row][col] = @pickTile(environment)
     return map
 
-  _pickTile: (environment) ->
-    # ^ is left-top curve
-    # > is right-top curve
-    # v is right-bottom curve
-    # < is left-bottom curve
-    # - is horizontal street
-    # | is vertical street
-    # + is a crossroad
+  pickTile: (environment) ->
     allowedNeighborhood = {
-      above: ['^', '>', '|', '+', '']
-      below: ['v', '<', '|', '+', '']
-      leftHand: ['v', '>', '-', '+', '']
-      rightHand: ['^', '<', '-', '+', '']
+      above: [
+        MapModel.SIGNS.LEFT_TOP
+        MapModel.SIGNS.RIGHT_TOP
+        MapModel.SIGNS.VERTICAL
+        MapModel.SIGNS.CROSSROAD
+        MapModel.SIGNS.ANY
+      ]
+      below: [
+        MapModel.SIGNS.RIGHT_BOTTOM
+        MapModel.SIGNS.LEFT_BOTTOM
+        MapModel.SIGNS.VERTICAL
+        MapModel.SIGNS.CROSSROAD
+        MapModel.SIGNS.ANY
+      ]
+      leftHand: [
+        MapModel.SIGNS.LEFT_BOTTOM
+        MapModel.SIGNS.LEFT_TOP
+        MapModel.SIGNS.HORIZONTAL
+        MapModel.SIGNS.CROSSROAD
+        MapModel.SIGNS.ANY
+      ]
+      rightHand: [
+        MapModel.SIGNS.RIGHT_TOP
+        MapModel.SIGNS.RIGHT_BOTTOM
+        MapModel.SIGNS.HORIZONTAL
+        MapModel.SIGNS.CROSSROAD
+        MapModel.SIGNS.ANY
+      ]
     }
-    tileCandidates = ['^', '>', 'v', '<', '-', '|', '+']
-    tileSet = tileCandidates[..]  # Copy of values
-    tileCandidates.push('')
+
+    # Copy of values
+    tileCandidates = ([v for k, v of MapModel.SIGNS])[0]
+    tileSet = ([s for s in tileCandidates when s isnt MapModel.SIGNS.ANY])[0]
 
     if environment.above is null
       tileCandidates = tileCandidates.filter (tile) ->
         tile not in allowedNeighborhood.above
 
+    if environment.rightHand is null
+      tileCandidates = tileCandidates.filter (tile) ->
+        tile not in allowedNeighborhood.rightHand
+    # else if tileCandidates.length > 1
+    #   tileCandidates = tileCandidates.filter (tile) ->
+    #     tile in allowedNeighborhood.rightHand
+
     if environment.leftHand is null
       tileCandidates = tileCandidates.filter (tile) ->
         tile not in allowedNeighborhood.leftHand
-    else if tileCandidates.length > 1
-      tileCandidates = tileCandidates.filter (tile) ->
-        tile in allowedNeighborhood.leftHand
+    # else if tileCandidates.length > 1
+    #   tileCandidates = tileCandidates.filter (tile) ->
+    #     tile in allowedNeighborhood.leftHand
 
     if environment.below is null
       tileCandidates = tileCandidates.filter (tile) ->
         tile not in allowedNeighborhood.below
-    else if tileCandidates.length > 1
-      tileCandidates = tileCandidates.filter (tile) ->
-        tile in allowedNeighborhood.below
+    # else if tileCandidates.length > 1
+    #   tileCandidates = tileCandidates.filter (tile) ->
+    #     tile in allowedNeighborhood.below
 
-    if environment.rightHand is null
-      tileCandidates = tileCandidates.filter (tile) ->
-        tile not in allowedNeighborhood.rightHand
-    else if tileCandidates.length > 1
-      tileCandidates = tileCandidates.filter (tile) ->
-        tile in allowedNeighborhood.rightHand
-
-    if '' in tileCandidates  # arbitrary tile
+    if MapModel.SIGNS.ANY in tileCandidates  # arbitrary tile
       tileCandidates = tileSet[Math.floor(Math.random() * tileSet.length)]
     return tileCandidates[0]
 
@@ -168,13 +197,13 @@ class MapView
 
   getViewForSign: (sign) ->
     switch sign
-      when '^' then view = LeftTopCurveView
-      when '>' then view = RightTopCurveView
-      when 'v' then view = RightBottomCurveView
-      when '<' then view = LeftBottomCurveView
-      when '-' then view = HorizontalStreetView
-      when '|' then view = VerticalStreetView
-      when '+' then view = CrossroadView
+      when MapModel.SIGNS.LEFT_TOP then view = LeftTopCurveView
+      when MapModel.SIGNS.RIGHT_TOP then view = RightTopCurveView
+      when MapModel.SIGNS.RIGHT_BOTTOM then view = RightBottomCurveView
+      when MapModel.SIGNS.LEFT_BOTTOM then view = LeftBottomCurveView
+      when MapModel.SIGNS.HORIZONTAL then view = HorizontalStreetView
+      when MapModel.SIGNS.VERTICAL then view = VerticalStreetView
+      when MapModel.SIGNS.CROSSROAD then view = CrossroadView
     return new view()
 
 

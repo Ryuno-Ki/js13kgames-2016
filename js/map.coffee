@@ -148,37 +148,39 @@ class MapModel
     }
 
     # Copy of values
-    tileCandidates = ([v for k, v of MapModel.SIGNS])[0]
-    tileSet = ([s for s in tileCandidates when s isnt MapModel.SIGNS.ANY])[0]
+    candidates = ([v for k, v of MapModel.SIGNS])[0]
+    tileSet = ([s for s in candidates when s isnt MapModel.SIGNS.ANY])[0]
 
     if environment.above is null
-      tileCandidates = tileCandidates.filter (tile) ->
+      candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.above
 
     if environment.rightHand is null
-      tileCandidates = tileCandidates.filter (tile) ->
+      candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.rightHand
-    # else if tileCandidates.length > 1
-    #   tileCandidates = tileCandidates.filter (tile) ->
+    # else if candidates.length > 1
+    #   candidates = candidates.filter (tile) ->
     #     tile in allowedNeighborhood.rightHand
 
     if environment.leftHand is null
-      tileCandidates = tileCandidates.filter (tile) ->
+      candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.leftHand
-    # else if tileCandidates.length > 1
-    #   tileCandidates = tileCandidates.filter (tile) ->
+    # else if candidates.length > 1
+    #   candidates = candidates.filter (tile) ->
     #     tile in allowedNeighborhood.leftHand
 
     if environment.below is null
-      tileCandidates = tileCandidates.filter (tile) ->
+      candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.below
-    # else if tileCandidates.length > 1
-    #   tileCandidates = tileCandidates.filter (tile) ->
+    # else if candidates.length > 1
+    #   candidates = candidates.filter (tile) ->
     #     tile in allowedNeighborhood.below
 
-    if MapModel.SIGNS.ANY in tileCandidates  # arbitrary tile
-      tileCandidates = tileSet[Math.floor(Math.random() * tileSet.length)]
-    return tileCandidates[0]
+    if MapModel.SIGNS.ANY in candidates  # arbitrary tile
+      candidates = tileSet[Math.floor(Math.random() * tileSet.length)]
+    else if candidates.length > 1
+      candidates = candidates[Math.floor(Math.random() * candidates.length)]
+    return candidates[0]
 
 
 class MapView

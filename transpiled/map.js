@@ -140,14 +140,14 @@
     };
 
     MapModel.prototype.pickTile = function(environment) {
-      var allowedNeighborhood, k, ref, s, tileCandidates, tileSet, v;
+      var allowedNeighborhood, candidates, k, ref, s, tileSet, v;
       allowedNeighborhood = {
         above: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         below: [MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         leftHand: [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         rightHand: [MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY]
       };
-      tileCandidates = [
+      candidates = [
         (function() {
           var ref, results;
           ref = MapModel.SIGNS;
@@ -163,8 +163,8 @@
         (function() {
           var i, len, results;
           results = [];
-          for (i = 0, len = tileCandidates.length; i < len; i++) {
-            s = tileCandidates[i];
+          for (i = 0, len = candidates.length; i < len; i++) {
+            s = candidates[i];
             if (s !== MapModel.SIGNS.ANY) {
               results.push(s);
             }
@@ -173,29 +173,31 @@
         })()
       ][0];
       if (environment.above === null) {
-        tileCandidates = tileCandidates.filter(function(tile) {
+        candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.above, tile) < 0;
         });
       }
       if (environment.rightHand === null) {
-        tileCandidates = tileCandidates.filter(function(tile) {
+        candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.rightHand, tile) < 0;
         });
       }
       if (environment.leftHand === null) {
-        tileCandidates = tileCandidates.filter(function(tile) {
+        candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.leftHand, tile) < 0;
         });
       }
       if (environment.below === null) {
-        tileCandidates = tileCandidates.filter(function(tile) {
+        candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.below, tile) < 0;
         });
       }
-      if (ref = MapModel.SIGNS.ANY, indexOf.call(tileCandidates, ref) >= 0) {
-        tileCandidates = tileSet[Math.floor(Math.random() * tileSet.length)];
+      if (ref = MapModel.SIGNS.ANY, indexOf.call(candidates, ref) >= 0) {
+        candidates = tileSet[Math.floor(Math.random() * tileSet.length)];
+      } else if (candidates.length > 1) {
+        candidates = candidates[Math.floor(Math.random() * candidates.length)];
       }
-      return tileCandidates[0];
+      return candidates[0];
     };
 
     return MapModel;

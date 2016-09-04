@@ -79,6 +79,51 @@ describe('Map model', () => {
             let tile = map.pickTile(environment);
             expect(tile).to.equal(MapModel.SIGNS.RIGHT_TOP);
         });
+
+        xit('should pick a street or curve on the top vertice', () => {
+            let environment = {
+                above: null,
+                below: MapModel.SIGNS.ANY,
+                leftHand: MapModel.SIGNS.ANY,
+                rightHand: MapModel.SIGNS.ANY
+            };
+            let tile = map.pickTile(environment);
+            expect(tile).to.equal(MapModel.SIGNS.HORIZONTAL);
+        });
+
+        xit('should pick the horizontal street on the bottom vertice', () => {
+            let environment = {
+                above: MapModel.SIGNS.ANY,
+                below: null,
+                leftHand: MapModel.SIGNS.ANY,
+                rightHand: MapModel.SIGNS.ANY
+            };
+            let tile = map.pickTile(environment);
+            expect(tile).to.equal(MapModel.SIGNS.HORIZONTAL);
+        });
+
+        xit('should pick the vertical street on the left vertice', () => {
+            let environment = {
+                above: MapModel.SIGNS.ANY,
+                below: MapModel.SIGNS.ANY,
+                leftHand: null,
+                rightHand: MapModel.SIGNS.ANY
+            };
+            console.log(environment);
+            let tile = map.pickTile(environment);
+            expect(tile).to.equal(MapModel.SIGNS.VERTICAL);
+        });
+
+        xit('should pick the vertical street on the right vertice', () => {
+            let environment = {
+                above: MapModel.SIGNS.ANY,
+                below: MapModel.SIGNS.ANY,
+                leftHand: MapModel.SIGNS.ANY,
+                rightHand: null,
+            };
+            let tile = map.pickTile(environment);
+            expect(tile).to.equal(MapModel.SIGNS.VERTICAL);
+        });
     });
 
     it('should generate a JSON representation of the map', () => {

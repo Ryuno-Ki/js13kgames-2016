@@ -140,38 +140,46 @@
     };
 
     MapModel.prototype.pickTile = function(environment) {
-      var allowedNeighborhood, candidates, k, ref, s, tileSet, v;
+      var candidates, ref, s, tileSet;
+      candidates = this.filterTileCandidates(environment);
+      tileSet = (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = candidates.length; i < len; i++) {
+          s = candidates[i];
+          if (s !== MapModel.SIGNS.ANY) {
+            results.push(s);
+          }
+        }
+        return results;
+      })();
+      if (ref = MapModel.SIGNS.ANY, indexOf.call(candidates, ref) >= 0) {
+        candidates = tileSet[Math.floor(Math.random() * tileSet.length)];
+      } else if (candidates.length > 1) {
+        candidates = candidates[Math.floor(Math.random() * candidates.length)];
+      }
+      return candidates[0];
+    };
+
+    MapModel.prototype.filterTileCandidates = function(environment) {
+      var aboveIsCurve, allowedNeighborhood, belowIsCurve, candidates, curveTiles, k, leftHandIsCurve, ref, ref1, ref2, ref3, rightHandIsCurve, v;
       allowedNeighborhood = {
         above: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         below: [MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         leftHand: [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         rightHand: [MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY]
       };
-      candidates = [
-        (function() {
-          var ref, results;
-          ref = MapModel.SIGNS;
-          results = [];
-          for (k in ref) {
-            v = ref[k];
-            results.push(v);
-          }
-          return results;
-        })()
-      ][0];
-      tileSet = [
-        (function() {
-          var i, len, results;
-          results = [];
-          for (i = 0, len = candidates.length; i < len; i++) {
-            s = candidates[i];
-            if (s !== MapModel.SIGNS.ANY) {
-              results.push(s);
-            }
-          }
-          return results;
-        })()
-      ][0];
+      curveTiles = [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM];
+      candidates = (function() {
+        var ref, results;
+        ref = MapModel.SIGNS;
+        results = [];
+        for (k in ref) {
+          v = ref[k];
+          results.push(v);
+        }
+        return results;
+      })();
       if (environment.above === null) {
         candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.above, tile) < 0;
@@ -192,12 +200,16 @@
           return indexOf.call(allowedNeighborhood.below, tile) < 0;
         });
       }
-      if (ref = MapModel.SIGNS.ANY, indexOf.call(candidates, ref) >= 0) {
-        candidates = tileSet[Math.floor(Math.random() * tileSet.length)];
-      } else if (candidates.length > 1) {
-        candidates = candidates[Math.floor(Math.random() * candidates.length)];
+      aboveIsCurve = (ref = environment.above, indexOf.call(curveTiles, ref) >= 0);
+      belowIsCurve = (ref1 = environment.below, indexOf.call(curveTiles, ref1) >= 0);
+      leftHandIsCurve = (ref2 = environment.leftHand, indexOf.call(curveTiles, ref2) >= 0);
+      rightHandIsCurve = (ref3 = environment.rightHand, indexOf.call(curveTiles, ref3) >= 0);
+      if (aboveIsCurve || belowIsCurve || leftHandIsCurve || rightHandIsCurve) {
+        candidates = candidates.filter(function(tile) {
+          return indexOf.call(curveTiles, tile) < 0;
+        });
       }
-      return candidates[0];
+      return candidates;
     };
 
     return MapModel;

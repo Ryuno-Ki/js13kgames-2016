@@ -112,10 +112,21 @@ class MapModel
       leftHand: if col > 0 then map[row][col - 1] else null
       rightHand: if col < numCols then map[row][col + 1] else null
     }
-    map[row][col] = @pickTile(environment)
+    map[row][col] = @pickTile environment
     return map
 
   pickTile: (environment) ->
+    candidates = @filterTileCandidates environment
+    tileSet = (s for s in candidates when s isnt MapModel.SIGNS.ANY)
+
+    if MapModel.SIGNS.ANY in candidates  # arbitrary tile
+      candidates = tileSet[Math.floor(Math.random() * tileSet.length)]
+    else if candidates.length > 1
+      candidates = candidates[Math.floor(Math.random() * candidates.length)]
+
+    return candidates[0]
+
+  filterTileCandidates: (environment) ->
     allowedNeighborhood = {
       above: [
         MapModel.SIGNS.LEFT_TOP
@@ -147,9 +158,15 @@ class MapModel
       ]
     }
 
+    curveTiles = [
+        MapModel.SIGNS.LEFT_TOP
+        MapModel.SIGNS.LEFT_BOTTOM
+        MapModel.SIGNS.RIGHT_TOP
+        MapModel.SIGNS.RIGHT_BOTTOM
+    ]
+
     # Copy of values
-    candidates = ([v for k, v of MapModel.SIGNS])[0]
-    tileSet = ([s for s in candidates when s isnt MapModel.SIGNS.ANY])[0]
+    candidates = (v for k, v of MapModel.SIGNS)
 
     if environment.above is null
       candidates = candidates.filter (tile) ->
@@ -158,29 +175,23 @@ class MapModel
     if environment.rightHand is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.rightHand
-    # else if candidates.length > 1
-    #   candidates = candidates.filter (tile) ->
-    #     tile in allowedNeighborhood.rightHand
 
     if environment.leftHand is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.leftHand
-    # else if candidates.length > 1
-    #   candidates = candidates.filter (tile) ->
-    #     tile in allowedNeighborhood.leftHand
 
     if environment.below is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.below
-    # else if candidates.length > 1
-    #   candidates = candidates.filter (tile) ->
-    #     tile in allowedNeighborhood.below
 
-    if MapModel.SIGNS.ANY in candidates  # arbitrary tile
-      candidates = tileSet[Math.floor(Math.random() * tileSet.length)]
-    else if candidates.length > 1
-      candidates = candidates[Math.floor(Math.random() * candidates.length)]
-    return candidates[0]
+    aboveIsCurve = environment.above in curveTiles
+    belowIsCurve = environment.below in curveTiles
+    leftHandIsCurve = environment.leftHand in curveTiles
+    rightHandIsCurve = environment.rightHand in curveTiles
+    if aboveIsCurve or belowIsCurve or leftHandIsCurve or rightHandIsCurve
+      candidates = candidates.filter (tile) ->
+        tile not in curveTiles
+    return candidates
 
 
 class MapView

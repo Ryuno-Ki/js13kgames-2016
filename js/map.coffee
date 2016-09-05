@@ -136,15 +136,15 @@ class MapModel
         MapModel.SIGNS.ANY
       ]
       below: [
-        MapModel.SIGNS.RIGHT_BOTTOM
         MapModel.SIGNS.LEFT_BOTTOM
+        MapModel.SIGNS.RIGHT_BOTTOM
         MapModel.SIGNS.VERTICAL
         MapModel.SIGNS.CROSSROAD
         MapModel.SIGNS.ANY
       ]
       leftHand: [
-        MapModel.SIGNS.LEFT_BOTTOM
         MapModel.SIGNS.LEFT_TOP
+        MapModel.SIGNS.LEFT_BOTTOM
         MapModel.SIGNS.HORIZONTAL
         MapModel.SIGNS.CROSSROAD
         MapModel.SIGNS.ANY
@@ -159,10 +159,10 @@ class MapModel
     }
 
     curveTiles = [
-        MapModel.SIGNS.LEFT_TOP
-        MapModel.SIGNS.LEFT_BOTTOM
-        MapModel.SIGNS.RIGHT_TOP
-        MapModel.SIGNS.RIGHT_BOTTOM
+      MapModel.SIGNS.LEFT_TOP
+      MapModel.SIGNS.LEFT_BOTTOM
+      MapModel.SIGNS.RIGHT_TOP
+      MapModel.SIGNS.RIGHT_BOTTOM
     ]
 
     # Copy of values
@@ -171,26 +171,31 @@ class MapModel
     if environment.above is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.above
+    else if environment.above in curveTiles
+      candidates = candidates.filter (tile) ->
+        tile isnt environment.above
 
     if environment.rightHand is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.rightHand
+    else if environment.rightHand in curveTiles
+      candidates = candidates.filter (tile) ->
+        tile isnt environment.rightHand
 
     if environment.leftHand is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.leftHand
+    else if environment.leftHand in curveTiles
+      candidates = candidates.filter (tile) ->
+        tile isnt environment.leftHand
 
     if environment.below is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.below
-
-    aboveIsCurve = environment.above in curveTiles
-    belowIsCurve = environment.below in curveTiles
-    leftHandIsCurve = environment.leftHand in curveTiles
-    rightHandIsCurve = environment.rightHand in curveTiles
-    if aboveIsCurve or belowIsCurve or leftHandIsCurve or rightHandIsCurve
+    else if environment.below in curveTiles
       candidates = candidates.filter (tile) ->
-        tile not in curveTiles
+        tile isnt environment.below
+
     return candidates
 
 

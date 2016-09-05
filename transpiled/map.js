@@ -162,11 +162,11 @@
     };
 
     MapModel.prototype.filterTileCandidates = function(environment) {
-      var aboveIsCurve, allowedNeighborhood, belowIsCurve, candidates, curveTiles, k, leftHandIsCurve, ref, ref1, ref2, ref3, rightHandIsCurve, v;
+      var allowedNeighborhood, candidates, curveTiles, k, ref, ref1, ref2, ref3, v;
       allowedNeighborhood = {
         above: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
-        below: [MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
-        leftHand: [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
+        below: [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
+        leftHand: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         rightHand: [MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY]
       };
       curveTiles = [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM];
@@ -184,29 +184,36 @@
         candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.above, tile) < 0;
         });
+      } else if (ref = environment.above, indexOf.call(curveTiles, ref) >= 0) {
+        candidates = candidates.filter(function(tile) {
+          return tile !== environment.above;
+        });
       }
       if (environment.rightHand === null) {
         candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.rightHand, tile) < 0;
+        });
+      } else if (ref1 = environment.rightHand, indexOf.call(curveTiles, ref1) >= 0) {
+        candidates = candidates.filter(function(tile) {
+          return tile !== environment.rightHand;
         });
       }
       if (environment.leftHand === null) {
         candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.leftHand, tile) < 0;
         });
+      } else if (ref2 = environment.leftHand, indexOf.call(curveTiles, ref2) >= 0) {
+        candidates = candidates.filter(function(tile) {
+          return tile !== environment.leftHand;
+        });
       }
       if (environment.below === null) {
         candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.below, tile) < 0;
         });
-      }
-      aboveIsCurve = (ref = environment.above, indexOf.call(curveTiles, ref) >= 0);
-      belowIsCurve = (ref1 = environment.below, indexOf.call(curveTiles, ref1) >= 0);
-      leftHandIsCurve = (ref2 = environment.leftHand, indexOf.call(curveTiles, ref2) >= 0);
-      rightHandIsCurve = (ref3 = environment.rightHand, indexOf.call(curveTiles, ref3) >= 0);
-      if (aboveIsCurve || belowIsCurve || leftHandIsCurve || rightHandIsCurve) {
+      } else if (ref3 = environment.below, indexOf.call(curveTiles, ref3) >= 0) {
         candidates = candidates.filter(function(tile) {
-          return indexOf.call(curveTiles, tile) < 0;
+          return tile !== environment.below;
         });
       }
       return candidates;

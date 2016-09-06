@@ -203,4 +203,13 @@ describe('Map view', () => {
         let numTiles = mapState.numRows * mapState.numCols;
         expect(mapNode.children.length).to.equal(numTiles);
     });
+
+    it('should spawn cars on the map', () => {
+        let mapModel = new MapModel();
+        let mapState = JSON.parse(mapModel.calculateMap());
+        map.render(mapState);
+        let tileToSpawn = map.spawnCar(mapState);
+        let carOnTile = tileToSpawn.querySelector('.car');
+        expect(carOnTile).not.to.be.null;
+    });
 });

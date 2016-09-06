@@ -11,4 +11,6 @@
 
   mapView.render(mapData);
 
+  mapView.spawnCar(mapData);
+
 }).call(this);

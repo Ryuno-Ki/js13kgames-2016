@@ -47,6 +47,13 @@ unless CrossroadView
   else
     CrossroadView = this.game.views.Crossroad
 
+unless CarView
+  if require
+    carModule = require('../transpiled/car.js').game
+    CarView = carModule.views.Car
+  else
+    CarView = this.game.views.Car
+
 
 class MapModel
   constructor: (canvasHeight, canvasWidth) ->
@@ -219,8 +226,12 @@ class MapView
     for row in [0...mapData.numRows]
       for col in [0...mapData.numCols]
         sign = mapData.map[row][col]
+        # FIXME This case should never occur!
+        if sign is null
+          continue
         view = @getViewForSign sign
         @node.appendChild view.render()
+    return
 
   getViewForSign: (sign) ->
     switch sign
@@ -232,6 +243,13 @@ class MapView
       when MapModel.SIGNS.VERTICAL then view = VerticalStreetView
       when MapModel.SIGNS.CROSSROAD then view = CrossroadView
     return new view()
+
+  spawnCar: (mapData) ->
+    numTiles = mapData.numRows * mapData.numCols
+    indexOfTile = Math.floor(Math.random() * numTiles)
+    tileWithNewCar = @node.children.item indexOfTile
+    tileWithNewCar.appendChild (new CarView()).render()
+    return tileWithNewCar
 
 
 root = exports ? this  # Node.js vs. Browser

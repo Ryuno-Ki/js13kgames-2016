@@ -1,5 +1,5 @@
 (function() {
-  var CrossroadView, HorizontalStreetView, LeftBottomCurveView, LeftTopCurveView, MapModel, MapView, RightBottomCurveView, RightTopCurveView, VerticalStreetView, base, base1, crossroadModule, curveModule, root, streetModule,
+  var CarView, CrossroadView, HorizontalStreetView, LeftBottomCurveView, LeftTopCurveView, MapModel, MapView, RightBottomCurveView, RightTopCurveView, VerticalStreetView, base, base1, carModule, crossroadModule, curveModule, root, streetModule,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   if (!LeftTopCurveView) {
@@ -62,6 +62,15 @@
       CrossroadView = crossroadModule.views.Crossroad;
     } else {
       CrossroadView = this.game.views.Crossroad;
+    }
+  }
+
+  if (!CarView) {
+    if (require) {
+      carModule = require('../transpiled/car.js').game;
+      CarView = carModule.views.Car;
+    } else {
+      CarView = this.game.views.Car;
     }
   }
 
@@ -240,23 +249,19 @@
     }
 
     MapView.prototype.render = function(mapData) {
-      var col, i, ref, results, row, sign, view;
+      var col, i, j, ref, ref1, row, sign, view;
       console.log('Translating into DOM:');
       console.log(mapData.map);
-      results = [];
       for (row = i = 0, ref = mapData.numRows; 0 <= ref ? i < ref : i > ref; row = 0 <= ref ? ++i : --i) {
-        results.push((function() {
-          var j, ref1, results1;
-          results1 = [];
-          for (col = j = 0, ref1 = mapData.numCols; 0 <= ref1 ? j < ref1 : j > ref1; col = 0 <= ref1 ? ++j : --j) {
-            sign = mapData.map[row][col];
-            view = this.getViewForSign(sign);
-            results1.push(this.node.appendChild(view.render()));
+        for (col = j = 0, ref1 = mapData.numCols; 0 <= ref1 ? j < ref1 : j > ref1; col = 0 <= ref1 ? ++j : --j) {
+          sign = mapData.map[row][col];
+          if (sign === null) {
+            continue;
           }
-          return results1;
-        }).call(this));
+          view = this.getViewForSign(sign);
+          this.node.appendChild(view.render());
+        }
       }
-      return results;
     };
 
     MapView.prototype.getViewForSign = function(sign) {
@@ -284,6 +289,15 @@
           view = CrossroadView;
       }
       return new view();
+    };
+
+    MapView.prototype.spawnCar = function(mapData) {
+      var indexOfTile, numTiles, tileWithNewCar;
+      numTiles = mapData.numRows * mapData.numCols;
+      indexOfTile = Math.floor(Math.random() * numTiles);
+      tileWithNewCar = this.node.children.item(indexOfTile);
+      tileWithNewCar.appendChild((new CarView()).render());
+      return tileWithNewCar;
     };
 
     return MapView;

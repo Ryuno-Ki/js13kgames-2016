@@ -1,17 +1,33 @@
 digraph G {
     app [shape=box];
+    AbstractCurveView [shape=box];
+    AbstractStreetView [shape=box];
     CarModel [shape=box];
     CarView [shape=box];
     CrossroadModel [shape=box];
     CrossroadView [shape=box];
+    HorizontalStreetView [shape=box];
+    LeftBottomCurve [shape=box];
+    LeftTopCurve [shape=box];
+    MapModel [shape=box];
+    MapView [shape=box];
     NotImplementedError [shape=box];
+    RightBottomCurve [shape=box];
+    RightTopCurve [shape=box];
     StreetModel [shape=box];
-    StreetView [shape=box];
     TrafficLightModel [shape=box];
+    VerticalStreetView [shape=box];
 
+    AbstractCurveView -> AbstractStreetView [label="depends on"];
+    AbstractStreetView -> NotImplementedError [label="depends on"];
     app -> CrossroadView [label="depends on"];
     app -> StreetView [label="depends on"];
     CrossroadModel -> StreetModel [label="depends on"];
-    CrossroadView -> StreetView [label="depends on"];
-    StreetView -> NotImplementedError [label="depends on"];
+    CrossroadView -> AbstractStreetView [label="depends on"];
+    HorizontalStreetView -> AbstractStreetView [label="depends on"];
+    LeftBottomCurve -> AbstractCurveView [label="depends on"];
+    LeftTopCurve -> AbstractCurveView [label="depends on"];
+    RightBottomCurve -> AbstractCurveView [label="depends on"];
+    RightTopCurve -> AbstractCurveView [label="depends on"];
+    VerticalStreetView -> AbstractStreetView [label="depends on"];
 }

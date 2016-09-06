@@ -3,9 +3,28 @@
     <head>
         <meta charset="utf-8" />
         <title>Glitch - js13kgames 2016</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <style>
 body {
-    background: #b2beb5;
+    background: burlywood;
+    overflow: hidden;
+}
+
+#fork-on-github {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform-origin: center center 0px;
+    transform: rotate(45deg) translate(0, 1em);
+}
+
+#fork-on-github a {
+    background: black;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    width: 150%;
 }
 
 #map {
@@ -14,8 +33,21 @@ body {
     max-width: 360px;
 }
 
+#map::after {
+    clear: both;
+    content: " ";
+    display: block;
+}
+
+svg {
+    box-sizing: border-box;
+    /* https://css-tricks.com/fighting-the-space-between-inline-block-elements/ */
+    display: block;
+    float: left;
+}
+
 .street .car .chassis {
-    fill: white;
+    fill: black;
     stroke: black;
 }
 
@@ -163,11 +195,29 @@ svg path {
     stroke-width: 1;
 }
         </style>
+        <meta name="description"
+              content="Ryuno-Ki's contribution to js13kgames of 2016" />
     </head>
     <body>
         <div id="map"></div>
-    </body>
-    <script>
+        <p id="fork-on-github">
+            <a href="https://github.com/Ryuno-Ki/js13kgames-2016/"
+               target="_blank">
+                Fork me on GitHub
+            </a>
+        </p>
+        <p>
+            <a href="https://github.com/Ryuno-Ki/js13kgames-2016/blob/master/LICENSE.txt" target="_blank">
+                License
+            </a>
+        </p>
+        <p>
+            Follow me on
+            <a href="https://twitter.com/AndreJaenisch" target="_blank">
+                Twitter
+            </a>
+        </p>
+        <script>
 (function(){var a,b,c,d=function(a,b){function c(){this.constructor=a}for(var d in b)e.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a},e={}.hasOwnProperty;a=function(a){function b(){this.name="NotImplementedError",this.message="Not implemented yet",this.stack=(new Error).stack}return d(b,a),b}(Error),c="undefined"!=typeof exports&&null!==exports?exports:this,null==c.game&&(c.game={}),null==(b=c.game).errors&&(b.errors={}),c.game.errors.NotImplemented=a}).call(this);
 //# sourceMappingURL=errors.min.js.map
 (function(){var a,b,c,d,e;a=function(){function a(){return this._id=null,this._driving=!1,this}return a.prototype.accelerate=function(){return this._driving=!0,this.isDriving()},a.prototype.isDriving=function(){return this._driving},a.prototype.stop=function(){return this._driving=!1,this.isDriving()},a}(),b=function(){function a(){}return a.prototype.on=function(a,b){b()},a.prototype.getTileContext=function(){var a,b;return b=this.getTileContextNamespace(),a=document.createElementNS(b,"svg"),a.setAttribute("viewBox","0 0 100 100"),a.setAttribute("xmlns",b),a.setAttribute("version","1.1"),a.setAttribute("height","15"),a.setAttribute("width","15"),a},a.prototype.getTileContextNamespace=function(){return"http://www.w3.org/2000/svg"},a.prototype.render=function(){var a,b,c,d,e,f,g,h;return f=this.getTileContextNamespace(),e=this.getTileContext(),d=document.createElementNS(f,"g"),g=document.createElementNS(f,"rect"),g.setAttribute("x",10),g.setAttribute("y",10),g.setAttribute("height",20),g.setAttribute("width",10),g.setAttribute("class","wheel"),h=document.createElementNS(f,"rect"),h.setAttribute("x",80),h.setAttribute("y",10),h.setAttribute("height",20),h.setAttribute("width",10),h.setAttribute("class","wheel"),a=document.createElementNS(f,"rect"),a.setAttribute("x",10),a.setAttribute("y",70),a.setAttribute("height",20),a.setAttribute("width",10),a.setAttribute("class","wheel"),b=document.createElementNS(f,"rect"),b.setAttribute("x",80),b.setAttribute("y",70),b.setAttribute("height",20),b.setAttribute("width",10),b.setAttribute("class","wheel"),c=document.createElementNS(f,"rect"),c.setAttribute("x",20),c.setAttribute("y",5),c.setAttribute("height",90),c.setAttribute("width",60),c.setAttribute("class","chassis"),d.appendChild(g),d.appendChild(h),d.appendChild(a),d.appendChild(b),d.appendChild(c),e.appendChild(d),e.setAttribute("class","car"),e},a}(),e="undefined"!=typeof exports&&null!==exports?exports:this,null==e.game&&(e.game={}),null==(c=e.game).models&&(c.models={}),e.game.models.Car=a,null==(d=e.game).views&&(d.views={}),e.game.views.Car=b}).call(this);
@@ -182,6 +232,7 @@ svg path {
 //# sourceMappingURL=curve.min.js.map
 (function(){var a,b,c,d,e,f,g,h,i,j,k,l,m,n=[].indexOf||function(a){for(var b=0,c=this.length;b<c;b++)if(b in this&&this[b]===a)return b;return-1};e||(e=this.game.views.LeftTopCurve),b||(i=this.game.views.RightTopCurve),d||(d=this.game.views.LeftBottomCurve),h||(h=this.game.views.RightBottomCurve),c||(c=this.game.views.HorizontalStreet),j||(j=this.game.views.VerticalStreet),b||(b=this.game.views.Crossroad),a||(a=this.game.views.Car),f=function(){function a(b,c){this.canvasHeight=b||300,this.canvasWidth=c||300,this.tileHeight=60,this.tileWidth=60,a.SIGNS={LEFT_TOP:"^",RIGHT_TOP:">",RIGHT_BOTTOM:"v",LEFT_BOTTOM:"<",HORIZONTAL:"-",VERTICAL:"|",CROSSROAD:"+",ANY:"?"}}return a.prototype.getCanvasHeight=function(){return this.canvasHeight},a.prototype.getCanvasWidth=function(){return this.canvasWidth},a.prototype.calculateMap=function(){var a,b,c,d,e,f,g,h,i;for(d=this._initMap(),f=d.numRows,e=d.numCols,i=b=0,g=f;0<=g?b<g:b>g;i=0<=g?++b:--b)for(a=c=0,h=e;0<=h?c<h:c>h;a=0<=h?++c:--c)this._setTile([i,a],d);return JSON.stringify({map:d,numRows:d.numRows,numCols:d.numCols})},a.prototype._initMap=function(){var b,c,d,e,f,g,h,i,j;for(g=Math.floor(this.canvasHeight/this.tileHeight),f=Math.floor(this.canvasWidth/this.tileWidth),e=[],e.numRows=g,e.numCols=f,j=c=0,h=g;0<=h?c<h:c>h;j=0<=h?++c:--c)for(e[j]=[],b=d=0,i=f;0<=i?d<i:d>i;b=0<=i?++d:--d)e[j][b]=a.SIGNS.ANY;return e},a.prototype._setTile=function(a,b){var c,d,e,f,g;return g=a[0],c=a[1],f=b.numRows-1,e=b.numCols-1,d={above:g>0?b[g-1][c]:null,below:g<f?b[g+1][c]:null,leftHand:c>0?b[g][c-1]:null,rightHand:c<e?b[g][c+1]:null},b[g][c]=this.pickTile(d),b},a.prototype.pickTile=function(b){var c,d,e,f;return c=this.filterTileCandidates(b),f=function(){var b,d,f;for(f=[],b=0,d=c.length;b<d;b++)e=c[b],e!==a.SIGNS.ANY&&f.push(e);return f}(),d=a.SIGNS.ANY,n.call(c,d)>=0?c=f[Math.floor(Math.random()*f.length)]:c.length>1&&(c=c[Math.floor(Math.random()*c.length)]),c[0]},a.prototype.filterTileCandidates=function(b){var c,d,e,f,g,h,i,j,k;return c={above:[a.SIGNS.LEFT_TOP,a.SIGNS.RIGHT_TOP,a.SIGNS.VERTICAL,a.SIGNS.CROSSROAD,a.SIGNS.ANY],below:[a.SIGNS.LEFT_BOTTOM,a.SIGNS.RIGHT_BOTTOM,a.SIGNS.VERTICAL,a.SIGNS.CROSSROAD,a.SIGNS.ANY],leftHand:[a.SIGNS.LEFT_TOP,a.SIGNS.LEFT_BOTTOM,a.SIGNS.HORIZONTAL,a.SIGNS.CROSSROAD,a.SIGNS.ANY],rightHand:[a.SIGNS.RIGHT_TOP,a.SIGNS.RIGHT_BOTTOM,a.SIGNS.HORIZONTAL,a.SIGNS.CROSSROAD,a.SIGNS.ANY]},h={top:[null,a.SIGNS.LEFT_TOP,a.SIGNS.RIGHT_TOP,a.SIGNS.VERTICAL],left:[null,a.SIGNS.LEFT_TOP,a.SIGNS.LEFT_BOTTOM,a.SIGNS.HORIZONTAL]},d=function(){var b,c;b=a.SIGNS,c=[];for(g in b)k=b[g],c.push(k);return c}(),e=function(){var a;a=[];for(g in b)k=b[g],a.push(k);return a}(),f=2===e.reduce(function(a,b){return a+(null===b)},0),null===b.above&&(d=d.filter(function(a){return n.call(c.above,a)<0})),null===b.rightHand&&(d=d.filter(function(a){return n.call(c.rightHand,a)<0})),null===b.leftHand&&(d=d.filter(function(a){return n.call(c.leftHand,a)<0})),null===b.below&&(d=d.filter(function(a){return n.call(c.below,a)<0})),f||(i=b.above,n.call(h.top,i)>=0&&(d=d.filter(function(a){return n.call(h.top,a)<0})),j=b.leftHand,n.call(h.left,j)>=0&&(d=d.filter(function(a){return n.call(h.left,a)<0}))),d},a}(),g=function(){function g(a){this.node=a}return g.prototype.render=function(a){var b,c,d,e,f,g,h,i;for(console.log("Translating into DOM:"),console.log(a.map),g=c=0,e=a.numRows;0<=e?c<e:c>e;g=0<=e?++c:--c)for(b=d=0,f=a.numCols;0<=f?d<f:d>f;b=0<=f?++d:--d)h=a.map[g][b],null!==h&&(i=this.getViewForSign(h),this.node.appendChild(i.render()))},g.prototype.getViewForSign=function(a){var g;switch(a){case f.SIGNS.LEFT_TOP:g=e;break;case f.SIGNS.RIGHT_TOP:g=i;break;case f.SIGNS.RIGHT_BOTTOM:g=h;break;case f.SIGNS.LEFT_BOTTOM:g=d;break;case f.SIGNS.HORIZONTAL:g=c;break;case f.SIGNS.VERTICAL:g=j;break;case f.SIGNS.CROSSROAD:g=b}return new g},g.prototype.spawnCar=function(b){var c,d,e;return d=b.numRows*b.numCols,c=Math.floor(Math.random()*d),e=this.node.children.item(c),e.appendChild((new a).render()),e},g}(),m="undefined"!=typeof exports&&null!==exports?exports:this,null==m.game&&(m.game={}),null==(k=m.game).models&&(k.models={}),m.game.models.Map=f,null==(l=m.game).views&&(l.views={}),m.game.views.Map=g}).call(this);
 //# sourceMappingURL=map.min.js.map
-(function(){var a,b,c,d;d=document.getElementById("map"),b=new game.models.Map(300,360),c=new game.views.Map(d),a=JSON.parse(b.calculateMap()),c.render(a)}).call(this);
-//# sourceMappingURL=app.min.js.map    </script>
+(function(){var a,b,c,d;d=document.getElementById("map"),b=new game.models.Map(300,360),c=new game.views.Map(d),a=JSON.parse(b.calculateMap()),c.render(a),setInterval(function(){return c.spawnCar(a)},1e3)}).call(this);
+//# sourceMappingURL=app.min.js.map        </script>
+    </body>
 </html>

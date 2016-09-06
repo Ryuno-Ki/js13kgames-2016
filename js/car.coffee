@@ -23,6 +23,23 @@ class CarView
     callback()
     return
 
+  # http://stackoverflow.com/a/16484266
+  handleEvent: (event) ->
+    switch event.type
+      when 'change' then @change event.target
+
+  change: (target) ->
+
+  # http://stackoverflow.com/a/16485030
+  bindTo: (element) ->
+    Object.defineProperty this, 'value', {
+      enumerable: true
+      get: () ->
+        return element.value
+      set: (val) ->
+        element.value = val
+    }
+
   getTileContext: () ->
     svgns = @getTileContextNamespace()
     svgNode = document.createElementNS svgns, 'svg'

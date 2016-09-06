@@ -33,6 +33,27 @@
       callback();
     };
 
+    CarView.prototype.handleEvent = function(event) {
+      switch (event.type) {
+        case 'change':
+          return this.change(event.target);
+      }
+    };
+
+    CarView.prototype.change = function(target) {};
+
+    CarView.prototype.bindTo = function(element) {
+      return Object.defineProperty(this, 'value', {
+        enumerable: true,
+        get: function() {
+          return element.value;
+        },
+        set: function(val) {
+          return element.value = val;
+        }
+      });
+    };
+
     CarView.prototype.getTileContext = function() {
       var svgNode, svgns;
       svgns = this.getTileContextNamespace();

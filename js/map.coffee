@@ -158,43 +158,52 @@ class MapModel
       ]
     }
 
-    curveTiles = [
-      MapModel.SIGNS.LEFT_TOP
-      MapModel.SIGNS.LEFT_BOTTOM
-      MapModel.SIGNS.RIGHT_TOP
-      MapModel.SIGNS.RIGHT_BOTTOM
-    ]
+    notCompatible =
+      top: [
+        null
+        MapModel.SIGNS.LEFT_TOP
+        MapModel.SIGNS.RIGHT_TOP
+        MapModel.SIGNS.VERTICAL
+      ]
+      left: [
+        null
+        MapModel.SIGNS.LEFT_TOP
+        MapModel.SIGNS.LEFT_BOTTOM
+        MapModel.SIGNS.HORIZONTAL
+      ]
 
     # Copy of values
     candidates = (v for k, v of MapModel.SIGNS)
 
+    envList = (v for k, v of environment)
+    isVertex = 2 == envList.reduce (sum, item) ->
+      sum + (item == null)
+    , 0
+
     if environment.above is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.above
-    else if environment.above in curveTiles
-      candidates = candidates.filter (tile) ->
-        tile isnt environment.above
 
     if environment.rightHand is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.rightHand
-    else if environment.rightHand in curveTiles
-      candidates = candidates.filter (tile) ->
-        tile isnt environment.rightHand
 
     if environment.leftHand is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.leftHand
-    else if environment.leftHand in curveTiles
-      candidates = candidates.filter (tile) ->
-        tile isnt environment.leftHand
 
     if environment.below is null
       candidates = candidates.filter (tile) ->
         tile not in allowedNeighborhood.below
-    else if environment.below in curveTiles
-      candidates = candidates.filter (tile) ->
-        tile isnt environment.below
+
+    if not isVertex
+      if environment.above in notCompatible.top
+        candidates = candidates.filter (tile) ->
+          tile not in notCompatible.top
+
+      if environment.leftHand in notCompatible.left
+        candidates = candidates.filter (tile) ->
+          tile not in notCompatible.left
 
     return candidates
 

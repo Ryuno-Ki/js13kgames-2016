@@ -162,14 +162,17 @@
     };
 
     MapModel.prototype.filterTileCandidates = function(environment) {
-      var allowedNeighborhood, candidates, curveTiles, k, ref, ref1, ref2, ref3, v;
+      var allowedNeighborhood, candidates, envList, isVertex, k, notCompatible, ref, ref1, v;
       allowedNeighborhood = {
         above: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         below: [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         leftHand: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         rightHand: [MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY]
       };
-      curveTiles = [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM];
+      notCompatible = {
+        top: [null, MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL],
+        left: [null, MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.HORIZONTAL]
+      };
       candidates = (function() {
         var ref, results;
         ref = MapModel.SIGNS;
@@ -180,41 +183,49 @@
         }
         return results;
       })();
+      envList = (function() {
+        var results;
+        results = [];
+        for (k in environment) {
+          v = environment[k];
+          results.push(v);
+        }
+        return results;
+      })();
+      isVertex = 2 === envList.reduce(function(sum, item) {
+        return sum + (item === null);
+      }, 0);
       if (environment.above === null) {
         candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.above, tile) < 0;
-        });
-      } else if (ref = environment.above, indexOf.call(curveTiles, ref) >= 0) {
-        candidates = candidates.filter(function(tile) {
-          return tile !== environment.above;
         });
       }
       if (environment.rightHand === null) {
         candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.rightHand, tile) < 0;
         });
-      } else if (ref1 = environment.rightHand, indexOf.call(curveTiles, ref1) >= 0) {
-        candidates = candidates.filter(function(tile) {
-          return tile !== environment.rightHand;
-        });
       }
       if (environment.leftHand === null) {
         candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.leftHand, tile) < 0;
-        });
-      } else if (ref2 = environment.leftHand, indexOf.call(curveTiles, ref2) >= 0) {
-        candidates = candidates.filter(function(tile) {
-          return tile !== environment.leftHand;
         });
       }
       if (environment.below === null) {
         candidates = candidates.filter(function(tile) {
           return indexOf.call(allowedNeighborhood.below, tile) < 0;
         });
-      } else if (ref3 = environment.below, indexOf.call(curveTiles, ref3) >= 0) {
-        candidates = candidates.filter(function(tile) {
-          return tile !== environment.below;
-        });
+      }
+      if (!isVertex) {
+        if (ref = environment.above, indexOf.call(notCompatible.top, ref) >= 0) {
+          candidates = candidates.filter(function(tile) {
+            return indexOf.call(notCompatible.top, tile) < 0;
+          });
+        }
+        if (ref1 = environment.leftHand, indexOf.call(notCompatible.left, ref1) >= 0) {
+          candidates = candidates.filter(function(tile) {
+            return indexOf.call(notCompatible.left, tile) < 0;
+          });
+        }
       }
       return candidates;
     };

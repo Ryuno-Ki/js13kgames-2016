@@ -1,9 +1,40 @@
 body {
-    background: #b2beb5;
+    background: burlywood;
+    overflow: hidden;
+}
+
+#fork-on-github {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform-origin: center center 0px;
+    transform: rotate(45deg) translate(0, 1em);
+}
+
+#fork-on-github a {
+    background: black;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    width: 150%;
 }
 
 #map {
     background: white;
     margin: 0 auto;
     max-width: 360px;
+}
+
+#map::after {
+    clear: both;
+    content: " ";
+    display: block;
+}
+
+svg {
+    box-sizing: border-box;
+    /* https://css-tricks.com/fighting-the-space-between-inline-block-elements/ */
+    display: block;
+    float: left;
 }

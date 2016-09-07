@@ -15,7 +15,6 @@ digraph G {
     RightBottomCurveView [shape=box];
     RightTopCurveView [shape=box];
     StreetModel [shape=box];
-    StreetView [shape=box];
     TrafficLightModel [shape=box];
     VerticalStreetView [shape=box];
 

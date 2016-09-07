@@ -7,13 +7,13 @@ digraph G {
     CrossroadModel [shape=box];
     CrossroadView [shape=box];
     HorizontalStreetView [shape=box];
-    LeftBottomCurve [shape=box];
-    LeftTopCurve [shape=box];
+    LeftBottomCurveView [shape=box];
+    LeftTopCurveView [shape=box];
     MapModel [shape=box];
     MapView [shape=box];
     NotImplementedError [shape=box];
-    RightBottomCurve [shape=box];
-    RightTopCurve [shape=box];
+    RightBottomCurveView [shape=box];
+    RightTopCurveView [shape=box];
     StreetModel [shape=box];
     StreetView [shape=box];
     TrafficLightModel [shape=box];

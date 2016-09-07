@@ -25,7 +25,7 @@ digraph G {
     CrossroadModel -> StreetModel [label="extends"];
     CrossroadView -> AbstractStreetView [label="extends"];
     HorizontalStreetView -> AbstractStreetView [label="extends"];
-    LeftBottomCurve -> AbstractCurveView [label="extends"];
+    LeftBottomCurveView -> AbstractCurveView [label="extends"];
     LeftTopCurveView -> AbstractCurveView [label="extends"];
     MapView -> CarView [label="calls"];
     MapView -> CrossroadView [label="calls"];
@@ -35,7 +35,7 @@ digraph G {
     MapView -> RightBottomCurveView [label="calls"];
     MapView -> RightTopCurveView [label="calls"];
     MapView -> VerticalStreetView [label="calls"];
-    RightBottomCurve -> AbstractCurveView [label="extends"];
-    RightTopCurve -> AbstractCurveView [label="extends"];
+    RightBottomCurveView -> AbstractCurveView [label="extends"];
+    RightTopCurveView -> AbstractCurveView [label="extends"];
     VerticalStreetView -> AbstractStreetView [label="extends"];
 }

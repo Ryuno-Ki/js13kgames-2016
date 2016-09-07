@@ -36,57 +36,47 @@ describe('Map model', () => {
     });
 
     describe('when selecting the correct tile', () => {
-        it('should pick right bottom curve for the top left corner', () => {
-            let environment = {
-                above: null,
+        let environment;
+
+        beforeEach(() => {
+            environment = {
+                above: MapModel.SIGNS.ANY,
                 below: MapModel.SIGNS.ANY,
-                leftHand: null,
+                leftHand: MapModel.SIGNS.ANY,
                 rightHand: MapModel.SIGNS.ANY
             };
+        });
+
+        it('should pick right bottom curve for the top left corner', () => {
+            environment.above = null;
+            environment.leftHand = null;
             let tile = map.filterTileCandidates(environment);
             expect(tile).to.deep.equal([MapModel.SIGNS.RIGHT_BOTTOM]);
         });
 
         it('should pick left bottom curve for the top right corner', () => {
-            let environment = {
-                above: null,
-                below: MapModel.SIGNS.ANY,
-                leftHand: MapModel.SIGNS.ANY,
-                rightHand: null
-            };
+            environment.above = null;
+            environment.rightHand = null;
             let tile = map.filterTileCandidates(environment);
             expect(tile).to.deep.equal([MapModel.SIGNS.LEFT_BOTTOM]);
         });
 
         it('should pick left top curve for the bottom right corner', () => {
-            let environment = {
-                above: MapModel.SIGNS.ANY,
-                below: null,
-                leftHand: MapModel.SIGNS.ANY,
-                rightHand: null
-            };
+            environment.below = null;
+            environment.rightHand = null;
             let tile = map.filterTileCandidates(environment);
             expect(tile).to.deep.equal([MapModel.SIGNS.LEFT_TOP]);
         });
 
         it('should pick right top curve for the bottom left corner', () => {
-            let environment = {
-                above: MapModel.SIGNS.ANY,
-                below: null,
-                leftHand: null,
-                rightHand: MapModel.SIGNS.ANY
-            };
+            environment.below = null;
+            environment.leftHand = null;
             let tile = map.filterTileCandidates(environment);
             expect(tile).to.deep.equal([MapModel.SIGNS.RIGHT_TOP]);
         });
 
         it('should pick a street or curve on the top edge', () => {
-            let environment = {
-                above: null,
-                below: MapModel.SIGNS.ANY,
-                leftHand: MapModel.SIGNS.ANY,
-                rightHand: MapModel.SIGNS.ANY
-            };
+            environment.above = null;
             let tile = map.filterTileCandidates(environment).sort();
             let expectedTiles = [];
             expectedTiles.push(MapModel.SIGNS.HORIZONTAL);
@@ -97,12 +87,7 @@ describe('Map model', () => {
         });
 
         it('should pick the horizontal street on the bottom edge', () => {
-            let environment = {
-                above: MapModel.SIGNS.ANY,
-                below: null,
-                leftHand: MapModel.SIGNS.ANY,
-                rightHand: MapModel.SIGNS.ANY
-            };
+            environment.below = null;
             let tile = map.filterTileCandidates(environment).sort();
             let expectedTiles= [];
             expectedTiles.push(MapModel.SIGNS.HORIZONTAL);
@@ -113,12 +98,7 @@ describe('Map model', () => {
         });
 
         it('should pick the vertical street on the left edge', () => {
-            let environment = {
-                above: MapModel.SIGNS.ANY,
-                below: MapModel.SIGNS.ANY,
-                leftHand: null,
-                rightHand: MapModel.SIGNS.ANY
-            };
+            environment.leftHand = null;
             let tile = map.filterTileCandidates(environment).sort();
             let expectedTiles= [];
             expectedTiles.push(MapModel.SIGNS.VERTICAL);
@@ -129,12 +109,7 @@ describe('Map model', () => {
         });
 
         it('should pick the vertical street on the right edge', () => {
-            let environment = {
-                above: MapModel.SIGNS.ANY,
-                below: MapModel.SIGNS.ANY,
-                leftHand: MapModel.SIGNS.ANY,
-                rightHand: null,
-            };
+            environment.rightHand = null;
             let tile = map.filterTileCandidates(environment).sort();
             let expectedTiles= [];
             expectedTiles.push(MapModel.SIGNS.VERTICAL);
@@ -145,12 +120,8 @@ describe('Map model', () => {
         });
 
         it('should not display the same curve next to each other', () => {
-            let environment = {
-                above: null,
-                below: MapModel.SIGNS.ANY,
-                leftHand: MapModel.SIGNS.LEFT_BOTTOM,
-                rightHand: MapModel.SIGNS.ANY
-            };
+            environment.above = null;
+            environment.leftHand = MapModel.SIGNS.LEFT_BOTTOM;
             let tile = map.filterTileCandidates(environment);
             expect(tile).not.to.include(MapModel.SIGNS.LEFT_BOTTOM);
         });

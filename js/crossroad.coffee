@@ -46,6 +46,8 @@ class CrossroadView extends AbstractStreetView
     g.appendChild topBottomCrossline
 
     svgNode.appendChild g
+    svgNode.setAttribute 'height', '60'
+    svgNode.setAttribute 'width', '60'
     svgNode.setAttribute 'class', 'crossroad street'
     return svgNode
 

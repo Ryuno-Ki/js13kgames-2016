@@ -32,16 +32,6 @@ describe('Abstract street view', () => {
         abstractStreet = new AbstractStreetView();
     });
 
-    it('should have a precursor', () => {
-        let precursor = abstractStreet.getTileBefore();
-        expect(precursor).to.be.null;
-    });
-
-    it('should have a successor', () => {
-        let successor = abstractStreet.getTileAfter();
-        expect(successor).to.be.null;
-    });
-
     it('should provide a name space for its context', () => {
         let namespace = abstractStreet.getTileContextNamespace();
         expect(namespace).to.equal('http://www.w3.org/2000/svg');

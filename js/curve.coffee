@@ -12,6 +12,7 @@ class AbstractCurveView extends AbstractStreetView
 
 class LeftTopCurveView extends AbstractCurveView
   constructor: () ->
+    super()
     @cars = []
 
   render: () ->
@@ -24,10 +25,12 @@ class LeftTopCurveView extends AbstractCurveView
     rightBottomBoundary = document.createElementNS svgns, 'path'
     rightBottomBoundary.setAttribute 'd', 'M0 67h67v-67'
 
-    g.appendChild(leftTopBoundary)
-    g.appendChild(rightBottomBoundary)
+    g.appendChild leftTopBoundary
+    g.appendChild rightBottomBoundary
 
-    svgNode.appendChild(g)
+    svgNode.appendChild g
+    svgNode.setAttribute 'height', '60'
+    svgNode.setAttribute 'width', '60'
     svgNode.setAttribute 'class', 'left-top curve street'
     return svgNode
 
@@ -46,10 +49,12 @@ class RightTopCurveView extends AbstractCurveView
     leftBottomBoundary = document.createElementNS svgns, 'path'
     leftBottomBoundary.setAttribute 'd', 'M100 67h-67v-67'
 
-    g.appendChild(rightTopBoundary)
-    g.appendChild(leftBottomBoundary)
+    g.appendChild rightTopBoundary
+    g.appendChild leftBottomBoundary
 
-    svgNode.appendChild(g)
+    svgNode.appendChild g
+    svgNode.setAttribute 'height', '60'
+    svgNode.setAttribute 'width', '60'
     svgNode.setAttribute 'class', 'right-top curve street'
     return svgNode
 
@@ -68,10 +73,12 @@ class LeftBottomCurveView extends AbstractCurveView
     rightBottomBoundary = document.createElementNS svgns, 'path'
     rightBottomBoundary.setAttribute 'd', 'M0 67h33v33'
 
-    g.appendChild(leftTopBoundary)
-    g.appendChild(rightBottomBoundary)
+    g.appendChild leftTopBoundary
+    g.appendChild rightBottomBoundary
 
-    svgNode.appendChild(g)
+    svgNode.appendChild g
+    svgNode.setAttribute 'height', '60'
+    svgNode.setAttribute 'width', '60'
     svgNode.setAttribute 'class', 'left-bottom curve street'
     return svgNode
 
@@ -90,10 +97,12 @@ class RightBottomCurveView extends AbstractCurveView
     leftBottomBoundary = document.createElementNS svgns, 'path'
     leftBottomBoundary.setAttribute 'd', 'M100 67h-33v67'
 
-    g.appendChild(rightTopBoundary)
-    g.appendChild(leftBottomBoundary)
+    g.appendChild rightTopBoundary
+    g.appendChild leftBottomBoundary
 
-    svgNode.appendChild(g)
+    svgNode.appendChild g
+    svgNode.setAttribute 'height', '60'
+    svgNode.setAttribute 'width', '60'
     svgNode.setAttribute 'class', 'right-bottom curve street'
     return svgNode
 

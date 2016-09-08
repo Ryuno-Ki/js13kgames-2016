@@ -1,5 +1,5 @@
 (function() {
-  var AbstractStreetView, HorizontalStreetView, NotImplementedError, StreetModel, VerticalStreetView, base, base1, errorsModule, root,
+  var AbstractStreetView, AbstractSvgView, HorizontalStreetView, NotImplementedError, StreetModel, VerticalStreetView, abstractSvgModule, base, base1, errorsModule, root,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -9,6 +9,15 @@
       NotImplementedError = errorsModule.NotImplemented;
     } else {
       NotImplementedError = this.game.errors.NotImplemented;
+    }
+  }
+
+  if (!AbstractSvgView) {
+    if (require) {
+      abstractSvgModule = require('../transpiled/svg.js').game;
+      AbstractSvgView = abstractSvgModule.views.AbstractSvg;
+    } else {
+      AbstractSvgView = this.game.views.AbstractSvg;
     }
   }
 
@@ -26,36 +35,13 @@
 
   })();
 
-  AbstractStreetView = (function() {
+  AbstractStreetView = (function(superClass) {
+    extend(AbstractStreetView, superClass);
+
     function AbstractStreetView() {
-      this.precursor = null;
-      this.successor = null;
+      AbstractStreetView.__super__.constructor.call(this);
       this.cars = [];
     }
-
-    AbstractStreetView.prototype.getTileBefore = function() {
-      return this.precursor;
-    };
-
-    AbstractStreetView.prototype.getTileAfter = function() {
-      return this.successor;
-    };
-
-    AbstractStreetView.prototype.getTileContext = function() {
-      var svgNode, svgns;
-      svgns = this.getTileContextNamespace();
-      svgNode = document.createElementNS(svgns, 'svg');
-      svgNode.setAttribute('viewBox', '0 0 100 100');
-      svgNode.setAttribute('xmlns', svgns);
-      svgNode.setAttribute('version', '1.1');
-      svgNode.setAttribute('height', '60');
-      svgNode.setAttribute('width', '60');
-      return svgNode;
-    };
-
-    AbstractStreetView.prototype.getTileContextNamespace = function() {
-      return 'http://www.w3.org/2000/svg';
-    };
 
     AbstractStreetView.prototype.render = function() {
       throw new NotImplementedError();
@@ -74,14 +60,13 @@
 
     return AbstractStreetView;
 
-  })();
+  })(AbstractSvgView);
 
   HorizontalStreetView = (function(superClass) {
     extend(HorizontalStreetView, superClass);
 
-    function HorizontalStreetView(precursor, successor) {
-      this.precursor = precursor || null;
-      this.successor = successor || null;
+    function HorizontalStreetView() {
+      HorizontalStreetView.__super__.constructor.call(this);
       this.cars = [];
       return this;
     }
@@ -101,6 +86,8 @@
       g.appendChild(middleBoundary);
       g.appendChild(rightBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('height', '60');
+      svgNode.setAttribute('width', '60');
       svgNode.setAttribute('class', 'horizontal street');
       return svgNode;
     };
@@ -112,9 +99,8 @@
   VerticalStreetView = (function(superClass) {
     extend(VerticalStreetView, superClass);
 
-    function VerticalStreetView(precursor, successor) {
-      this.precursor = precursor || null;
-      this.successor = successor || null;
+    function VerticalStreetView() {
+      VerticalStreetView.__super__.constructor.call(this);
       this.cars = [];
       return this;
     }
@@ -134,6 +120,8 @@
       g.appendChild(middleBoundary);
       g.appendChild(bottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('height', '60');
+      svgNode.setAttribute('width', '60');
       svgNode.setAttribute('class', 'vertical street');
       return svgNode;
     };

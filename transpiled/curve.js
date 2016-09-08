@@ -27,6 +27,7 @@
     extend(LeftTopCurveView, superClass);
 
     function LeftTopCurveView() {
+      LeftTopCurveView.__super__.constructor.call(this);
       this.cars = [];
     }
 
@@ -42,6 +43,8 @@
       g.appendChild(leftTopBoundary);
       g.appendChild(rightBottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('height', '60');
+      svgNode.setAttribute('width', '60');
       svgNode.setAttribute('class', 'left-top curve street');
       return svgNode;
     };
@@ -69,6 +72,8 @@
       g.appendChild(rightTopBoundary);
       g.appendChild(leftBottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('height', '60');
+      svgNode.setAttribute('width', '60');
       svgNode.setAttribute('class', 'right-top curve street');
       return svgNode;
     };
@@ -96,6 +101,8 @@
       g.appendChild(leftTopBoundary);
       g.appendChild(rightBottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('height', '60');
+      svgNode.setAttribute('width', '60');
       svgNode.setAttribute('class', 'left-bottom curve street');
       return svgNode;
     };
@@ -123,6 +130,8 @@
       g.appendChild(rightTopBoundary);
       g.appendChild(leftBottomBoundary);
       svgNode.appendChild(g);
+      svgNode.setAttribute('height', '60');
+      svgNode.setAttribute('width', '60');
       svgNode.setAttribute('class', 'right-bottom curve street');
       return svgNode;
     };

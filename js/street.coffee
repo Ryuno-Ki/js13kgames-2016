@@ -5,6 +5,15 @@ unless NotImplementedError
   else
     NotImplementedError = this.game.errors.NotImplemented
 
+
+unless AbstractSvgView
+  if require
+    abstractSvgModule = require('../transpiled/svg.js').game
+    AbstractSvgView = abstractSvgModule.views.AbstractSvg
+  else
+    AbstractSvgView = this.game.views.AbstractSvg
+
+
 class StreetModel
   constructor: () ->
     this.utilisation = 0
@@ -14,30 +23,10 @@ class StreetModel
     return this.utilisation
 
 
-class AbstractStreetView
+class AbstractStreetView extends AbstractSvgView
   constructor: () ->
-    @precursor = null
-    @successor = null
+    super()
     @cars = []
-
-  getTileBefore: () ->
-    return this.precursor
-
-  getTileAfter: () ->
-    return this.successor
-
-  getTileContext: () ->
-    svgns = @getTileContextNamespace()
-    svgNode = document.createElementNS(svgns, 'svg')
-    svgNode.setAttribute('viewBox', '0 0 100 100')
-    svgNode.setAttribute('xmlns', svgns)
-    svgNode.setAttribute('version', '1.1')
-    svgNode.setAttribute('height', '60')
-    svgNode.setAttribute('width', '60')
-    return svgNode
-
-  getTileContextNamespace: () ->
-    return 'http://www.w3.org/2000/svg'
 
   render: () ->
     throw new NotImplementedError()
@@ -53,9 +42,8 @@ class AbstractStreetView
 
 
 class HorizontalStreetView extends AbstractStreetView
-  constructor: (precursor, successor) ->
-    @precursor = precursor || null
-    @successor = successor || null
+  constructor: () ->
+    super()
     @cars = []
     return this
 
@@ -76,13 +64,14 @@ class HorizontalStreetView extends AbstractStreetView
     g.appendChild rightBoundary
 
     svgNode.appendChild g
+    svgNode.setAttribute 'height', '60'
+    svgNode.setAttribute 'width', '60'
     svgNode.setAttribute 'class', 'horizontal street'
     return svgNode
 
 class VerticalStreetView extends AbstractStreetView
-  constructor: (precursor, successor) ->
-    @precursor = precursor || null
-    @successor = successor || null
+  constructor: () ->
+    super()
     @cars = []
     return this
 
@@ -98,11 +87,13 @@ class VerticalStreetView extends AbstractStreetView
     bottomBoundary = document.createElementNS svgns, 'path'
     bottomBoundary.setAttribute 'd', 'M67 0v100'
 
-    g.appendChild(topBoundary)
-    g.appendChild(middleBoundary)
-    g.appendChild(bottomBoundary)
+    g.appendChild topBoundary
+    g.appendChild middleBoundary
+    g.appendChild bottomBoundary
 
-    svgNode.appendChild(g)
+    svgNode.appendChild g
+    svgNode.setAttribute 'height', '60'
+    svgNode.setAttribute 'width', '60'
     svgNode.setAttribute 'class', 'vertical street'
     return svgNode
 

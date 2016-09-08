@@ -7,8 +7,6 @@ class AbstractSvgView
     svgNode.setAttribute 'viewBox', '0 0 100 100'
     svgNode.setAttribute 'xmlns', svgns
     svgNode.setAttribute 'version', '1.1'
-    svgNode.setAttribute 'height', '40'
-    svgNode.setAttribute 'width', '40'
     return svgNode
 
   getTileContextNamespace: () ->

@@ -1,3 +1,10 @@
+unless AbstractSvgView
+  if require
+    abstractSvgModule = require('../transpiled/svg.js').game
+    AbstractSvgView = abstractSvgModule.views.AbstractSvg
+  else
+    AbstractSvgView = this.game.views.AbstractSvg
+
 class TrafficLightModel
   constructor: () ->
     this._states = ['red', 'yellow', 'green']
@@ -39,22 +46,9 @@ class TrafficLightModel
     return this._currentState
 
 
-# TODO: Write a SvgView to extend here
-class TrafficLightView
+class TrafficLightView extends AbstractSvgView
   constructor: () ->
-
-  getTileContext: () ->
-    svgns = @getTileContextNamespace()
-    svgNode = document.createElementNS svgns, 'svg'
-    svgNode.setAttribute 'viewBox', '0 0 100 100'
-    svgNode.setAttribute 'xmlns', svgns
-    svgNode.setAttribute 'version', '1.1'
-    svgNode.setAttribute 'height', '40'
-    svgNode.setAttribute 'width', '40'
-    return svgNode
-
-  getTileContextNamespace: () ->
-    return 'http://www.w3.org/2000/svg'
+    super()
 
   render: () ->
     svgns = @getTileContextNamespace()
@@ -88,6 +82,8 @@ class TrafficLightView
     g.appendChild greenLight
 
     svgNode.appendChild g
+    svgNode.setAttribute 'height', '40'
+    svgNode.setAttribute 'width', '40'
     svgNode.setAttribute 'class', 'traffic-light'
     return svgNode
  

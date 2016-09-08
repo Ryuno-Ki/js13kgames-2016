@@ -1,5 +1,16 @@
 (function() {
-  var TrafficLightModel, TrafficLightView, base, base1, root;
+  var AbstractSvgView, TrafficLightModel, TrafficLightView, abstractSvgModule, base, base1, root,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  if (!AbstractSvgView) {
+    if (require) {
+      abstractSvgModule = require('../transpiled/svg.js').game;
+      AbstractSvgView = abstractSvgModule.views.AbstractSvg;
+    } else {
+      AbstractSvgView = this.game.views.AbstractSvg;
+    }
+  }
 
   TrafficLightModel = (function() {
     function TrafficLightModel() {
@@ -49,24 +60,12 @@
 
   })();
 
-  TrafficLightView = (function() {
-    function TrafficLightView() {}
+  TrafficLightView = (function(superClass) {
+    extend(TrafficLightView, superClass);
 
-    TrafficLightView.prototype.getTileContext = function() {
-      var svgNode, svgns;
-      svgns = this.getTileContextNamespace();
-      svgNode = document.createElementNS(svgns, 'svg');
-      svgNode.setAttribute('viewBox', '0 0 100 100');
-      svgNode.setAttribute('xmlns', svgns);
-      svgNode.setAttribute('version', '1.1');
-      svgNode.setAttribute('height', '40');
-      svgNode.setAttribute('width', '40');
-      return svgNode;
-    };
-
-    TrafficLightView.prototype.getTileContextNamespace = function() {
-      return 'http://www.w3.org/2000/svg';
-    };
+    function TrafficLightView() {
+      TrafficLightView.__super__.constructor.call(this);
+    }
 
     TrafficLightView.prototype.render = function() {
       var device, g, greenLight, redLight, svgNode, svgns, yellowLight;
@@ -95,13 +94,15 @@
       g.appendChild(yellowLight);
       g.appendChild(greenLight);
       svgNode.appendChild(g);
+      svgNode.setAttribute('height', '40');
+      svgNode.setAttribute('width', '40');
       svgNode.setAttribute('class', 'traffic-light');
       return svgNode;
     };
 
     return TrafficLightView;
 
-  })();
+  })(AbstractSvgView);
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 

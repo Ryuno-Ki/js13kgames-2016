@@ -1,5 +1,5 @@
 (function() {
-  var CarView, CrossroadView, HorizontalStreetView, LeftBottomCurveView, LeftTopCurveView, MapModel, MapView, RightBottomCurveView, RightTopCurveView, VerticalStreetView, base, base1, carModule, crossroadModule, curveModule, root, streetModule,
+  var CarView, CrossroadView, HorizontalStreetView, LeftBottomCurveView, LeftTopCurveView, MapModel, MapView, RightBottomCurveView, RightTopCurveView, TrafficLightView, VerticalStreetView, base, base1, carModule, crossroadModule, curveModule, root, streetModule,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   if (!LeftTopCurveView) {
@@ -62,6 +62,15 @@
       CrossroadView = crossroadModule.views.Crossroad;
     } else {
       CrossroadView = this.game.views.Crossroad;
+    }
+  }
+
+  if (!TrafficLightView) {
+    if (require) {
+      crossroadModule = require('../transpiled/trafficLight.js').game;
+      TrafficLightView = crossroadModule.views.TrafficLight;
+    } else {
+      TrafficLightView = this.game.views.TrafficLight;
     }
   }
 
@@ -270,7 +279,7 @@
     }
 
     MapView.prototype.render = function(mapData) {
-      var col, i, j, ref, ref1, row, sign, view;
+      var col, i, j, ref, ref1, row, sign, tile;
       console.log('Translating into DOM:');
       console.log(mapData.map);
       for (row = i = 0, ref = mapData.numRows; 0 <= ref ? i < ref : i > ref; row = 0 <= ref ? ++i : --i) {
@@ -279,13 +288,13 @@
           if (sign === null) {
             continue;
           }
-          view = this.getViewForSign(sign);
-          this.node.appendChild(view.render());
+          tile = this.addTrafficLight(this.getTileForSign(sign));
+          this.node.appendChild(tile);
         }
       }
     };
 
-    MapView.prototype.getViewForSign = function(sign) {
+    MapView.prototype.getTileForSign = function(sign) {
       var view;
       switch (sign) {
         case MapModel.SIGNS.LEFT_TOP:
@@ -309,7 +318,23 @@
         case MapModel.SIGNS.CROSSROAD:
           view = CrossroadView;
       }
-      return new view();
+      return (new view()).render();
+    };
+
+    MapView.prototype.addTrafficLight = function(tile) {
+      var trafficLight;
+      if (!/crossroad/.test(tile.getAttribute('class'))) {
+        return tile;
+      }
+      trafficLight = (new TrafficLightView()).render();
+      tile.appendChild(trafficLight);
+      trafficLight = (new TrafficLightView()).render();
+      tile.appendChild(trafficLight);
+      trafficLight = (new TrafficLightView()).render();
+      tile.appendChild(trafficLight);
+      trafficLight = (new TrafficLightView()).render();
+      tile.appendChild(trafficLight);
+      return tile;
     };
 
     MapView.prototype.spawnCar = function(mapData) {

@@ -47,6 +47,13 @@ unless CrossroadView
   else
     CrossroadView = this.game.views.Crossroad
 
+unless TrafficLightView
+  if require
+    crossroadModule = require('../transpiled/trafficLight.js').game
+    TrafficLightView = crossroadModule.views.TrafficLight
+  else
+    TrafficLightView = this.game.views.TrafficLight
+
 unless CarView
   if require
     carModule = require('../transpiled/car.js').game
@@ -255,11 +262,11 @@ class MapView
         # FIXME This case should never occur!
         if sign is null
           continue
-        view = @getViewForSign sign
-        @node.appendChild view.render()
+        tile = @addTrafficLight(@getTileForSign sign)
+        @node.appendChild tile
     return
 
-  getViewForSign: (sign) ->
+  getTileForSign: (sign) ->
     switch sign
       when MapModel.SIGNS.LEFT_TOP then view = LeftTopCurveView
       when MapModel.SIGNS.RIGHT_TOP then view = RightTopCurveView
@@ -268,7 +275,21 @@ class MapView
       when MapModel.SIGNS.HORIZONTAL then view = HorizontalStreetView
       when MapModel.SIGNS.VERTICAL then view = VerticalStreetView
       when MapModel.SIGNS.CROSSROAD then view = CrossroadView
-    return new view()
+    return (new view()).render()
+
+  addTrafficLight: (tile) ->
+    if not /crossroad/.test(tile.getAttribute 'class')
+      return tile
+
+    trafficLight = (new TrafficLightView()).render()
+    tile.appendChild trafficLight
+    trafficLight = (new TrafficLightView()).render()
+    tile.appendChild trafficLight
+    trafficLight = (new TrafficLightView()).render()
+    tile.appendChild trafficLight
+    trafficLight = (new TrafficLightView()).render()
+    tile.appendChild trafficLight
+    return tile
 
   spawnCar: (mapData) ->
     numTiles = mapData.numRows * mapData.numCols

@@ -1,4 +1,4 @@
-class TrafficLight
+class TrafficLightModel
   constructor: () ->
     this._states = ['red', 'yellow', 'green']
     this._currentState = this._states[0]
@@ -38,7 +38,64 @@ class TrafficLight
         this._currentState = states[1]
     return this._currentState
 
+
+# TODO: Write a SvgView to extend here
+class TrafficLightView
+  constructor: () ->
+
+  getTileContext: () ->
+    svgns = @getTileContextNamespace()
+    svgNode = document.createElementNS svgns, 'svg'
+    svgNode.setAttribute 'viewBox', '0 0 100 100'
+    svgNode.setAttribute 'xmlns', svgns
+    svgNode.setAttribute 'version', '1.1'
+    svgNode.setAttribute 'height', '40'
+    svgNode.setAttribute 'width', '40'
+    return svgNode
+
+  getTileContextNamespace: () ->
+    return 'http://www.w3.org/2000/svg'
+
+  render: () ->
+    svgns = @getTileContextNamespace()
+    svgNode = @getTileContext()
+
+    g = document.createElementNS svgns, 'g'
+    device = document.createElementNS svgns, 'path'
+    device.setAttribute 'd', 'M33 0h33v60h-11v40h-11v-40h-11z'
+    device.setAttribute 'class', 'device'
+
+    redLight = document.createElementNS svgns, 'circle'
+    redLight.setAttribute 'r', '10'
+    redLight.setAttribute 'cx', '50'
+    redLight.setAttribute 'cy', '10'
+    redLight.setAttribute 'class', 'red light'
+
+    yellowLight = document.createElementNS svgns, 'circle'
+    yellowLight.setAttribute 'r', '10'
+    yellowLight.setAttribute 'cx', '50'
+    yellowLight.setAttribute 'cy', '30'
+    yellowLight.setAttribute 'class', 'yellow light'
+
+    greenLight = document.createElementNS svgns, 'circle'
+    greenLight.setAttribute 'r', '10'
+    greenLight.setAttribute 'cx', '50'
+    greenLight.setAttribute 'cy', '50'
+    greenLight.setAttribute 'class', 'green light'
+
+    g.appendChild redLight
+    g.appendChild yellowLight
+    g.appendChild greenLight
+
+    svgNode.appendChild g
+    svgNode.setAttribute 'class', 'traffic-light'
+    return svgNode
+ 
+
 root = exports ? this  # Nodejs. vs. Browser
 root.game ?= {}
 root.game.models ?= {}
-root.game.models.TrafficLight = TrafficLight
+root.game.models.TrafficLight = TrafficLightModel
+
+root.game.views ?= {}
+root.game.views.TrafficLight = TrafficLightView

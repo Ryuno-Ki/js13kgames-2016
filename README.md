@@ -13,7 +13,6 @@ The topic of js13kgames competition in 2016 is *glitch*.
 # Left to do
 
  * Map algorithm
- * Traffic lights on crossroad tiles
  * Data binding (car crosses tiles)
  * Cosmic radiation on traffic light (aka "Glitch")
  * Scores

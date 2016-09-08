@@ -1,0 +1,27 @@
+.traffic-light .red {
+    fill: red;
+}
+
+.traffic-light .yellow {
+    fill: yellow;
+}
+
+.traffic-light .green {
+    fill: green;
+}
+
+.crossroad .traffic-light:first-of-type {
+    transform: translate(4em, 4.5em);
+}
+
+/* aka :second-of-type */
+.crossroad .traffic-light:first-of-type + .traffic-light {
+    transform: rotate(90deg) translate(4em, 4.5em);
+    transform-origin: center;
+}
+
+/* aka :third-of-type */
+.crossroad .traffic-light:first-of-type + .traffic-light + .traffic-light {
+    transform: rotate(90deg);
+    transform-origin: center;
+}

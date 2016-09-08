@@ -38,8 +38,9 @@ describe('Car view', function () {
     });
 
     it('should render', function () {
-        var renderedObject = car.render();
-        expect(renderedObject.nodeName.toLowerCase()).to.equal('svg');
+        var renderedSprite = car.render();
+        expect(renderedSprite.nodeName.toLowerCase()).to.equal('svg');
+        expect(renderedSprite.className).to.contain('car');
     });
 });
 //# sourceMappingURL=car.spec.js.map

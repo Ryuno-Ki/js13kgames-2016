@@ -1,4 +1,6 @@
-let TrafficLightModel = require('../transpiled/trafficLight.js').game.models.TrafficLight;
+let TrafficLightModule = require('../transpiled/trafficLight.js').game;
+let TrafficLightModel = TrafficLightModule.models.TrafficLight;
+let TrafficLightView = TrafficLightModule.views.TrafficLight;
 
 describe('TrafficLight', () => {
     let trafficLight;
@@ -36,5 +38,19 @@ describe('TrafficLight', () => {
         trafficLight.cycle();
         state = trafficLight.getState();
         expect(state).to.equal('red');
+    });
+});
+
+describe('TrafficLight view', () => {
+    let trafficLight;
+
+    beforeEach(() => {
+        trafficLight = new TrafficLightView();
+    });
+
+    it('should render', () => {
+        let renderedSprite = trafficLight.render();
+        expect(renderedSprite.nodeName.toLowerCase()).to.equal('svg');
+        expect(renderedSprite.className).to.contain('traffic-light');
     });
 });

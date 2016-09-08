@@ -36,7 +36,8 @@ describe('Car view', () => {
     });
 
     it('should render', () => {
-        let renderedObject = car.render();
-        expect(renderedObject.nodeName.toLowerCase()).to.equal('svg');
+        let renderedSprite = car.render();
+        expect(renderedSprite.nodeName.toLowerCase()).to.equal('svg');
+        expect(renderedSprite.className).to.contain('car');
     });
 });

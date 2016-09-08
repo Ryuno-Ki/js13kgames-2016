@@ -2,7 +2,7 @@ let TrafficLightModule = require('../transpiled/trafficLight.js').game;
 let TrafficLightModel = TrafficLightModule.models.TrafficLight;
 let TrafficLightView = TrafficLightModule.views.TrafficLight;
 
-describe('TrafficLight', () => {
+describe('TrafficLight module', () => {
     let trafficLight;
 
     beforeEach(() => {

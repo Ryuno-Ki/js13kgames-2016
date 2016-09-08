@@ -10,6 +10,7 @@ module.exports = (grunt) =>
                     'spec/curve.spec.js': 'spec/curve.spec.es6.js'
                     'spec/street.spec.js': 'spec/street.spec.es6.js'
                     'spec/crossroad.spec.js': 'spec/crossroad.spec.es6.js'
+                    'spec/svg.spec.js': 'spec/svg.spec.es6.js'
                     'spec/trafficLight.spec.js': 'spec/trafficLight.spec.es6.js'
                     'spec/map.spec.js': 'spec/map.spec.es6.js'
 
@@ -22,6 +23,7 @@ module.exports = (grunt) =>
                     'transpiled/errors.js': 'js/errors.coffee'
                     'transpiled/street.js': 'js/street.coffee'
                     'transpiled/crossroad.js': 'js/crossroad.coffee'
+                    'transpiled/svg.js': 'js/svg.coffee'
                     'transpiled/trafficLight.js': 'js/trafficLight.coffee'
                     'transpiled/map.js': 'js/map.coffee'
 
@@ -113,6 +115,7 @@ module.exports = (grunt) =>
                     'dist/curve.min.js': ['transpiled/curve.js']
                     'dist/errors.min.js': ['transpiled/errors.js']
                     'dist/street.min.js': ['transpiled/street.js']
+                    'dist/svg.min.js': ['transpiled/svg.js']
                     'dist/trafficLight.min.js': ['transpiled/trafficLight.js']
                     'dist/map.min.js': ['transpiled/map.js']
 

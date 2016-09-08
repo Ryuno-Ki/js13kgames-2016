@@ -165,52 +165,78 @@ class MapModel
       ]
     }
 
-    notCompatible =
+    notAccessibleFrom =
       top: [
-        null
+        MapModel.SIGNS.LEFT_BOTTOM
+        MapModel.SIGNS.RIGHT_BOTTOM
+        MapModel.SIGNS.HORIZONTAL
+      ]
+      bottom: [
         MapModel.SIGNS.LEFT_TOP
         MapModel.SIGNS.RIGHT_TOP
-        MapModel.SIGNS.VERTICAL
+        MapModel.SIGNS.HORIZONTAL
       ]
       left: [
-        null
+        MapModel.SIGNS.RIGHT_TOP
+        MapModel.SIGNS.RIGHT_BOTTOM
+        MapModel.SIGNS.VERTICAL
+      ]
+      right: [
         MapModel.SIGNS.LEFT_TOP
         MapModel.SIGNS.LEFT_BOTTOM
-        MapModel.SIGNS.HORIZONTAL
+        MapModel.SIGNS.VERTICAL
       ]
 
     # Copy of values
     candidates = (v for k, v of MapModel.SIGNS)
 
     envList = (v for k, v of environment)
-    isVertex = 2 == envList.reduce (sum, item) ->
+    numOfNulls = envList.reduce (sum, item) ->
       sum + (item == null)
     , 0
 
-    if environment.above is null
-      candidates = candidates.filter (tile) ->
-        tile not in allowedNeighborhood.above
-
-    if environment.rightHand is null
-      candidates = candidates.filter (tile) ->
-        tile not in allowedNeighborhood.rightHand
-
-    if environment.leftHand is null
-      candidates = candidates.filter (tile) ->
-        tile not in allowedNeighborhood.leftHand
-
-    if environment.below is null
-      candidates = candidates.filter (tile) ->
-        tile not in allowedNeighborhood.below
-
-    if not isVertex
-      if environment.above in notCompatible.top
+    if numOfNulls == 2  # Vertex
+      if environment.above is null
         candidates = candidates.filter (tile) ->
-          tile not in notCompatible.top
+          tile not in allowedNeighborhood.above
 
-      if environment.leftHand in notCompatible.left
+      if environment.rightHand is null
         candidates = candidates.filter (tile) ->
-          tile not in notCompatible.left
+          tile not in allowedNeighborhood.rightHand
+
+      if environment.leftHand is null
+        candidates = candidates.filter (tile) ->
+          tile not in allowedNeighborhood.leftHand
+
+      if environment.below is null
+        candidates = candidates.filter (tile) ->
+          tile not in allowedNeighborhood.below
+
+    else if numOfNulls == 1  # Edge
+      if environment.above is null
+        candidates = notAccessibleFrom.top
+      if environment.rightHand is null
+        candidates = notAccessibleFrom.right
+      if environment.leftHand is null
+        candidates = notAccessibleFrom.left
+      if environment.below is null
+        candidates = notAccessibleFrom.bottom
+
+    else
+      if environment.above in notAccessibleFrom.bottom
+        if environment.leftHand in notAccessibleFrom.right
+          candidates = [MapModel.SIGNS.RIGHT_BOTTOM]
+        else
+          candidates = [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.HORIZONTAL]
+
+      else if environment.leftHand in notAccessibleFrom.right
+        if environment.above in notAccessibleFrom.bottom
+          candidates = [MapModel.SIGNS.RIGHT_BOTTOM]
+        else
+          candidates = [MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL]
+
+      else  # Environment is accessible from both: above and left
+        candidates = [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.CROSSROAD]
 
     return candidates
 

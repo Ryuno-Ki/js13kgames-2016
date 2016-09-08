@@ -86,7 +86,7 @@ describe('Map model', () => {
             expect(tile).to.deep.equal(expectedTiles);
         });
 
-        it('should pick the horizontal street on the bottom edge', () => {
+        it('should pick the horizontal or top curve on the bottom edge', () => {
             environment.below = null;
             let tile = map.filterTileCandidates(environment).sort();
             let expectedTiles= [];
@@ -119,11 +119,60 @@ describe('Map model', () => {
             expect(tile).to.deep.equal(expectedTiles);
         });
 
-        it('should not display the same curve next to each other', () => {
-            environment.above = null;
-            environment.leftHand = MapModel.SIGNS.LEFT_BOTTOM;
-            let tile = map.filterTileCandidates(environment);
-            expect(tile).not.to.include(MapModel.SIGNS.LEFT_BOTTOM);
+        it('should pick either horizontal or left bottom curve', () => {
+            environment.above = MapModel.SIGNS.HORIZONTAL;
+            // HORIZONTAL covers RIGHT_TOP and RIGHT_BOTTOM as well.
+            // Top curves, VERTICAL and CROSSROAD are not possible
+            // due to above == null
+            environment.leftHand = MapModel.SIGNS.HORIZONTAL;
+            let tile = map.filterTileCandidates(environment).sort();
+            let expectedTiles = [];
+            expectedTiles.push(MapModel.SIGNS.LEFT_BOTTOM);
+            expectedTiles.push(MapModel.SIGNS.HORIZONTAL);
+            expectedTiles.sort();
+            expect(tile).to.deep.equal(expectedTiles);
+        });
+
+        it('should pick either horizontal or left bottom curve', () => {
+            environment.above = MapModel.SIGNS.HORIZONTAL;
+            // HORIZONTAL covers RIGHT_TOP and RIGHT_BOTTOM as well.
+            // Top curves, VERTICAL and CROSSROAD are not possible
+            // due to above == HORIZONTAL
+            environment.leftHand = MapModel.SIGNS.HORIZONTAL;
+            let tile = map.filterTileCandidates(environment).sort();
+            let expectedTiles = [];
+            expectedTiles.push(MapModel.SIGNS.LEFT_BOTTOM);
+            expectedTiles.push(MapModel.SIGNS.HORIZONTAL);
+            expectedTiles.sort();
+            expect(tile).to.deep.equal(expectedTiles);
+        });
+
+        it('should pick either crossroad or left top curve', () => {
+            environment.above = MapModel.SIGNS.VERTICAL;
+            // VERTICAL covers LEFT_BOTTOM and RIGHT_BOTTOM as well.
+            // RIGHT_BOTTOM, HORIZONTAL and VERTICAL are not possible
+            // due to leftHand == HORIZONTAL
+            environment.leftHand = MapModel.SIGNS.HORIZONTAL;
+            let tile = map.filterTileCandidates(environment).sort();
+            let expectedTiles = [];
+            expectedTiles.push(MapModel.SIGNS.LEFT_TOP);
+            expectedTiles.push(MapModel.SIGNS.CROSSROAD);
+            expectedTiles.sort();
+            expect(tile).to.deep.equal(expectedTiles);
+        });
+
+        it('should pick either vertical or right top curve', () => {
+            environment.above = MapModel.SIGNS.VERTICAL;
+            environment.leftHand = MapModel.SIGNS.VERTICAL;
+            // VERTICAL covers LEFT_BOTTOM and RIGHT_BOTTOM as well.
+            // Left curves, HORIZONTAL and CROSSROAD are not possible
+            // due to leftHand == null
+            let tile = map.filterTileCandidates(environment).sort();
+            let expectedTiles = [];
+            expectedTiles.push(MapModel.SIGNS.RIGHT_TOP);
+            expectedTiles.push(MapModel.SIGNS.VERTICAL);
+            expectedTiles.sort();
+            expect(tile).to.deep.equal(expectedTiles);
         });
     });
 

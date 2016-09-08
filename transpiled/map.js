@@ -171,16 +171,18 @@
     };
 
     MapModel.prototype.filterTileCandidates = function(environment) {
-      var allowedNeighborhood, candidates, envList, isVertex, k, notCompatible, ref, ref1, v;
+      var allowedNeighborhood, candidates, envList, k, notAccessibleFrom, numOfNulls, ref, ref1, ref2, ref3, v;
       allowedNeighborhood = {
         above: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         below: [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.VERTICAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         leftHand: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY],
         rightHand: [MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.HORIZONTAL, MapModel.SIGNS.CROSSROAD, MapModel.SIGNS.ANY]
       };
-      notCompatible = {
-        top: [null, MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL],
-        left: [null, MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.HORIZONTAL]
+      notAccessibleFrom = {
+        top: [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.HORIZONTAL],
+        bottom: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.HORIZONTAL],
+        left: [MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.RIGHT_BOTTOM, MapModel.SIGNS.VERTICAL],
+        right: [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.VERTICAL]
       };
       candidates = (function() {
         var ref, results;
@@ -201,39 +203,58 @@
         }
         return results;
       })();
-      isVertex = 2 === envList.reduce(function(sum, item) {
+      numOfNulls = envList.reduce(function(sum, item) {
         return sum + (item === null);
       }, 0);
-      if (environment.above === null) {
-        candidates = candidates.filter(function(tile) {
-          return indexOf.call(allowedNeighborhood.above, tile) < 0;
-        });
-      }
-      if (environment.rightHand === null) {
-        candidates = candidates.filter(function(tile) {
-          return indexOf.call(allowedNeighborhood.rightHand, tile) < 0;
-        });
-      }
-      if (environment.leftHand === null) {
-        candidates = candidates.filter(function(tile) {
-          return indexOf.call(allowedNeighborhood.leftHand, tile) < 0;
-        });
-      }
-      if (environment.below === null) {
-        candidates = candidates.filter(function(tile) {
-          return indexOf.call(allowedNeighborhood.below, tile) < 0;
-        });
-      }
-      if (!isVertex) {
-        if (ref = environment.above, indexOf.call(notCompatible.top, ref) >= 0) {
+      if (numOfNulls === 2) {
+        if (environment.above === null) {
           candidates = candidates.filter(function(tile) {
-            return indexOf.call(notCompatible.top, tile) < 0;
+            return indexOf.call(allowedNeighborhood.above, tile) < 0;
           });
         }
-        if (ref1 = environment.leftHand, indexOf.call(notCompatible.left, ref1) >= 0) {
+        if (environment.rightHand === null) {
           candidates = candidates.filter(function(tile) {
-            return indexOf.call(notCompatible.left, tile) < 0;
+            return indexOf.call(allowedNeighborhood.rightHand, tile) < 0;
           });
+        }
+        if (environment.leftHand === null) {
+          candidates = candidates.filter(function(tile) {
+            return indexOf.call(allowedNeighborhood.leftHand, tile) < 0;
+          });
+        }
+        if (environment.below === null) {
+          candidates = candidates.filter(function(tile) {
+            return indexOf.call(allowedNeighborhood.below, tile) < 0;
+          });
+        }
+      } else if (numOfNulls === 1) {
+        if (environment.above === null) {
+          candidates = notAccessibleFrom.top;
+        }
+        if (environment.rightHand === null) {
+          candidates = notAccessibleFrom.right;
+        }
+        if (environment.leftHand === null) {
+          candidates = notAccessibleFrom.left;
+        }
+        if (environment.below === null) {
+          candidates = notAccessibleFrom.bottom;
+        }
+      } else {
+        if (ref = environment.above, indexOf.call(notAccessibleFrom.bottom, ref) >= 0) {
+          if (ref1 = environment.leftHand, indexOf.call(notAccessibleFrom.right, ref1) >= 0) {
+            candidates = [MapModel.SIGNS.RIGHT_BOTTOM];
+          } else {
+            candidates = [MapModel.SIGNS.LEFT_BOTTOM, MapModel.SIGNS.HORIZONTAL];
+          }
+        } else if (ref2 = environment.leftHand, indexOf.call(notAccessibleFrom.right, ref2) >= 0) {
+          if (ref3 = environment.above, indexOf.call(notAccessibleFrom.bottom, ref3) >= 0) {
+            candidates = [MapModel.SIGNS.RIGHT_BOTTOM];
+          } else {
+            candidates = [MapModel.SIGNS.RIGHT_TOP, MapModel.SIGNS.VERTICAL];
+          }
+        } else {
+          candidates = [MapModel.SIGNS.LEFT_TOP, MapModel.SIGNS.CROSSROAD];
         }
       }
       return candidates;

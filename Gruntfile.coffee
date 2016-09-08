@@ -120,7 +120,7 @@ module.exports = (grunt) =>
                     'dist/map.min.js': ['transpiled/map.js']
 
         watch:
-            files: ['js/*.coffee', 'spec/*.es6.js']
+            files: ['Gruntfile.coffee', 'js/*.coffee', 'spec/*.es6.js']
             tasks: [
                 'coffee'
                 'babel'

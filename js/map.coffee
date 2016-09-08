@@ -251,20 +251,18 @@ class MapModel
 class MapView
   constructor: (node) ->
     @node = node
+    @mapData = null
 
   render: (mapData) ->
-    console.log 'Translating into DOM:'
-    console.log mapData.map
-
     for row in [0...mapData.numRows]
       for col in [0...mapData.numCols]
         sign = mapData.map[row][col]
-        # FIXME This case should never occur!
-        if sign is null
-          continue
         tile = @addTrafficLight(@getTileForSign sign)
         @node.appendChild tile
-    return
+
+    @mapData = mapData
+    @on 'click'
+    return @node
 
   getTileForSign: (sign) ->
     switch sign
@@ -291,8 +289,15 @@ class MapView
     tile.appendChild trafficLight
     return tile
 
-  spawnCar: (mapData) ->
-    numTiles = mapData.numRows * mapData.numCols
+  on: (event, callback) ->
+    @node.addEventListener event, (ev) =>
+      @spawnCar()
+      if callback
+        callback()
+    return
+
+  spawnCar: () ->
+    numTiles = @mapData.numRows * @mapData.numCols
     indexOfTile = Math.floor(Math.random() * numTiles)
     tileWithNewCar = @node.children.item indexOfTile
     tileWithNewCar.appendChild (new CarView()).render()

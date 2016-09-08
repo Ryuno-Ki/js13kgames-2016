@@ -215,10 +215,7 @@ describe('Map view', () => {
     it('should render the map state of the model', () => {
         let mapModel = new MapModel();
         let mapState = JSON.parse(mapModel.calculateMap());
-        let mapNode  = document.getElementById('map');
-
-        expect(mapNode).not.to.be.null;
-        map.render(mapState);
+        let mapNode = map.render(mapState);
 
         let numTiles = mapState.numRows * mapState.numCols;
         expect(mapNode.children.length).to.equal(numTiles);
@@ -228,8 +225,22 @@ describe('Map view', () => {
         let mapModel = new MapModel();
         let mapState = JSON.parse(mapModel.calculateMap());
         map.render(mapState);
-        let tileToSpawn = map.spawnCar(mapState);
+        let tileToSpawn = map.spawnCar();
         let carOnTile = tileToSpawn.querySelector('.car');
+        expect(carOnTile).not.to.be.null;
+    });
+
+    it('should spawn a new car on click', () => {
+        let mapModel = new MapModel();
+        let mapState = JSON.parse(mapModel.calculateMap());
+        let renderedMap = map.render(mapState);
+
+        // Old style for creating and dispatching events
+        let clickEvent = document.createEvent('Event');
+        clickEvent.initEvent('click', true, true);
+        renderedMap.dispatchEvent(clickEvent);
+
+        let carOnTile = renderedMap.querySelector('.car');
         expect(carOnTile).not.to.be.null;
     });
 });

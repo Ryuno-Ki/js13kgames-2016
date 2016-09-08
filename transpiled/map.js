@@ -276,22 +276,21 @@
   MapView = (function() {
     function MapView(node) {
       this.node = node;
+      this.mapData = null;
     }
 
     MapView.prototype.render = function(mapData) {
       var col, i, j, ref, ref1, row, sign, tile;
-      console.log('Translating into DOM:');
-      console.log(mapData.map);
       for (row = i = 0, ref = mapData.numRows; 0 <= ref ? i < ref : i > ref; row = 0 <= ref ? ++i : --i) {
         for (col = j = 0, ref1 = mapData.numCols; 0 <= ref1 ? j < ref1 : j > ref1; col = 0 <= ref1 ? ++j : --j) {
           sign = mapData.map[row][col];
-          if (sign === null) {
-            continue;
-          }
           tile = this.addTrafficLight(this.getTileForSign(sign));
           this.node.appendChild(tile);
         }
       }
+      this.mapData = mapData;
+      this.on('click');
+      return this.node;
     };
 
     MapView.prototype.getTileForSign = function(sign) {
@@ -337,9 +336,20 @@
       return tile;
     };
 
-    MapView.prototype.spawnCar = function(mapData) {
+    MapView.prototype.on = function(event, callback) {
+      this.node.addEventListener(event, (function(_this) {
+        return function(ev) {
+          _this.spawnCar();
+          if (callback) {
+            return callback();
+          }
+        };
+      })(this));
+    };
+
+    MapView.prototype.spawnCar = function() {
       var indexOfTile, numTiles, tileWithNewCar;
-      numTiles = mapData.numRows * mapData.numCols;
+      numTiles = this.mapData.numRows * this.mapData.numCols;
       indexOfTile = Math.floor(Math.random() * numTiles);
       tileWithNewCar = this.node.children.item(indexOfTile);
       tileWithNewCar.appendChild((new CarView()).render());

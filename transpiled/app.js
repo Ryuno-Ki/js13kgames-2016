@@ -11,8 +11,4 @@
 
   mapView.render(mapData);
 
-  setInterval(function() {
-    return mapView.spawnCar(mapData);
-  }, 1000);
-
 }).call(this);

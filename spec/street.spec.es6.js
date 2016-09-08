@@ -61,6 +61,7 @@ describe('Horizontal street view', () => {
     it('should render a svg tile', () => {
         let tileNode = street.render();
         expect(tileNode.nodeName.toLowerCase()).to.equal('svg');
+        expect(tileNode.className).to.contain('street');
     });
 
     it('should show a car on enter', () => {

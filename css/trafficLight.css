@@ -1,12 +1,12 @@
-.traffic-light .red {
+.traffic-light .current.red {
     fill: red;
 }
 
-.traffic-light .yellow {
+.traffic-light .current.yellow {
     fill: yellow;
 }
 
-.traffic-light .green {
+.traffic-light .current.green {
     fill: green;
 }
 

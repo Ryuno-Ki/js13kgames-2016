@@ -1,3 +1,10 @@
+unless TrafficLightModel
+  if require
+    trafficLightModule = require('../transpiled/trafficLight.js').game
+    TrafficLightModel = trafficLightModule.models.TrafficLight
+  else
+    TrafficLightModel = this.game.models.TrafficLight
+
 unless LeftTopCurveView
   if require
     curveModule = require('../transpiled/curve.js').game
@@ -49,8 +56,8 @@ unless CrossroadView
 
 unless TrafficLightView
   if require
-    crossroadModule = require('../transpiled/trafficLight.js').game
-    TrafficLightView = crossroadModule.views.TrafficLight
+    trafficLightModule = require('../transpiled/trafficLight.js').game
+    TrafficLightView = trafficLightModule.views.TrafficLight
   else
     TrafficLightView = this.game.views.TrafficLight
 
@@ -280,14 +287,29 @@ class MapView
     if not /crossroad/.test(tile.getAttribute 'class')
       return tile
 
-    trafficLight = (new TrafficLightView()).render()
-    tile.appendChild trafficLight
-    trafficLight = (new TrafficLightView()).render()
-    tile.appendChild trafficLight
-    trafficLight = (new TrafficLightView()).render()
-    tile.appendChild trafficLight
-    trafficLight = (new TrafficLightView()).render()
-    tile.appendChild trafficLight
+    trafficLightModel = new TrafficLightModel()
+    trafficLightView = new TrafficLightView()
+    trafficLightTile = trafficLightView.render()
+    trafficLightView.bindTo trafficLightModel
+    tile.appendChild trafficLightTile
+
+    trafficLightModel = new TrafficLightModel()
+    trafficLightView = new TrafficLightView()
+    trafficLightTile = trafficLightView.render()
+    trafficLightView.bindTo trafficLightModel
+    tile.appendChild trafficLightTile
+
+    trafficLightModel = new TrafficLightModel()
+    trafficLightView = new TrafficLightView()
+    trafficLightTile = trafficLightView.render()
+    trafficLightView.bindTo trafficLightModel
+    tile.appendChild trafficLightTile
+
+    trafficLightModel = new TrafficLightModel()
+    trafficLightView = new TrafficLightView()
+    trafficLightTile = trafficLightView.render()
+    trafficLightView.bindTo trafficLightModel
+    tile.appendChild trafficLightTile
     return tile
 
   on: (event, callback) ->

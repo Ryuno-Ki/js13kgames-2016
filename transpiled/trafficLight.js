@@ -1,5 +1,6 @@
 (function() {
   var AbstractSvgView, TrafficLightModel, TrafficLightView, abstractSvgModule, base, base1, root,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -26,6 +27,10 @@
 
     TrafficLightModel.prototype.getState = function() {
       return this._currentState;
+    };
+
+    TrafficLightModel.prototype.setState = function(newState) {
+      this._currentState = this._states[this._states.indexOf(newState)];
     };
 
     TrafficLightModel.prototype.cycle = function() {
@@ -64,7 +69,11 @@
     extend(TrafficLightView, superClass);
 
     function TrafficLightView() {
+      this.bindTo = bind(this.bindTo, this);
       TrafficLightView.__super__.constructor.call(this);
+      this.node = null;
+      this.model = null;
+      this.state = 'red';
     }
 
     TrafficLightView.prototype.render = function() {
@@ -79,7 +88,7 @@
       redLight.setAttribute('r', '10');
       redLight.setAttribute('cx', '50');
       redLight.setAttribute('cy', '10');
-      redLight.setAttribute('class', 'red light');
+      redLight.setAttribute('class', 'current red light');
       yellowLight = document.createElementNS(svgns, 'circle');
       yellowLight.setAttribute('r', '10');
       yellowLight.setAttribute('cx', '50');
@@ -97,7 +106,45 @@
       svgNode.setAttribute('height', '40');
       svgNode.setAttribute('width', '40');
       svgNode.setAttribute('class', 'traffic-light');
+      this.node = svgNode;
+      this.on('click');
       return svgNode;
+    };
+
+    TrafficLightView.prototype.bindTo = function(model) {
+      this.model = model;
+      return Object.defineProperty(this, 'state', {
+        enumerable: true,
+        get: function() {
+          return model.getState();
+        },
+        set: function(state) {
+          var currentLight, newLight;
+          model.setState(state);
+          currentLight = this.node.querySelector('.current.light');
+          currentLight.classList.remove('current');
+          newLight = this.node.querySelector('.' + state);
+          newLight.classList.add('current');
+        }
+      });
+    };
+
+    TrafficLightView.prototype.on = function(event, callback) {
+      this.node.addEventListener(event, (function(_this) {
+        return function(ev) {
+          switch (ev.type) {
+            case 'click':
+              _this.cycleState();
+          }
+          if (callback) {
+            return callback();
+          }
+        };
+      })(this));
+    };
+
+    TrafficLightView.prototype.cycleState = function() {
+      return this.state = this.model.cycle();
     };
 
     return TrafficLightView;

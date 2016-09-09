@@ -1,6 +1,15 @@
 (function() {
-  var CarView, CrossroadView, HorizontalStreetView, LeftBottomCurveView, LeftTopCurveView, MapModel, MapView, RightBottomCurveView, RightTopCurveView, TrafficLightView, VerticalStreetView, base, base1, carModule, crossroadModule, curveModule, root, streetModule,
+  var CarView, CrossroadView, HorizontalStreetView, LeftBottomCurveView, LeftTopCurveView, MapModel, MapView, RightBottomCurveView, RightTopCurveView, TrafficLightModel, TrafficLightView, VerticalStreetView, base, base1, carModule, crossroadModule, curveModule, root, streetModule, trafficLightModule,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  if (!TrafficLightModel) {
+    if (require) {
+      trafficLightModule = require('../transpiled/trafficLight.js').game;
+      TrafficLightModel = trafficLightModule.models.TrafficLight;
+    } else {
+      TrafficLightModel = this.game.models.TrafficLight;
+    }
+  }
 
   if (!LeftTopCurveView) {
     if (require) {
@@ -67,8 +76,8 @@
 
   if (!TrafficLightView) {
     if (require) {
-      crossroadModule = require('../transpiled/trafficLight.js').game;
-      TrafficLightView = crossroadModule.views.TrafficLight;
+      trafficLightModule = require('../transpiled/trafficLight.js').game;
+      TrafficLightView = trafficLightModule.views.TrafficLight;
     } else {
       TrafficLightView = this.game.views.TrafficLight;
     }
@@ -322,18 +331,30 @@
     };
 
     MapView.prototype.addTrafficLight = function(tile) {
-      var trafficLight;
+      var trafficLightModel, trafficLightTile, trafficLightView;
       if (!/crossroad/.test(tile.getAttribute('class'))) {
         return tile;
       }
-      trafficLight = (new TrafficLightView()).render();
-      tile.appendChild(trafficLight);
-      trafficLight = (new TrafficLightView()).render();
-      tile.appendChild(trafficLight);
-      trafficLight = (new TrafficLightView()).render();
-      tile.appendChild(trafficLight);
-      trafficLight = (new TrafficLightView()).render();
-      tile.appendChild(trafficLight);
+      trafficLightModel = new TrafficLightModel();
+      trafficLightView = new TrafficLightView();
+      trafficLightTile = trafficLightView.render();
+      trafficLightView.bindTo(trafficLightModel);
+      tile.appendChild(trafficLightTile);
+      trafficLightModel = new TrafficLightModel();
+      trafficLightView = new TrafficLightView();
+      trafficLightTile = trafficLightView.render();
+      trafficLightView.bindTo(trafficLightModel);
+      tile.appendChild(trafficLightTile);
+      trafficLightModel = new TrafficLightModel();
+      trafficLightView = new TrafficLightView();
+      trafficLightTile = trafficLightView.render();
+      trafficLightView.bindTo(trafficLightModel);
+      tile.appendChild(trafficLightTile);
+      trafficLightModel = new TrafficLightModel();
+      trafficLightView = new TrafficLightView();
+      trafficLightTile = trafficLightView.render();
+      trafficLightView.bindTo(trafficLightModel);
+      tile.appendChild(trafficLightTile);
       return tile;
     };
 

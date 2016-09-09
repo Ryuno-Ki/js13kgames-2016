@@ -53,4 +53,12 @@ describe('TrafficLight view', () => {
         expect(renderedSprite.nodeName.toLowerCase()).to.equal('svg');
         expect(renderedSprite.className).to.contain('traffic-light');
     });
+
+    it('should bind its state to the model', () => {
+        let trafficLightModel = new TrafficLightModel();
+        let renderedSprite = trafficLight.render();
+        trafficLight.bindTo(trafficLightModel);
+        trafficLight.state = 'green';
+        expect(trafficLightModel.getState()).to.equal('green');
+    });
 });

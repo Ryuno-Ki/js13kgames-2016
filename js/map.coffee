@@ -261,6 +261,7 @@ class MapView
         @node.appendChild tile
 
     @mapData = mapData
+    @on 'animationend'
     @on 'click'
     return @node
 
@@ -291,7 +292,10 @@ class MapView
 
   on: (event, callback) ->
     @node.addEventListener event, (ev) =>
-      @spawnCar()
+      switch ev.type
+        when 'click' then @spawnCar()
+        when 'animationend' then @moveCarToNextTile ev.target
+
       if callback
         callback()
     return
@@ -302,6 +306,14 @@ class MapView
     tileWithNewCar = @node.children.item indexOfTile
     tileWithNewCar.appendChild (new CarView()).render()
     return tileWithNewCar
+
+  moveCarToNextTile: (car) ->
+    currentTileWithCar = car.parentNode
+    futureTileWithCar = currentTileWithCar.previousSibling
+    if futureTileWithCar is null
+      futureTileWithCar = @node.lastChild
+    futureTileWithCar.appendChild car, true
+    return
 
 
 root = exports ? this  # Node.js vs. Browser

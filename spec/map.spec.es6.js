@@ -243,4 +243,24 @@ describe('Map view', () => {
         let carOnTile = renderedMap.querySelector('.car');
         expect(carOnTile).not.to.be.null;
     });
+
+    it('should move the car to the next tile', () => {
+        let mapModel = new MapModel();
+        let mapState = JSON.parse(mapModel.calculateMap());
+        let renderedMap = map.render(mapState);
+
+        // Old style for creating and dispatching events
+        let clickEvent = document.createEvent('Event');
+        clickEvent.initEvent('click', true, true);
+        renderedMap.dispatchEvent(clickEvent);
+
+        let carOnTile = renderedMap.querySelector('.car');
+        let tileWithCar = carOnTile.parentNode;
+        expect(tileWithCar.previousSibling.querySelector('.car')).to.be.null;
+
+        let animationEndEvent = document.createEvent('Event');
+        animationEndEvent.initEvent('animationend', true, true);
+        carOnTile.dispatchEvent(animationEndEvent);
+        expect(tileWithCar.previousSibling.querySelector('.car')).not.to.be.null;
+    });
 });

@@ -289,6 +289,7 @@
         }
       }
       this.mapData = mapData;
+      this.on('animationend');
       this.on('click');
       return this.node;
     };
@@ -339,7 +340,13 @@
     MapView.prototype.on = function(event, callback) {
       this.node.addEventListener(event, (function(_this) {
         return function(ev) {
-          _this.spawnCar();
+          switch (ev.type) {
+            case 'click':
+              _this.spawnCar();
+              break;
+            case 'animationend':
+              _this.moveCarToNextTile(ev.target);
+          }
           if (callback) {
             return callback();
           }
@@ -354,6 +361,16 @@
       tileWithNewCar = this.node.children.item(indexOfTile);
       tileWithNewCar.appendChild((new CarView()).render());
       return tileWithNewCar;
+    };
+
+    MapView.prototype.moveCarToNextTile = function(car) {
+      var currentTileWithCar, futureTileWithCar;
+      currentTileWithCar = car.parentNode;
+      futureTileWithCar = currentTileWithCar.previousSibling;
+      if (futureTileWithCar === null) {
+        futureTileWithCar = this.node.lastChild;
+      }
+      futureTileWithCar.appendChild(car, true);
     };
 
     return MapView;
